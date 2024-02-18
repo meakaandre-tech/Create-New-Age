@@ -28,6 +28,12 @@ import org.antarcticgardens.newage.tools.RecipeTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
+
 
 import static org.antarcticgardens.newage.content.heat.heater.HeaterBlock.STRENGTH;
 
@@ -89,4 +95,12 @@ public class CreateNewAge implements ModInitializer {
 						.title(Component.translatable("tab." + MOD_ID + ".tab"))
 						.build());
 	}
+
+	@SubscribeEvent
+    @OnlyIn(Dist.CLIENT)
+    public void userJoined(PlayerEvent.PlayerLoggedInEvent event) {
+        if (ModList.get().isLoaded("optifine")) {
+            event.getEntity().sendSystemMessage(Component.translatable("optifine_issue.create_new_age.message"));
+        }
+    }
 }
