@@ -199,5 +199,8 @@
   "item.create_new_age.copper_circuit": "Copper Circuit",
   "item.create_new_age.blank_circuit": "Blank Circuit",
 
-  "tooltip.create_new_age.motor_extension": "Placed behind a motor"
+  "tooltip.create_new_age.motor_extension": "Placed behind a motor",
+
+    "optifine_issue.create_new_age.message": "§e[WARNING] Optifine will cause Create: New Age to not work properly! Please uninstall Optifine, and/or install Sodium.§r"
+
 }
