@@ -5,14 +5,14 @@ import com.simibubi.create.content.kinetics.belt.behaviour.BeltProcessingBehavio
 import com.simibubi.create.content.kinetics.belt.behaviour.TransportedItemStackHandlerBehaviour;
 import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyRecipe;
-import earth.terrarium.botarium.common.energy.base.PlatformItemEnergyManager;
-import earth.terrarium.botarium.common.energy.util.EnergyHooks;
+import earth.terrarium.botarium.common.energy.EnergyApi;
+import earth.terrarium.botarium.common.energy.base.EnergyContainer;
+import earth.terrarium.botarium.common.item.ItemStackHolder;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import org.antarcticgardens.newage.CreateNewAge;
 import org.joml.Math;
 
@@ -145,27 +145,25 @@ public class EnergiserBehaviour extends BeltProcessingBehaviour {
             return ProcessingResult.PASS;
         }
         if (capacitorMode) {
-            if (EnergyHooks.isEnergyItem(transportedItemStack.stack)) {
-
-                var c = transportedItemStack.stack.getCapability(ForgeCapabilities.ENERGY).resolve();
-
-                if (c.isEmpty()) {
+            if (EnergyApi.isEnergyItem(transportedItemStack.stack)) {
+                EnergyContainer itemEnergyContainer = EnergyApi.getItemEnergyContainer(new ItemStackHolder(transportedItemStack.stack));
+                
+                if (!itemEnergyContainer.allowsInsertion()) {
                     capacitorMode = false;
                     charged = 0;
                     needed = 0;
                     shouldCreateParticles = true;
                     return ProcessingResult.PASS;
                 }
-                var capability = c.get();
 
                 long extr = be.energy.internalExtract(eSpeed(), true);
-                long insr = capability.receiveEnergy((int)extr, true);
+                long insr = itemEnergyContainer.insertEnergy((int)extr, true);
 
                 be.lastCharged = be.energy.extractEnergy(insr, false);
-                capability.receiveEnergy((int)insr, false);
+                itemEnergyContainer.insertEnergy((int)insr, false);
 
-                charged = capability.getEnergyStored();
-                needed = capability.getMaxEnergyStored();
+                charged = itemEnergyContainer.getStoredEnergy();
+                needed = itemEnergyContainer.getMaxCapacity();
                 sinceUpdate = 10;
 
 
@@ -235,13 +233,12 @@ public class EnergiserBehaviour extends BeltProcessingBehaviour {
         if (be.getSpeed() == 0) {
             return ProcessingResult.PASS;
         }
-
-        var c = transportedItemStack.stack.getCapability(ForgeCapabilities.ENERGY).resolve();
-        if (c.isPresent() && c.get().getEnergyStored() < c.get().getMaxEnergyStored()) {
+        
+        EnergyContainer container;
+        if (EnergyApi.isEnergyItem(transportedItemStack.stack) && (container = EnergyApi.getItemEnergyContainer(new ItemStackHolder(transportedItemStack.stack))).getStoredEnergy() < container.getMaxCapacity()) {
             capacitorMode = true;
-            PlatformItemEnergyManager container = EnergyHooks.getItemEnergyManager(transportedItemStack.stack);
             charged = container.getStoredEnergy();
-            needed = container.getCapacity();
+            needed = container.getMaxCapacity();
             sinceUpdate = 10;
             return ProcessingResult.HOLD;
         }
