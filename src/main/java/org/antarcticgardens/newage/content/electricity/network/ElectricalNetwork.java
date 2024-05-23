@@ -1,13 +1,17 @@
 package org.antarcticgardens.newage.content.electricity.network;
 
-import earth.terrarium.botarium.common.energy.base.PlatformEnergyManager;
-import earth.terrarium.botarium.common.energy.util.EnergyHooks;
+import com.google.common.graph.Network;
+import com.google.common.graph.NetworkBuilder;
+import earth.terrarium.botarium.common.energy.EnergyApi;
+import earth.terrarium.botarium.common.energy.base.EnergyContainer;
 import earth.terrarium.botarium.forge.energy.ForgeEnergyManager;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Graph;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraftforge.energy.EnergyStorage;
 import org.antarcticgardens.newage.content.electricity.connector.ElectricalConnectorBlock;
 import org.antarcticgardens.newage.content.electricity.connector.ElectricalConnectorBlockEntity;
 
@@ -16,8 +20,8 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class ElectricalNetwork {
     private final List<ElectricalConnectorBlockEntity> nodes = new ArrayList<>();
-    private final Map<ElectricalConnectorBlockEntity, EnergyStorageWrapper> consumers = new HashMap<>();
-    private final Map<ElectricalConnectorBlockEntity, EnergyStorageWrapper> pulledSources = new HashMap<>();
+    private final Map<ElectricalConnectorBlockEntity, EnergyContainer> consumers = new HashMap<>();
+    private final Map<ElectricalConnectorBlockEntity, EnergyContainer> pulledSources = new HashMap<>();
 
     private final ElectricalNetworkPathManager pathManager = new ElectricalNetworkPathManager();
 
@@ -61,15 +65,15 @@ public class ElectricalNetwork {
                 Direction dir = node.getBlockState().getValue(BlockStateProperties.FACING);
                 BlockEntity entity = node.getLevel().getBlockEntity(node.getSupportingBlockPos());
 
-                if (entity != null && !(entity instanceof ElectricalConnectorBlockEntity) && EnergyHooks.isEnergyContainer(entity, dir)) {
-                    PlatformEnergyManager storage = EnergyHooks.getBlockEnergyManager(entity, dir);
-                    if (storage instanceof ForgeEnergyManager fem) {
-                        if (storage.supportsInsertion())
-                            consumers.put(node, new EnergyStorageWrapper(entity, fem.energy()));
-                        
-                        if (storage.supportsExtraction() && node.getBlockState().getValue(ElectricalConnectorBlock.MODE).pull)
-                            pulledSources.put(node, new EnergyStorageWrapper(entity, fem.energy()));
-                    }
+                if (entity != null && !(entity instanceof ElectricalConnectorBlockEntity) && EnergyApi.isEnergyBlock(entity, dir)) {
+                    
+                    EnergyContainer storage = EnergyApi.getBlockEnergyContainer(entity, dir);
+	                assert storage != null;
+	                if (storage.allowsInsertion())
+                        consumers.put(node, storage);
+                    
+                    if (storage.allowsExtraction() && node.getBlockState().getValue(ElectricalConnectorBlock.MODE).pull)
+                        pulledSources.put(node, storage);
                 }
             }
         }
@@ -89,9 +93,9 @@ public class ElectricalNetwork {
                 new NetworkPathConductivityContext(pathManager.getConductivityContext()) :
                 pathManager.getConductivityContext();
 
-        consumers.entrySet().stream()
-                .sorted(Comparator.comparingDouble(e ->
-                        e.getValue().storage().getEnergyStored() / (double) e.getValue().storage().getMaxEnergyStored()))
+        consumers.entrySet()
+                 .stream()
+                .sorted(Comparator.comparingDouble(e -> (double) e.getValue().getStoredEnergy() / e.getValue().getMaxCapacity()))
                 .takeWhile(e -> inserted.get() < amount)
                 .forEach(e -> inserted.addAndGet(insertInto(from, e, context, Math.min(perConsumer, amount - inserted.get()), simulate)));
 
@@ -99,7 +103,7 @@ public class ElectricalNetwork {
     }
 
     private long insertInto(ElectricalConnectorBlockEntity from,
-                            Map.Entry<ElectricalConnectorBlockEntity, EnergyStorageWrapper> to,
+                            Map.Entry<ElectricalConnectorBlockEntity, EnergyContainer> to,
                             NetworkPathConductivityContext context,
                             long amount,
                             boolean simulate) {
@@ -108,18 +112,18 @@ public class ElectricalNetwork {
 
         while ((path = pathManager.findConductiblePath(from, to.getKey())) != null && inserted < amount) {
             long pathConductivity = context.calculatePathConductivity(path);
-            long insertedThroughThisPath = to.getValue().insert(Math.min(pathConductivity, amount - inserted), simulate);
+            long insertedThroughThisPath = to.getValue().insertEnergy(Math.min(pathConductivity, amount - inserted), simulate);
 
             if (insertedThroughThisPath == 0)
                 break;
-
-            if (!simulate && insertedThroughThisPath > 0) {
-                BlockEntity be = to.getValue().entity();
-
-                be.setChanged();
-                if (be.getLevel() instanceof ServerLevel serverLevel)
-                    serverLevel.getChunkSource().blockChanged(be.getBlockPos());
-            }
+            // should be handled by EnergyContainer#insertEnergy
+//            if (!simulate && insertedThroughThisPath > 0) {
+//                BlockEntity be = to.getValue().entity();
+//
+//                be.setChanged();
+//                if (be.getLevel() instanceof ServerLevel serverLevel)
+//                    serverLevel.getChunkSource().blockChanged(be.getBlockPos());
+//            }
 
             inserted += insertedThroughThisPath;
 
@@ -137,11 +141,11 @@ public class ElectricalNetwork {
     }
 
     protected void tick() {
-        for (Map.Entry<ElectricalConnectorBlockEntity, EnergyStorageWrapper> e : pulledSources.entrySet()) {
-            long maxExtracted = e.getValue().extract(Long.MAX_VALUE, true);
-            long inserted = insert(e.getKey(), maxExtracted, false);
-            e.getValue().extract(inserted, false);
-        }
+        pulledSources.forEach((k, v) -> {
+            long maxExtracted = v.extractEnergy(Long.MAX_VALUE, true);
+            long inserted = insert(k, maxExtracted, false);
+            v.extractEnergy(inserted, false);
+        });
         
         pathManager.tick();
     }
