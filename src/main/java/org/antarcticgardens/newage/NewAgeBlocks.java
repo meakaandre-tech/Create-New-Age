@@ -122,7 +122,6 @@ public class NewAgeBlocks {
                     .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
                     .properties(BlockBehaviour.Properties::noOcclusion)
                     .properties(BlockBehaviour.Properties::noOcclusion)
-                    .addLayer(() -> RenderType::cutout)
                     .simpleItem()
                     .register();
 
@@ -243,7 +242,6 @@ public class NewAgeBlocks {
                         b.onRegister(CreateRegistrate.connectedTextures(() -> new SimpleCTBehaviour(NewAgeSpriteShifts.REACTOR_GLASS)));
                         return b;
                     })
-                    .addLayer(() -> RenderType::cutout)
                     .simpleItem()
                     .register();
 
@@ -267,7 +265,6 @@ public class NewAgeBlocks {
             REGISTRATE.block("basic_solar_heating_plate", SolarHeatingPlateBlock::createBasic)
                     .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
                     .properties(BlockBehaviour.Properties::noOcclusion)
-                    .addLayer(() -> RenderType::cutout)
                     .simpleItem()
                     .register();
 
@@ -275,7 +272,6 @@ public class NewAgeBlocks {
             REGISTRATE.block("advanced_solar_heating_plate", SolarHeatingPlateBlock::createAdvanced)
                     .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
                     .properties(BlockBehaviour.Properties::noOcclusion)
-                    .addLayer(() -> RenderType::cutout)
                     .simpleItem()
                     .register();
 

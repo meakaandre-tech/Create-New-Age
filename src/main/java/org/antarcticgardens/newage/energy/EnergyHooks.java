@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 public class EnergyHooks {
     public static long distributeEnergyNearby(BlockEntity energyBlock, long amount) {
@@ -25,6 +26,7 @@ public class EnergyHooks {
                 .filter(pair -> pair.getSecond() != null)
                 .filter(pair -> EnergyApi.isEnergyBlock(pair.getSecond(), pair.getFirst().getOpposite()))
                 .map(pair -> EnergyApi.getBlockEnergyContainer(pair.getSecond(), pair.getFirst().getOpposite()))
+                .filter(Objects::nonNull)
                 .sorted(Comparator.comparingLong(energy -> energy.insertEnergy(amount, true)))
                 .toList();
         int receiverCount = list.size();

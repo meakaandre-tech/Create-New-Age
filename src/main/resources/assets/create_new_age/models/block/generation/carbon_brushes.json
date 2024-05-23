@@ -1,6 +1,7 @@
 {
 	"credit": "Made with Blockbench by ProfBones",
 	"parent": "block/block",
+	"render_type": "minecraft:cutout",
 	"texture_size": [64, 64],
 	"textures": {
 		"1": "create_new_age:block/carbon_brushes",
