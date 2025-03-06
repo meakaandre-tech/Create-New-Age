@@ -1,6 +1,5 @@
 package org.antarcticgardens.newage;
 
-import com.simibubi.create.content.kinetics.BlockStressDefaults;
 import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
 import com.simibubi.create.foundation.block.connected.SimpleCTBehaviour;
 import com.simibubi.create.foundation.data.CreateRegistrate;
@@ -45,7 +44,7 @@ public class NewAgeBlocks {
             REGISTRATE.block("energiser_t1", EnergiserBlock::createT1)
                     .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
                     .properties(BlockBehaviour.Properties::noOcclusion)
-                    .transform(BlockStressDefaults.setImpact(4.0))
+//                    .transform(CStress.setImpact(4.0))
                     .item(AssemblyOperatorBlockItem::new)
                     .build()
                     .register();
@@ -54,7 +53,7 @@ public class NewAgeBlocks {
             REGISTRATE.block("energiser_t2", EnergiserBlock::createT2)
                     .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
                     .properties(BlockBehaviour.Properties::noOcclusion)
-                    .transform(BlockStressDefaults.setImpact(8.0))
+//                    .transform(CStress.setImpact(8.0))
                     .item(AssemblyOperatorBlockItem::new)
                     .build()
                     .register();
@@ -63,7 +62,7 @@ public class NewAgeBlocks {
             REGISTRATE.block("energiser_t3", EnergiserBlock::createT3)
                     .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
                     .properties(BlockBehaviour.Properties::noOcclusion)
-                    .transform(BlockStressDefaults.setImpact(32.0))
+//                    .transform(CStress.setImpact(32.0))
                     .item(AssemblyOperatorBlockItem::new)
                     .build()
                     .register();
@@ -130,7 +129,7 @@ public class NewAgeBlocks {
             REGISTRATE.block("generator_coil", GeneratorCoilBlock::new)
                     .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
                     .properties(BlockBehaviour.Properties::noOcclusion)
-                    .transform(BlockStressDefaults.setImpact(24.0f))
+//                    .transform(CStress.setImpact(24.0f))
                     .simpleItem()
                     .register();
 
@@ -198,7 +197,7 @@ public class NewAgeBlocks {
                     .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
                     .properties(BlockBehaviour.Properties::noOcclusion)
                     .properties(properties -> properties.strength(2.0f))
-                    .transform(BlockStressDefaults.setCapacity(32.0))
+//                    .transform(CStress.setCapacity(32.0))
                     .simpleItem()
                     .register();
 

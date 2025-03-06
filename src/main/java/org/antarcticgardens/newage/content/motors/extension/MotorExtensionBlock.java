@@ -3,7 +3,7 @@ package org.antarcticgardens.newage.content.motors.extension;
 
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.IBE;
-import com.simibubi.create.foundation.utility.Lang;
+import com.simibubi.create.foundation.utility.CreateLang;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -55,13 +55,13 @@ public class MotorExtensionBlock extends Block implements IBE<MotorExtensionBloc
     @Override
     public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.translatable("tooltip.create_new_age.motor_extension").withStyle(ChatFormatting.DARK_GRAY));
-        tooltip.add(Lang.translate("tooltip.create_new_age.stress_limit_multiplier").style(ChatFormatting.GRAY)
+        tooltip.add(CreateLang.translate("tooltip.create_new_age.stress_limit_multiplier").style(ChatFormatting.GRAY)
                 .component());
-        tooltip.add(Lang.text(" ").add(Lang.number((int)(variant.getMultiplier() * 100)).text("%").style(ChatFormatting.AQUA)).component());
+        tooltip.add(CreateLang.text(" ").add(CreateLang.number((int)(variant.getMultiplier() * 100)).text("%").style(ChatFormatting.AQUA)).component());
 
-        tooltip.add(Lang.translate("tooltip.create_new_age.additional_capacity").style(ChatFormatting.GRAY)
+        tooltip.add(CreateLang.translate("tooltip.create_new_age.additional_capacity").style(ChatFormatting.GRAY)
                 .component());
-        tooltip.add(Lang.text(" ").add(Lang.number(variant.getExtraCapacity()).text("⚡").style(ChatFormatting.AQUA)).component());
+        tooltip.add(CreateLang.text(" ").add(CreateLang.number(variant.getExtraCapacity()).text("⚡").style(ChatFormatting.AQUA)).component());
     }
 
     @Nullable

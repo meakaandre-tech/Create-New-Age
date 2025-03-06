@@ -1,12 +1,12 @@
 package org.antarcticgardens.newage;
 
-import com.simibubi.create.content.contraptions.ContraptionMovementSetting;
-import com.simibubi.create.content.fluids.tank.BoilerHeaters;
+import com.simibubi.create.api.boiler.BoilerHeater;
+import com.simibubi.create.api.contraption.ContraptionMovementSetting;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipeSerializer;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
+import net.createmod.catnip.placement.PlacementHelpers;
 import net.minecraft.ChatFormatting;
-import com.simibubi.create.foundation.placement.PlacementHelpers;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -71,6 +71,7 @@ public class CreateNewAge {
 		NewAgeBlocks.load();
 		NewAgeBlockEntityTypes.load();
 		NewAgeItems.load();
+		NewAgePartialModels.load();
 
 		magnetPlacementHelperId = PlacementHelpers.register(new MagnetPlacementHelper());
 		
@@ -114,8 +115,8 @@ public class CreateNewAge {
 
 	private void generalSetup(final FMLCommonSetupEvent event) {
 		event.enqueueWork(() -> {
-			BoilerHeaters.registerHeater(NewAgeBlocks.HEATER.get(), (level, pos, state) -> state.getValue(STRENGTH).ordinal() - 1);
-			ContraptionMovementSetting.register(NewAgeBlocks.ELECTRICAL_CONNECTOR.get(), () -> ContraptionMovementSetting.UNMOVABLE);
+			BoilerHeater.REGISTRY.register(NewAgeBlocks.HEATER.get(), (level, pos, state) -> state.getValue(STRENGTH).ordinal() - 1);
+			ContraptionMovementSetting.REGISTRY.register(NewAgeBlocks.ELECTRICAL_CONNECTOR.get(), () -> ContraptionMovementSetting.UNMOVABLE);
 		});
 	}
 }
