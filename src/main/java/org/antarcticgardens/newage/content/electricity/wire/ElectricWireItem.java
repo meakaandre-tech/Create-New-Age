@@ -160,6 +160,8 @@ public class ElectricWireItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+        tooltip.add(CreateLang.translate("tooltip.create_new_age.lag").style(ChatFormatting.GRAY)
+                .component());
         tooltip.add(CreateLang.translate("tooltip.create_new_age.transfers").style(ChatFormatting.GRAY)
                 .component());
         tooltip.add(CreateLang.text(" ").translate("tooltip.create_new_age.energy_per_tick", String.format("%,d", wireType.getConductivity())).style(ChatFormatting.AQUA).component());

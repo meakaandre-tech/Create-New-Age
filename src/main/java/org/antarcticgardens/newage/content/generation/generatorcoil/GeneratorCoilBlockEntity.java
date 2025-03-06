@@ -121,7 +121,8 @@ public class GeneratorCoilBlockEntity extends KineticBlockEntity {
         CreateLang.translate("tooltip.create_new_age.percent", StringFormattingTool.formatPercentFloat(
                 (lastStressApplied-plainStress)/lastStressApplied
         )).style(ChatFormatting.AQUA).forGoggles(tooltip, 2);
-        return super.addToGoggleTooltip(tooltip, isPlayerSneaking);
+        super.addToGoggleTooltip(tooltip, isPlayerSneaking);
+        return true;
     }
 
     public int takeGeneratedEnergy() {

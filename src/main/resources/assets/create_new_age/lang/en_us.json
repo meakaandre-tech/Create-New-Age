@@ -1,6 +1,8 @@
 {
   "create_new_age.monkey_edition": "Create: New Age [Monkey Edition]",
 
+  "create.tooltip.create_new_age.lag": "Large wire networks are known to cause a lot of lag,\nIt is advised that you use wires from other mods.",
+
   "recipe.assembly.energising": "Energizing",
   "create.tooltip.create_new_age.energy_stored": "Energy Stored: ",
   "create.tooltip.create_new_age.energy_stats": "Energy Stats: ",

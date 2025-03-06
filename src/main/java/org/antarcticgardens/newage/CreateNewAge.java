@@ -117,6 +117,9 @@ public class CreateNewAge {
 		event.enqueueWork(() -> {
 			BoilerHeater.REGISTRY.register(NewAgeBlocks.HEATER.get(), (level, pos, state) -> state.getValue(STRENGTH).ordinal() - 1);
 			ContraptionMovementSetting.REGISTRY.register(NewAgeBlocks.ELECTRICAL_CONNECTOR.get(), () -> ContraptionMovementSetting.UNMOVABLE);
+			for (Runnable doLater : NewAgeBlocks.doLater) {
+				doLater.run();
+			}
 		});
 	}
 }
