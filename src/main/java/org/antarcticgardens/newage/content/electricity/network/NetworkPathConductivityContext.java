@@ -95,19 +95,16 @@ public class NetworkPathConductivityContext {
         }
     }
 
-    // Call this when chunks are loading
     public static void setChunkLoading(boolean loading) {
+        boolean previousState = inChunkLoading;
         inChunkLoading = loading;
-        if (loading) {
+
+        if (loading && !previousState) {
             // When chunks start loading, temporarily disable electricity
             disableSystem("Chunk loading");
-        } else {
-            // When chunk loading is done, enable electricity
-            if (!isSystemDisabled()) {
-                // If system is already enabled, no need to do anything
-                return;
-            }
-                enableSystem();
+        } else if (!loading && previousState) {
+            // Only re-enable when transitioning from loading to not loading
+            enableSystem();
         }
     }
 
