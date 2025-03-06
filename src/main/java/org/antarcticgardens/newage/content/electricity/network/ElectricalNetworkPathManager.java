@@ -19,7 +19,7 @@ public class ElectricalNetworkPathManager {
     }
 
     private static final AtomicInteger pathFindAttempts = new AtomicInteger(0);
-    private static final int MAX_PATH_FIND_PER_TICK = 50;
+    private static final int MAX_PATH_FIND_PER_TICK = 500;
 
     protected NetworkPath findConductiblePath(ElectricalConnectorBlockEntity a, ElectricalConnectorBlockEntity b) {
         // Circuit breaker to prevent excessive path searches
