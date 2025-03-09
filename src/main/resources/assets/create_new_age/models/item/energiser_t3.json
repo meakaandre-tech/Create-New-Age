@@ -2,6 +2,8 @@
 	"texture_size": [48, 48],
 	"textures": {
 		"0": "create_new_age:block/energiser_t3",
+		"1": "create:block/axis",
+		"2": "create:block/axis_top",
 		"particle": "create_new_age:block/energiser_t3"
 	},
 	"elements": [
@@ -90,16 +92,17 @@
 			}
 		},
 		{
-			"from": [6.5, -6.5, 6.5],
-			"to": [9.5, -3.5, 9.5],
-			"rotation": {"angle": 45, "axis": "y", "origin": [8, -4.5, 8]},
+			"name": "Axis",
+			"from": [6, 6, 0],
+			"to": [10, 10, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
 			"faces": {
-				"north": {"uv": [8.33333, 5, 9.33333, 6], "texture": "#0"},
-				"east": {"uv": [8.33333, 5, 9.33333, 6], "texture": "#0"},
-				"south": {"uv": [8.33333, 5, 9.33333, 6], "texture": "#0"},
-				"west": {"uv": [8.33333, 5, 9.33333, 6], "texture": "#0"},
-				"up": {"uv": [8.33333, 5, 9.33333, 6], "texture": "#0"},
-				"down": {"uv": [8.33333, 5, 9.33333, 6], "texture": "#0"}
+				"north": {"uv": [6, 6, 9.91667, 10], "rotation": 90, "texture": "#2"},
+				"east": {"uv": [6, 0, 9.91667, 16], "rotation": 90, "texture": "#1"},
+				"south": {"uv": [6, 6, 9.91667, 10], "rotation": 90, "texture": "#2"},
+				"west": {"uv": [6, 0, 9.91667, 16], "rotation": 90, "texture": "#1"},
+				"up": {"uv": [6, 0, 9.91667, 16], "rotation": 90, "texture": "#1"},
+				"down": {"uv": [6, 0, 9.91667, 16], "rotation": 90, "texture": "#1"}
 			}
 		}
 	],
