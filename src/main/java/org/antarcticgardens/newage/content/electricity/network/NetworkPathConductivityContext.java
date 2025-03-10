@@ -15,18 +15,15 @@ public class NetworkPathConductivityContext {
     public static final long OPERATION_TIMEOUT_NANOS = 100_000_000; // 100ms timeout
     private static final int MAX_CONNECTIONS = 5000; // Cap network size
 
-    // Circuit breaker pattern to disable electricity when system is unstable
+    // Circuit breaker pattern to disable electricity when the system is unstable
     private static final AtomicBoolean DISABLED = new AtomicBoolean(false);
     private static long disabledUntilTime = 0;
-    private static final long RECOVERY_TIME_MS = 10000; // 10 seconds cooldown
-
-    // Track chunk loading state
-    private static boolean inChunkLoading = false;
+    private static final long RECOVERY_TIME_MS = 10000; // ms cooldown
 
     private static final int MAX_ITERATION_NODES = 200; // Hard cap on iterations
 
     protected long calculatePathConductivity(NetworkPath path) {
-        if (isSystemDisabled() || inChunkLoading) return 0;
+        if (isSystemDisabled()) return 0;
         if (path == null || path.getLength() < 2 || path.getLength() > MAX_PATH_LENGTH) return 0;
 
         long startTime = System.nanoTime();
@@ -95,19 +92,6 @@ public class NetworkPathConductivityContext {
         }
     }
 
-    public static void setChunkLoading(boolean loading) {
-        boolean previousState = inChunkLoading;
-        inChunkLoading = loading;
-
-        if (loading && !previousState) {
-            // When chunks start loading, temporarily disable electricity
-            disableSystem("Chunk loading");
-        } else if (!loading && previousState) {
-            // Only re-enable when transitioning from loading to not loading
-            enableSystem();
-        }
-    }
-
     private static void enableSystem() {
         DISABLED.set(false);
         disabledUntilTime = 0;
@@ -134,7 +118,7 @@ public class NetworkPathConductivityContext {
     }
 
     public void addConnection(ElectricalConnectorBlockEntity node, ElectricalConnectorBlockEntity node1) {
-        if (isSystemDisabled() || inChunkLoading) return;
+        if (isSystemDisabled()) return;
         if (node == null || node1 == null) return;
         if (node.equals(node1)) return;
         if (connections.size() >= MAX_CONNECTIONS) return;
@@ -162,7 +146,7 @@ public class NetworkPathConductivityContext {
     }
 
     private boolean isConnectionValid(NetworkPathKey<ElectricalConnectorBlockEntity> key) {
-        if (isSystemDisabled() || inChunkLoading) return false;
+        if (isSystemDisabled()) return false;
         if (key == null) return false;
 
         try {
@@ -182,7 +166,7 @@ public class NetworkPathConductivityContext {
     }
 
     private Tuple<Long, Long> safeGet(NetworkPathKey<ElectricalConnectorBlockEntity> key) {
-        if (isSystemDisabled() || inChunkLoading) return null;
+        if (isSystemDisabled()) return null;
         if (key == null) return null;
 
         try {
@@ -202,17 +186,17 @@ public class NetworkPathConductivityContext {
     }
 
     protected long getConnectionConductivity(NetworkPathKey<ElectricalConnectorBlockEntity> key) {
-        if (isSystemDisabled() || inChunkLoading) return 0;
+        if (isSystemDisabled()) return 0;
         Tuple<Long, Long> connection = safeGet(key);
         return connection != null ? connection.getB() : 0;
     }
 
     protected boolean containsConnection(NetworkPathKey<ElectricalConnectorBlockEntity> key) {
-        return !isSystemDisabled() && !inChunkLoading && isConnectionValid(key);
+        return !isSystemDisabled() && isConnectionValid(key);
     }
 
     protected void decreasePathConductivity(NetworkPath path, long amount) {
-        if (isSystemDisabled() || inChunkLoading) return;
+        if (isSystemDisabled()) return;
         if (path == null || path.getLength() < 2) return;
 
         long startTime = System.nanoTime();
@@ -250,7 +234,7 @@ public class NetworkPathConductivityContext {
     }
 
     protected void updateConductivity() {
-        if (isSystemDisabled() || inChunkLoading) return;
+        if (isSystemDisabled()) return;
 
         long startTime = System.nanoTime();
 
