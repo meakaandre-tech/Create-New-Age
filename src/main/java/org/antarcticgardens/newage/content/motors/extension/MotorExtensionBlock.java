@@ -35,9 +35,12 @@ import java.util.List;
 import static org.antarcticgardens.newage.content.reactor.reactorfuelacceptor.ReactorFuelAcceptorBlock.FACING;
 
 public class MotorExtensionBlock extends Block implements IBE<MotorExtensionBlockEntity>, IWrenchable {
-    protected static final VoxelShape Y_AXIS_AABB = Block.box(2.0, 0.0, 2.0, 14.0, 16.0, 14.0);
-    protected static final VoxelShape Z_AXIS_AABB = Block.box(2.0, 2.0, 0.0, 14.0, 14.0, 16.0);
-    protected static final VoxelShape X_AXIS_AABB = Block.box(0.0, 2.0, 2.0, 16.0, 14.0, 14.0);
+    protected static final VoxelShape DOWN_AABB = Block.box(2.0, 0.0, 2.0, 14.0, 12.0, 14.0);
+    protected static final VoxelShape UP_AABB = Block.box(2.0, 4.0, 2.0, 14.0, 16.0, 14.0);
+    protected static final VoxelShape NORTH_AABB = Block.box(2.0, 2.0, 0.0, 14.0, 14.0, 12.0);
+    protected static final VoxelShape SOUTH_AABB = Block.box(2.0, 2.0, 4.0, 14.0, 14.0, 16.0);
+    protected static final VoxelShape WEST_AABB = Block.box(0.0, 2.0, 2.0, 12.0, 14.0, 14.0);
+    protected static final VoxelShape EAST_AABB = Block.box(4.0, 2.0, 2.0, 16.0, 14.0, 14.0);
     private final BlockEntityEntry<MotorExtensionBlockEntity> entry;
     private final IMotorExtensionVariant variant;
 
@@ -116,10 +119,13 @@ public class MotorExtensionBlock extends Block implements IBE<MotorExtensionBloc
     }
 
     public VoxelShape getShape(BlockState arg, BlockGetter arg2, BlockPos arg3, CollisionContext arg4) {
-        return switch ((arg.getValue(FACING)).getAxis()) {
-            case X -> X_AXIS_AABB;
-            case Z -> Z_AXIS_AABB;
-            case Y -> Y_AXIS_AABB;
+        return switch (arg.getValue(FACING)) {
+            case DOWN -> DOWN_AABB;
+            case UP -> UP_AABB;
+            case NORTH -> NORTH_AABB;
+            case SOUTH -> SOUTH_AABB;
+            case WEST -> WEST_AABB;
+            case EAST -> EAST_AABB;
         };
     }
 

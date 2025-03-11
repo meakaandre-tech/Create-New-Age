@@ -14,6 +14,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.antarcticgardens.newage.config.NewAgeConfig;
 import org.antarcticgardens.newage.content.heat.HeatBlockEntity;
 import org.antarcticgardens.newage.content.reactor.RodFindingReactorBlockEntity;
@@ -48,6 +49,11 @@ public class ReactorHeatVentBlockEntity extends RodFindingReactorBlockEntity imp
         tag.putFloat("extract", extract);
     }
 
+
+    @Override
+    public boolean canConnect(Direction from) {
+        return from != getBlockState().getValue(BlockStateProperties.FACING);
+    }
 
     @Override
     public float getHeat() {
