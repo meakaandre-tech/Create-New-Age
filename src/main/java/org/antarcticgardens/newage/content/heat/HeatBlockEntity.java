@@ -106,7 +106,7 @@ public interface HeatBlockEntity {
 
         double multiplier = NewAgeConfig.getCommon().overheatingMultiplier.get();
         if (multiplier > 0 && self.getHeat() > self.maxHeat() * NewAgeConfig.getCommon().overheatingMultiplier.get() * 0.7f) {
-            self.setHeat(Math.max(self.getHeat()-100, 0));
+            self.setHeat(Math.max(self.getHeat()-5, 0));
             if (self.getHeat() > self.maxHeat() * NewAgeConfig.getCommon().overheatingMultiplier.get()) {
                 onOverHeat.run();
             }
