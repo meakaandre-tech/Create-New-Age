@@ -13,7 +13,6 @@ import com.simibubi.create.foundation.utility.CreateLang;
 import com.tterrag.registrate.builders.BlockEntityBuilder;
 import earth.terrarium.botarium.common.energy.base.BotariumEnergyBlock;
 import earth.terrarium.botarium.common.energy.impl.WrappedBlockEnergyContainer;
-import net.createmod.catnip.math.AngleHelper;
 import net.createmod.catnip.math.VecHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -41,7 +40,6 @@ public class MotorBlockEntity extends GeneratingKineticBlockEntity implements Bo
     private float actualSpeed = 0;
     private float actualStress = 0;
     private long prvEnergy = -100000;
-    private int energySpam = 0;
 
     private float speed = 0;
     private float stress = 0;
@@ -254,13 +252,11 @@ public class MotorBlockEntity extends GeneratingKineticBlockEntity implements Bo
                 updateGeneratedRotation();
                 speed = actualSpeed;
                 stress = actualStress;
-            } else if (energy.getStoredEnergy() != prvEnergy && energySpam > 10) {
+            } else if (energy.getStoredEnergy() != prvEnergy && level.getGameTime() % 20 == 0) {
                 this.sendData();
                 prvEnergy = energy.getStoredEnergy();
-                energySpam = 0;
             }
         }
-        energySpam++;
     }
 
     @Override
