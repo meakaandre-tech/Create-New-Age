@@ -122,6 +122,7 @@ public class MotorBlockEntity extends GeneratingKineticBlockEntity implements Bo
         stress = compound.getFloat("lastGeneratedStress");
         speed = compound.getFloat("lastGeneratedSpeed");
         e = compound.getLong("eUse");
+        actualStress = compound.getFloat("actualStress");
         super.read(compound, clientPacket);
     }
 
@@ -133,6 +134,7 @@ public class MotorBlockEntity extends GeneratingKineticBlockEntity implements Bo
         compound.putFloat("lastGeneratedStress", stress);
         compound.putFloat("lastGeneratedSpeed", speed);
         compound.putFloat("eUse", e);
+        compound.putFloat("actualStress", actualStress);
         super.write(compound, clientPacket);
     }
 
