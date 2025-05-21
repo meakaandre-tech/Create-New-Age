@@ -21,6 +21,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -38,6 +39,7 @@ public class MotorBlockEntity extends GeneratingKineticBlockEntity implements Bo
     private final IMotorVariant variant;
     public MotorScrollValueBehaviour speedBehavior;
     public boolean powered = false;
+    private float powerRatio = 1f;
     private float actualSpeed = 0;
     private float actualStress = 0;
     private long prvEnergy = -100000;
@@ -125,6 +127,7 @@ public class MotorBlockEntity extends GeneratingKineticBlockEntity implements Bo
         stress = compound.getFloat("lastGeneratedStress");
         speed = compound.getFloat("lastGeneratedSpeed");
         e = compound.getLong("eUse");
+        powerRatio = compound.getFloat("pRatio");
         super.read(compound, clientPacket);
     }
 
@@ -136,6 +139,7 @@ public class MotorBlockEntity extends GeneratingKineticBlockEntity implements Bo
         compound.putFloat("lastGeneratedStress", stress);
         compound.putFloat("lastGeneratedSpeed", speed);
         compound.putFloat("eUse", e);
+        compound.putFloat("pRatio", powerRatio);
         super.write(compound, clientPacket);
     }
 
@@ -165,6 +169,15 @@ public class MotorBlockEntity extends GeneratingKineticBlockEntity implements Bo
                 .forGoggles(tooltip, 1);
 
         super.addToGoggleTooltip(tooltip, isPlayerSneaking);
+
+        if (powerRatio < 1f) {
+            Lang.translate("tooltip.create_new_age.underpowered")
+                    .style(ChatFormatting.RED)
+                    .forGoggles(tooltip);
+            Lang.translate("tooltip.create_new_age.limited_capacity", StringFormattingTool.formatPercentFloat(powerRatio))
+                    .style(ChatFormatting.RED)
+                    .forGoggles(tooltip, 1);
+        }
 
         return true;
     }
@@ -234,19 +247,25 @@ public class MotorBlockEntity extends GeneratingKineticBlockEntity implements Bo
         }
 
         mut.setMaxCapacity(extraEnergy + variant.getMaxCapacity());
-        speedBehavior.betweenValidated((int) -variant.getSpeed(), (int) variant.getSpeed());
+        speedBehavior.betweenValidated((int) (-variant.getSpeed()), (int) (variant.getSpeed()));
 
         if (!level.isClientSide()) {
             int needed = (int) Math.ceil((variant.getStress() * stressMultiplier
                         * NewAgeConfig.getCommon().motorSUMultiplier.get())
                     * NewAgeConfig.getCommon().suToEnergy.get());
+
+            //simulate a power draw to determine available energy, and if we are underrun scale the motor's power down.
+            long available = needsPower == powered? energy.internalExtract(needed, true) : 0;
+            powerRatio = Mth.clamp(available / (float) needed, 0f, 1f);
+            needed = (int) available;
+
             e = needsPower == powered ? energy.internalExtract(needed, false) : 0;
             if (e > 0) {
                 actualSpeed = speedBehavior.value;
                 actualStress =
                         (float) Math.ceil((variant.getStress() * stressMultiplier
                                     * NewAgeConfig.getCommon().motorSUMultiplier.get())
-                                * (e / (float)needed));
+                                * powerRatio);
             } else {
                 actualSpeed = 0;
                 actualStress = 0;

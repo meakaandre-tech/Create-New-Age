@@ -26,6 +26,8 @@
   "create.tooltip.create_new_age.transfers":  "Transfers: ",
   "create.tooltip.create_new_age.percent":  "%s%%",
   "create.tooltip.create_new_age.magnetic_force":  "Magnetic Force: ",
+  "create.tooltip.create_new_age.underpowered": "Underpowered!",
+  "create.tooltip.create_new_age.limited_capacity": "Running at %s%% capacity!",
   
   "create.tooltip.create_new_age.connector_info": "Connector Info: ",
   "create.tooltip.create_new_age.mode": "Mode: ",
