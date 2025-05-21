@@ -42,6 +42,7 @@ public class MotorBlockEntity extends GeneratingKineticBlockEntity implements Bo
     private float actualStress = 0;
     private long prvEnergy = -100000;
     private int energySpam = 0;
+    private boolean initialTickSkip = true;
 
     private float speed = 0;
     private float stress = 0;
@@ -221,6 +222,12 @@ public class MotorBlockEntity extends GeneratingKineticBlockEntity implements Bo
         super.tick();
         if (level == null)
             return;
+
+        if (initialTickSkip)
+        {
+            initialTickSkip = false;
+            return;
+        }
 
         float stressMultiplier = 1;
         long extraEnergy = 0;
