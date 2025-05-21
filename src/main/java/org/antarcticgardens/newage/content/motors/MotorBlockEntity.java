@@ -247,7 +247,7 @@ public class MotorBlockEntity extends GeneratingKineticBlockEntity implements Bo
         }
 
         mut.setMaxCapacity(extraEnergy + variant.getMaxCapacity());
-        speedBehavior.betweenValidated((int) (-variant.getSpeed() * powerRatio), (int) (variant.getSpeed() * powerRatio));
+        speedBehavior.betweenValidated((int) (-variant.getSpeed()), (int) (variant.getSpeed()));
 
         if (!level.isClientSide()) {
             int needed = (int) Math.ceil((variant.getStress() * stressMultiplier
