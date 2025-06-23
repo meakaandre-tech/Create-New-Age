@@ -33,6 +33,7 @@ public class EnergiserBlockEntity extends KineticBlockEntity implements Botarium
         this.energisingBehaviour.tier = tier;
         if (mut == null) {
             getOrCreateNetwork();
+            mut = new InsertOnlyResizableEnergyContainer((long) (Math.pow(10, tier) * 1000));
         }
         mut.setMaxCapacity((long) (Math.pow(10, tier) * 1000));
     }
