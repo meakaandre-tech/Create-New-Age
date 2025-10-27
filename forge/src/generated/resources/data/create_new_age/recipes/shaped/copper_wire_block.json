@@ -2,23 +2,16 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "B": {
-      "item": "create:brass_sheet"
-    },
-    "I": {
-      "item": "create:industrial_iron_block"
-    },
     "W": {
       "item": "create_new_age:copper_wire"
     }
   },
   "pattern": [
-    " B ",
-    "WIW",
-    " B "
+    "WW",
+    "WW"
   ],
   "result": {
-    "item": "create_new_age:battery"
+    "item": "create_new_age:copper_wire_block"
   },
   "show_notification": true
 }

@@ -186,8 +186,8 @@ public class ElectricalConnectorRenderer implements BlockEntityRenderer<Electric
         }
     }
 
-//    @Override
-//    public boolean shouldRenderOffScreen(ElectricalConnectorBlockEntity blockEntity) {
-//        return true;
-//    }
+    @Override
+    public boolean shouldRenderOffScreen(ElectricalConnectorBlockEntity blockEntity) {
+        return true;
+    }
 }

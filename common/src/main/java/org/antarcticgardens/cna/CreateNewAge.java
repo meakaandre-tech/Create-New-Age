@@ -52,6 +52,9 @@ public abstract class CreateNewAge {
 
         platform.commonSetup(() -> {
             BoilerHeater.REGISTRY.register(CNABlocks.HEATER.get(), ((level, pos, state) -> state.getValue(HeaterBlock.STRENGTH).ordinal() - 1));
+            for (var run : CNABlocks.doLater) {
+                run.run();
+            }
         });
 
         // TODO: Monkey edition?

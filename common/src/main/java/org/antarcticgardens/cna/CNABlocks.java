@@ -17,13 +17,15 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
-import org.antarcticgardens.cna.content.electricity.battery.BatteryBlock;
-import org.antarcticgardens.cna.content.electricity.battery.BatteryBlockStateGen;
-import org.antarcticgardens.cna.content.electricity.battery.BatteryItem;
-import org.antarcticgardens.cna.content.electricity.battery.BatteryModel;
+//import org.antarcticgardens.cna.content.electricity.battery.BatteryBlock;
+//import org.antarcticgardens.cna.content.electricity.battery.BatteryBlockStateGen;
+//import org.antarcticgardens.cna.content.electricity.battery.BatteryItem;
+//import org.antarcticgardens.cna.content.electricity.battery.BatteryModel;
 import org.antarcticgardens.cna.content.electricity.connector.ElectricalConnectorBlock;
 import org.antarcticgardens.cna.content.electricity.generation.brushes.CarbonBrushesBlock;
 import org.antarcticgardens.cna.content.electricity.generation.brushes.CarbonBrushesItemRenderer;
@@ -127,8 +129,9 @@ public class CNABlocks {
                     .properties(BlockBehaviour.Properties::noOcclusion)
                     .properties(properties -> properties.strength(0.4f))
                     .tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                    .blockstate((c, p) -> p.directionalBlock(c.get(), p.models().getExistingFile(p.modLoc(c.getName()))))
-                    .simpleItem()
+                    .blockstate(CNABlockStateGen.electricalConnector())
+                    .item()
+                    .transform(ModelGen.customItemModel())
                     .register();
 
     public static final BlockEntry<GeneratorCoilBlock> GENERATOR_COIL =
@@ -417,17 +420,73 @@ public class CNABlocks {
                     .build()
                     .register();
 
-
-    public static final BlockEntry<BatteryBlock> BATTERY =
-            REGISTRATE.block("battery", BatteryBlock::new)
+    public static final BlockEntry<RotatedPillarBlock> COPPER_WIRE_BLOCK =
+            REGISTRATE.block("copper_wire_block", RotatedPillarBlock::new)
+                    .initialProperties(() -> Blocks.COPPER_BLOCK)
+                    .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
                     .properties(BlockBehaviour.Properties::noOcclusion)
-                    .blockstate(new BatteryBlockStateGen()::generate)
-                    .onRegister(CreateRegistrate.blockModel(() -> BatteryModel::new))
-                    .addLayer(() -> RenderType::cutoutMipped)
-                    .item(BatteryItem::new)
-                    .model(AssetLookup.customBlockItemModel("battery_single"))
-                    .build()
+                    .properties(p -> p.sound(SoundType.COPPER))
+                    .blockstate((c, p) ->
+                            p.axisBlock(c.get(), p.models().getExistingFile(p.modLoc(c.getName())), p.models().getExistingFile(p.modLoc(c.getName()))))
+                    .tag(BlockTags.MINEABLE_WITH_PICKAXE)
+                    .tag(BlockTags.MINEABLE_WITH_AXE)
+                    .tag(BlockTags.NEEDS_STONE_TOOL)
+                    .simpleItem()
                     .register();
+
+    public static final BlockEntry<RotatedPillarBlock> OVERCHARGED_IRON_WIRE_BLOCK =
+            REGISTRATE.block("overcharged_iron_wire_block", RotatedPillarBlock::new)
+                    .initialProperties(() -> Blocks.IRON_BLOCK)
+                    .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
+                    .properties(BlockBehaviour.Properties::noOcclusion)
+                    .properties(p -> p.sound(SoundType.COPPER))
+                    .blockstate((c, p) ->
+                            p.axisBlock(c.get(), p.models().getExistingFile(p.modLoc(c.getName())), p.models().getExistingFile(p.modLoc(c.getName()))))
+                    .tag(BlockTags.MINEABLE_WITH_PICKAXE)
+                    .tag(BlockTags.MINEABLE_WITH_AXE)
+                    .tag(BlockTags.NEEDS_STONE_TOOL)
+                    .simpleItem()
+                    .register();
+
+    public static final BlockEntry<RotatedPillarBlock> OVERCHARGED_GOLDEN_WIRE_BLOCK =
+            REGISTRATE.block("overcharged_golden_wire_block", RotatedPillarBlock::new)
+                    .initialProperties(() -> Blocks.GOLD_BLOCK)
+                    .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
+                    .properties(BlockBehaviour.Properties::noOcclusion)
+                    .properties(p -> p.sound(SoundType.COPPER))
+                    .blockstate((c, p) ->
+                            p.axisBlock(c.get(), p.models().getExistingFile(p.modLoc(c.getName())), p.models().getExistingFile(p.modLoc(c.getName()))))
+                    .tag(BlockTags.MINEABLE_WITH_PICKAXE)
+                    .tag(BlockTags.MINEABLE_WITH_AXE)
+                    .tag(BlockTags.NEEDS_IRON_TOOL)
+                    .simpleItem()
+                    .register();
+
+    public static final BlockEntry<RotatedPillarBlock> OVERCHARGED_DIAMOND_WIRE_BLOCK =
+            REGISTRATE.block("overcharged_diamond_wire_block", RotatedPillarBlock::new)
+                    .initialProperties(() -> Blocks.DIAMOND_BLOCK)
+                    .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
+                    .properties(BlockBehaviour.Properties::noOcclusion)
+                    .properties(p -> p.sound(SoundType.COPPER))
+                    .blockstate((c, p) ->
+                            p.axisBlock(c.get(), p.models().getExistingFile(p.modLoc(c.getName())), p.models().getExistingFile(p.modLoc(c.getName()))))
+                    .tag(BlockTags.MINEABLE_WITH_PICKAXE)
+                    .tag(BlockTags.MINEABLE_WITH_AXE)
+                    .tag(BlockTags.NEEDS_IRON_TOOL)
+                    .simpleItem()
+                    .register();
+
+
+//    public static final BlockEntry<BatteryBlock> BATTERY =
+//            REGISTRATE.block("battery", BatteryBlock::new)
+//                    .properties(BlockBehaviour.Properties::noOcclusion)
+//                    .blockstate(new BatteryBlockStateGen()::generate)
+//                    .onRegister(CreateRegistrate.blockModel(() -> BatteryModel::new))
+//                    .addLayer(() -> RenderType::cutoutMipped)
+//                    .item(BatteryItem::new)
+//                    .model(AssetLookup.customBlockItemModel("battery_single"))
+//                    .build()
+//                    .register();
 
     public static void load() {  }
 }
