@@ -31,12 +31,6 @@ public class FabricReactorFuelAcceptorBlockEntity extends ReactorFuelAcceptorBlo
 
         FuelAcceptorItemHandler(ReactorFuelAcceptorBlockEntity blockEntity) {
             this.blockEntity = blockEntity;
-            update();
-        }
-
-        public void update() {
-            this.variant = ItemVariant.of(blockEntity.container.getItem(0));
-            this.amount = blockEntity.container.getItem(0).getCount();
         }
 
         @Override
