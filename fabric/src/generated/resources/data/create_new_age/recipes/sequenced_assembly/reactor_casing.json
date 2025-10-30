@@ -32,7 +32,7 @@
           "item": "create_new_age:incomplete_reactor_casing"
         },
         {
-          "tag": "c:iron_plates"
+          "tag": "c:plates/iron"
         }
       ],
       "results": [

@@ -15,7 +15,7 @@ import org.antarcticgardens.cna.CNATags;
 import java.util.function.UnaryOperator;
 
 #if CNA_FABRIC
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+//import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import io.github.fabricators_of_create.porting_lib.tags.Tags;
 #else
 import net.minecraftforge.common.Tags;
@@ -83,10 +83,10 @@ public class CNASequencedAssemblyRecipeGen extends CNARecipeProvider {
     }
     
     public CNASequencedAssemblyRecipeGen(PackOutput output) {
-        #if CNA_FABRIC
-        super((FabricDataOutput) output);
-        #else
+//        #if CNA_FABRIC
+//        super((FabricDataOutput) output);
+//        #else
         super(output);
-        #endif
+//        #endif
     }
 }

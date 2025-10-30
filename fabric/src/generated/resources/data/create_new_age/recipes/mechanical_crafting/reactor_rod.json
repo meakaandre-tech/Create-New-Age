@@ -12,7 +12,7 @@
       "item": "create_new_age:reactor_glass"
     },
     "P": {
-      "tag": "c:gold_plates"
+      "tag": "c:plates/gold"
     }
   },
   "pattern": [

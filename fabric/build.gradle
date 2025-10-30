@@ -19,7 +19,8 @@ dependencies {
     modCompileOnly("dev.engine-room.flywheel:flywheel-fabric-api-${minecraftVersion}:${flywheelVersion}")
     modRuntimeOnly("dev.engine-room.flywheel:flywheel-fabric-${minecraftVersion}:${flywheelVersion}")
 
-    annotationProcessor(implementation(include("io.github.llamalad7:mixinextras-fabric:0.4.1")))
+    // Fabric 0.15.0+ should already have mixinextras
+//    annotationProcessor(implementation(include("io.github.llamalad7:mixinextras-fabric:0.4.1")))
 
     // Mods with compat
     modImplementation("com.terraformersmc:modmenu:${modmenuVersion}")
@@ -33,8 +34,9 @@ dependencies {
     }
     
     // Runtime only mods
-    modRuntimeOnly("maven.modrinth:sodium:${sodiumVersion}")
-    modRuntimeOnly("maven.modrinth:indium:${indiumVersion}")
+//    Sodium crashes immediately on world join so I'm just going to remove it for now
+//    modRuntimeOnly("maven.modrinth:sodium:${sodiumVersion}")
+//    modRuntimeOnly("maven.modrinth:indium:${indiumVersion}")
     
     // Runtime only mods for testing
     modRuntimeOnly("maven.modrinth:resourceful-lib:YzWNEutS")

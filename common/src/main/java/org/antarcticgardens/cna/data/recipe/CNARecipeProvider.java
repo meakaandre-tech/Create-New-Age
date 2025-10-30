@@ -21,7 +21,7 @@ public abstract class CNARecipeProvider extends RecipeProvider {
     }
 
     @Override
-    protected void buildRecipes(Consumer<FinishedRecipe> writer) {
+    public void buildRecipes(Consumer<FinishedRecipe> writer) {
         all.forEach(c -> c.register(writer));
         CreateNewAge.LOGGER.info(getName() + " registered " + all.size() + " recipe" + (all.size() == 1 ? "" : "s"));
     }

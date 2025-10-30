@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "c:copper_nuggets"
+            "tag": "c:nuggets/copper"
           }
         ]
       },

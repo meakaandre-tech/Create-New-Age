@@ -3,7 +3,7 @@
   "energyNeeded": 2000,
   "ingredients": [
     {
-      "tag": "c:gold_plates"
+      "tag": "c:plates/gold"
     }
   ],
   "results": [

@@ -67,20 +67,21 @@ public class CNATags {
     }
     
     public static class Common {
+        @SuppressWarnings("removal")
         public static TagKey<net.minecraft.world.item.Item>
-                #if CNA_FABRIC
-                NUGGETS_COPPER = AllTags.forgeItemTag("copper_nuggets"), 
-                NUGGETS_ZINC = AllTags.forgeItemTag("zinc_nuggets"), 
-                PLATES_COPPER = AllTags.forgeItemTag("copper_plates"), 
-                PLATES_IRON = AllTags.forgeItemTag("iron_plates"),
-                PLATES_GOLD = AllTags.forgeItemTag("gold_plates");
-                #else
+//                #if CNA_FABRIC
+//                NUGGETS_COPPER = AllTags.forgeItemTag("copper_nuggets"),
+//                NUGGETS_ZINC = AllTags.forgeItemTag("zinc_nuggets"),
+//                PLATES_COPPER = AllTags.forgeItemTag("copper_plates"),
+//                PLATES_IRON = AllTags.forgeItemTag("iron_plates"),
+//                PLATES_GOLD = AllTags.forgeItemTag("gold_plates");
+//                #else
                 NUGGETS_COPPER = AllTags.forgeItemTag("nuggets/copper"), 
                 NUGGETS_ZINC = AllTags.forgeItemTag("nuggets/zinc"), 
                 PLATES_COPPER = AllTags.forgeItemTag("plates/copper"), 
                 PLATES_IRON = AllTags.forgeItemTag("plates/iron"),
                 PLATES_GOLD = AllTags.forgeItemTag("plates/gold");
-                #endif
+//                #endif
     }
     
     public static TagKey<net.minecraft.world.item.Item> createNuclearEnergyTag(int energy) {

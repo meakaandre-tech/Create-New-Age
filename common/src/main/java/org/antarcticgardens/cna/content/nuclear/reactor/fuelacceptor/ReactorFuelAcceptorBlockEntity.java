@@ -9,32 +9,21 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.items.wrapper.InvWrapper;
 import org.antarcticgardens.cna.CreateNewAge;
 import org.antarcticgardens.cna.CNATags;
 import org.antarcticgardens.cna.content.nuclear.reactor.RodFindingReactorBlockEntity;
 import org.antarcticgardens.cna.content.nuclear.reactor.rod.ReactorRodBlockEntity;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
-// TODO: Make this fabric compatible
-// import io.github.fabricators_of_create.porting_lib.transfer.item.ItemStackHandler;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class ReactorFuelAcceptorBlockEntity extends RodFindingReactorBlockEntity {
-    public LazyOptional<IItemHandler> capability;
+public abstract class ReactorFuelAcceptorBlockEntity extends RodFindingReactorBlockEntity {
     public SimpleContainer container;
 
     public ReactorFuelAcceptorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
         super(type, pos, blockState);
         container = new FuelAcceptorContainer(3);
-        capability = LazyOptional.of(FuelAcceptorInventoryHandler::new);
     }
 
     @Override
@@ -106,19 +95,6 @@ public class ReactorFuelAcceptorBlockEntity extends RodFindingReactorBlockEntity
         }
     }
 
-    @Override
-    public void invalidate() {
-        super.invalidate();
-        capability.invalidate();
-    }
-
-    @Override
-    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        if (isItemHandlerCap(cap))
-            return capability.cast();
-        return super.getCapability(cap, side);
-    }
-
     private class FuelAcceptorContainer extends SimpleContainer {
 
         FuelAcceptorContainer(int size) {
@@ -131,10 +107,4 @@ public class ReactorFuelAcceptorBlockEntity extends RodFindingReactorBlockEntity
         }
     }
 
-    private class FuelAcceptorInventoryHandler extends InvWrapper {
-
-        public FuelAcceptorInventoryHandler() {
-            super(container);
-        }
-    }
 }
