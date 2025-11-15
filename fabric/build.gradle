@@ -51,18 +51,18 @@ compileJava {
 
 processResources {
     from project(":common").sourceSets.main.resources
-    inputs.property "version", rootProject.modVersion
+    inputs.property "version", rootProject.version.replaceAll("\\+.*-mc", "\\+mc")
     inputs.property "minecraftVersion", rootProject.minecraftVersion
     inputs.property "fabricLoaderVersion", project.fabricLoaderVersion
-    inputs.property "eslVersion", project.eslVersion
-    inputs.property "createVersion", project.createVersionShort
+    inputs.property "eslVersion", rootProject.eslVersion
+    inputs.property "createVersion", rootProject.createVersionShort
 
     filesMatching("fabric.mod.json") {
-        expand "version": rootProject.modVersion,
-                "minecraftVersion": rootProject.minecraftVersion,
-                "fabricLoaderVersion": project.fabricLoaderVersion,
-                "eslVersion": project.eslVersion,
-                "createVersion": project.createVersionShort
+        expand "version": rootProject.version.replaceAll("\\+.*-mc", "\\+mc"),
+        "minecraftVersion": rootProject.minecraftVersion,
+        "fabricLoaderVersion": project.fabricLoaderVersion,
+        "eslVersion": rootProject.eslVersion,
+        "createVersion": rootProject.createVersionShort
     }
 }
 
