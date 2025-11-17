@@ -1,0 +1,30 @@
+{
+  "type": "create:mechanical_crafting",
+  "acceptMirrored": true,
+  "key": {
+    "C": {
+      "item": "create:brass_casing"
+    },
+    "P": {
+      "tag": "forge:plates/iron"
+    },
+    "R": {
+      "tag": "forge:storage_blocks/redstone"
+    },
+    "S": {
+      "item": "create:shaft"
+    },
+    "d": {
+      "tag": "forge:gems/diamond"
+    }
+  },
+  "pattern": [
+    "dRPPd",
+    "RCRSS",
+    "dRPPd"
+  ],
+  "result": {
+    "count": 2,
+    "item": "create_new_age:reinforced_motor"
+  }
+}

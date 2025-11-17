@@ -1,4 +1,6 @@
 {
+  "create_new_age.monkey_edition": "机械动力：电气时代 [Monkey Edition]",
+
   "recipe.assembly.energising": "充电",
   "create.tooltip.create_new_age.energy_stored": "电能存储：",
   "create.tooltip.create_new_age.energy_stats": "电能数据：",

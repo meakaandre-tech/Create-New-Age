@@ -32,6 +32,8 @@ import net.minecraftforge.common.Tags;
 
 @SuppressWarnings("unused")
 public class CNAProcessingRecipeGen extends CNARecipeProvider {
+    // TODO: Registrate Monkey Edition
+
     // ========================================================================================================= Cutting
     
     GeneratedRecipe COPPER_WIRE = builder(CNAItems.COPPER_WIRE)

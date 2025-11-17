@@ -15,6 +15,9 @@ public class CreateNewAgeForge extends CreateNewAge {
         MinecraftForge.EVENT_BUS.addListener((TickEvent.LevelTickEvent e) -> NetworkTicker.tickWorld(e.level));
         
         FMLJavaModLoadingContext.get().getModEventBus().addListener(new CreateNewAgeClientForge()::onClientSetup);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(new CreateNewAgeClientForge()::registerDatapack);
+
         FMLJavaModLoadingContext.get().getModEventBus().addListener(EventPriority.LOWEST, new CreateNewAgeDatagenForge()::gatherData);
+
     }
 }

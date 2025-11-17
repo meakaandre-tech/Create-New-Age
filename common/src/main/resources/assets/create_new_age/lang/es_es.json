@@ -1,4 +1,6 @@
 {
+  "create_new_age.monkey_edition": "Create: New Age [Monkey Edition]",
+
   "recipe.assembly.energising": "Energizante",
   "create.tooltip.create_new_age.energy_stored": "Energía almacenada: ",
   "create.tooltip.create_new_age.energy_stats": "Estadísticas de energía:",

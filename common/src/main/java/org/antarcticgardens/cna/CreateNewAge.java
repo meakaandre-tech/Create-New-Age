@@ -56,8 +56,6 @@ public abstract class CreateNewAge {
                 run.run();
             }
         });
-
-        // TODO: Monkey edition?
     }
     
     public Platform getPlatform() {
