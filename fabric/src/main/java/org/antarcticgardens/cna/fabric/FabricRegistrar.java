@@ -5,6 +5,10 @@ import com.simibubi.create.foundation.item.render.CustomRenderedItems;
 import fuzs.forgeconfigapiport.api.config.v2.ForgeConfigRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
+import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -50,5 +54,15 @@ public class FabricRegistrar implements PlatformRegistrar {
     @Override
     public void afterRegistration() {
         CreateNewAge.REGISTRATE.register();
+
+        var containerContainer = FabricLoader.getInstance().getModContainer("create_new_age");
+
+        if (containerContainer.isEmpty()) {
+            return;
+        }
+
+        ModContainer modContainer = containerContainer.get();
+        ResourceManagerHelper.registerBuiltinResourcePack(new ResourceLocation(CreateNewAge.MOD_ID, "create_new_age_monkey_edition"), modContainer, Component.translatable("create_new_age.monkey_edition"), ResourcePackActivationType.NORMAL);
+
     }
 }

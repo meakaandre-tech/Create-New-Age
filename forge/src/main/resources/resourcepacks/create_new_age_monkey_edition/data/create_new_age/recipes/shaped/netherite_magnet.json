@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "D": {
-      "item": "forge:storage_blocks/diamond"
+      "tag": "forge:storage_blocks/diamond"
     },
     "S": {
       "item": "minecraft:netherite_scrap"

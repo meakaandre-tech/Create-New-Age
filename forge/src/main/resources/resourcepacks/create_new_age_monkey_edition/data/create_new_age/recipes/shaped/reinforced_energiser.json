@@ -6,10 +6,10 @@
       "tag": "forge:storage_blocks/copper"
     },
     "R": {
-      "item": "forge:storage_blocks/redstone"
+      "tag": "forge:storage_blocks/redstone"
     },
     "E": {
-      "item": "forge:storage_blocks/diamond"
+      "tag": "forge:storage_blocks/diamond"
     },
     "c": {
       "tag": "forge:ingots/copper"
