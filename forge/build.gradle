@@ -20,18 +20,17 @@ dependencies {
 
 processResources {
     from(project(":common").sourceSets.main.resources)
-    inputs.property "version", rootProject.version.replaceAll("\\+.*-mc", "\\+mc")
-    inputs.property "minecraftVersion", rootProject.minecraftVersion
-    inputs.property "forgeVersionRange", project.forgeVersionRange
-    inputs.property "eslVersion", rootProject.eslVersion
-    inputs.property "createVersion", rootProject.createVersion.replaceAll("-[0-9]*", "")
-
-    filesMatching(["META-INF/mods.toml"]) {
-        expand "version": rootProject.version.replaceAll("\\+.*-mc", "\\+mc"),
+    var replaceProperties = [
+        "version": rootProject.version.replaceAll("\\+.*-mc", "\\+mc"),
         "minecraftVersion": rootProject.minecraftVersion,
         "forgeVersionRange": project.forgeVersionRange,
         "eslVersion": rootProject.eslVersion,
         "createVersion": rootProject.createVersion.replaceAll("-[0-9]*", "")
+    ]
+
+    inputs.properties(replaceProperties)
+    filesMatching("META-INF/mods.toml") {
+        expand(replaceProperties)
     }
 }
 
