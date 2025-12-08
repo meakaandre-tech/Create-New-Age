@@ -55,14 +55,14 @@ processResources {
     inputs.property "minecraftVersion", rootProject.minecraftVersion
     inputs.property "fabricLoaderVersion", project.fabricLoaderVersion
     inputs.property "eslVersion", rootProject.eslVersion
-    inputs.property "createVersion", rootProject.createVersionShort
+    inputs.property "createVersion", rootProject.createVersion.replaceAll("-[0-9]*", "")
 
-    filesMatching("fabric.mod.json") {
+    filesMatching(["fabric.mod.json"]) {
         expand "version": rootProject.version.replaceAll("\\+.*-mc", "\\+mc"),
         "minecraftVersion": rootProject.minecraftVersion,
         "fabricLoaderVersion": project.fabricLoaderVersion,
         "eslVersion": rootProject.eslVersion,
-        "createVersion": rootProject.createVersionShort
+        "createVersion": rootProject.createVersion.replaceAll("-[0-9]*", "")
     }
 }
 
