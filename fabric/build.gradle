@@ -52,15 +52,16 @@ compileJava {
 processResources {
     from project(":common").sourceSets.main.resources
     var replaceProperties = [
-            "version": rootProject.version.replaceAll("\\+.*-mc", "\\+mc"),
-            "minecraftVersion": rootProject.minecraftVersion,
-            "fabricLoaderVersion": project.fabricLoaderVersion,
-            "eslVersion": rootProject.eslVersion,
-            "createVersion": rootProject.createVersion.replaceAll("-[0-9]*", "")
+        "version": rootProject.version.replaceAll("\\+.*-mc", "\\+mc"),
+        "minecraftVersion": rootProject.minecraftVersion,
+        "fabricLoaderVersion": project.fabricLoaderVersion,
+        "eslVersion": rootProject.eslVersion,
+        "createVersion": rootProject.createVersion.replaceAll("-[0-9]*", ""),
+        "objLoader": project.objLoader
     ]
 
     inputs.properties(replaceProperties)
-    filesMatching("fabric.mod.json") {
+    filesMatching(["fabric.mod.json", "assets/**/*.json"]) {
         expand(replaceProperties)
     }
 }

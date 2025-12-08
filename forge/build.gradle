@@ -25,11 +25,12 @@ processResources {
         "minecraftVersion": rootProject.minecraftVersion,
         "forgeVersionRange": project.forgeVersionRange,
         "eslVersion": rootProject.eslVersion,
-        "createVersion": rootProject.createVersion.replaceAll("-[0-9]*", "")
+        "createVersion": rootProject.createVersion.replaceAll("-[0-9]*", ""),
+        "objLoader": project.objLoader
     ]
 
     inputs.properties(replaceProperties)
-    filesMatching("META-INF/mods.toml") {
+    filesMatching(["META-INF/mods.toml", "assets/**/*.json"]) {
         expand(replaceProperties)
     }
 }
