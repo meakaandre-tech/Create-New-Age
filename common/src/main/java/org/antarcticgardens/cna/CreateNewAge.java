@@ -42,7 +42,11 @@ public abstract class CreateNewAge {
         CNABlockEntityTypes.load();
         CNAItems.load();
         CNATags.load();
-        CNAPartialModels.load();
+        try {
+            CNAPartialModels.load();
+        } catch (NoClassDefFoundError e) {
+            CreateNewAge.LOGGER.warn(e.getMessage());
+        }
         EnergisingRecipe.load();
         
         magnetPlacementHelperId = PlacementHelpers.register(new MagnetPlacementHelper());

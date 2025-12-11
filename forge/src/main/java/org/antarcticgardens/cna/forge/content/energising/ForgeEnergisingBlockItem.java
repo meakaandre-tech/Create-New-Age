@@ -1,18 +1,18 @@
 package org.antarcticgardens.cna.forge.content.energising;
 
 import com.mojang.math.Axis;
+import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
 import com.simibubi.create.foundation.item.render.SimpleCustomRenderer;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-import org.antarcticgardens.cna.content.energising.EnergisingBlockItem;
 import org.antarcticgardens.cna.rendering.ItemShaftRenderer;
 import org.joml.Vector3f;
 
 import java.util.function.Consumer;
 
-public class ForgeEnergisingBlockItem extends EnergisingBlockItem {
+public class ForgeEnergisingBlockItem extends AssemblyOperatorBlockItem {
     public ForgeEnergisingBlockItem(Block block, Properties builder) {
         super(block, builder);
     }

@@ -1,9 +1,6 @@
 package org.antarcticgardens.cna.fabric;
 
-import com.simibubi.create.foundation.item.render.CustomRenderedItemModelRenderer;
-import com.simibubi.create.foundation.item.render.CustomRenderedItems;
 import fuzs.forgeconfigapiport.api.config.v2.ForgeConfigRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
@@ -13,7 +10,6 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.fml.config.IConfigSpec;
@@ -33,12 +29,6 @@ public class FabricRegistrar implements PlatformRegistrar {
         RecipeType<?> type = RecipeType.register(name);
         Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, new ResourceLocation(CreateNewAge.MOD_ID, name), serializer);
         return type;
-    }
-
-    @Override
-    public void registerCustomItemRenderer(Item item, CustomRenderedItemModelRenderer renderer) {
-        BuiltinItemRendererRegistry.INSTANCE.register(item, renderer);
-        CustomRenderedItems.register(item);
     }
 
     @Override

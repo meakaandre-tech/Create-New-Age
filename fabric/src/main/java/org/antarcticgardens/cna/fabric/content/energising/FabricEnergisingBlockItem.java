@@ -1,9 +1,9 @@
 package org.antarcticgardens.cna.fabric.content.energising;
 
+import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
 import net.minecraft.world.level.block.Block;
-import org.antarcticgardens.cna.content.energising.EnergisingBlockItem;
 
-public class FabricEnergisingBlockItem extends EnergisingBlockItem {
+public class FabricEnergisingBlockItem extends AssemblyOperatorBlockItem {
     public FabricEnergisingBlockItem(Block block, Properties builder) {
         super(block, builder);
     }

@@ -31,12 +31,4 @@ public class CarbonBrushesItemRenderer extends ItemShaftRenderer {
         ms.translate(offset.x, offset.y, offset.z);
         renderer.render(CNAPartialModels.COIL.get(), light);
     }
-
-    public static <T extends Item, P> NonNullUnaryOperator<ItemBuilder<T, P>> itemTransformer(Vector3f offset, Quaternionf rotation) {
-        return b -> {
-            b.onRegister(item -> CreateNewAge.getInstance().getPlatform().getRegistrar()
-                    .registerCustomItemRenderer(item, new CarbonBrushesItemRenderer(offset, rotation)));
-            return b;
-        };
-    }
 }

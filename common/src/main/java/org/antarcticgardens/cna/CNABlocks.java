@@ -1,6 +1,5 @@
 package org.antarcticgardens.cna;
 
-import com.mojang.math.Axis;
 import com.simibubi.create.api.stress.BlockStressValues;
 import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
 import com.simibubi.create.foundation.block.connected.SimpleCTBehaviour;
@@ -27,11 +26,9 @@ import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 //import org.antarcticgardens.cna.content.electricity.battery.BatteryModel;
 import org.antarcticgardens.cna.content.electricity.connector.ElectricalConnectorBlock;
 import org.antarcticgardens.cna.content.electricity.generation.brushes.CarbonBrushesBlock;
-import org.antarcticgardens.cna.content.electricity.generation.brushes.CarbonBrushesItemRenderer;
 import org.antarcticgardens.cna.content.electricity.generation.coil.GeneratorCoilBlock;
 import org.antarcticgardens.cna.content.electricity.generation.magnet.ImplementedMagnetBlock;
 import org.antarcticgardens.cna.content.energising.EnergiserBlock;
-import org.antarcticgardens.cna.content.energising.EnergisingBlockItem;
 import org.antarcticgardens.cna.content.heat.heater.HeaterBlock;
 import org.antarcticgardens.cna.content.heat.pipe.HeatPipeBlock;
 import org.antarcticgardens.cna.content.heat.plate.SolarHeatingPlateBlock;
@@ -53,9 +50,6 @@ import org.antarcticgardens.cna.content.nuclear.reactor.fuelacceptor.ReactorFuel
 import org.antarcticgardens.cna.content.nuclear.reactor.rod.ReactorRodBlock;
 import org.antarcticgardens.cna.content.nuclear.reactor.vent.ReactorHeatVentBlock;
 import org.antarcticgardens.cna.data.CNABlockStateGen;
-import org.antarcticgardens.cna.rendering.ItemShaftRenderer;
-import org.joml.Quaternionf;
-import org.joml.Vector3f;
 
 import java.util.LinkedList;
 
