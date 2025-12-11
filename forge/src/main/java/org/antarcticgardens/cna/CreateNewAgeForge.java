@@ -13,9 +13,12 @@ public class CreateNewAgeForge extends CreateNewAge {
     public CreateNewAgeForge() {
         this.initialize(new ForgePlatform());
         MinecraftForge.EVENT_BUS.addListener((TickEvent.LevelTickEvent e) -> NetworkTicker.tickWorld(e.level));
-        
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(new CreateNewAgeClientForge()::onClientSetup);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(new CreateNewAgeClientForge()::registerDatapack);
+
+        try {
+            FMLJavaModLoadingContext.get().getModEventBus().addListener(new CreateNewAgeClientForge()::onClientSetup);
+        } catch (RuntimeException e) {
+            CreateNewAge.LOGGER.info("Running in dedicated server");
+        }
 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(EventPriority.LOWEST, new CreateNewAgeDatagenForge()::gatherData);
 
