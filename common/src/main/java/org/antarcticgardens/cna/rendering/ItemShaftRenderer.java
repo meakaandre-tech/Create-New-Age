@@ -23,7 +23,7 @@ public class ItemShaftRenderer extends CustomRenderedItemModelRenderer {
     protected final Vector3f offset;
     protected final Quaternionf rotation;
 
-    protected ItemShaftRenderer(Vector3f offset, Quaternionf rotation) {
+    public ItemShaftRenderer(Vector3f offset, Quaternionf rotation) {
         this.offset = offset.div(16.0f);
         this.rotation = rotation;
     }

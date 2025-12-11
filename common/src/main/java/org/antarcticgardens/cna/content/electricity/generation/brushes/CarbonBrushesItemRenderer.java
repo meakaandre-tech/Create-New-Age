@@ -17,7 +17,7 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 public class CarbonBrushesItemRenderer extends ItemShaftRenderer {
-    protected CarbonBrushesItemRenderer(Vector3f offset, Quaternionf rotation) {
+    public CarbonBrushesItemRenderer(Vector3f offset, Quaternionf rotation) {
         super(offset, rotation);
     }
 

@@ -4,7 +4,6 @@ import com.mojang.math.Axis;
 import com.simibubi.create.api.stress.BlockStressValues;
 import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
 import com.simibubi.create.foundation.block.connected.SimpleCTBehaviour;
-import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.BlockStateGen;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.ModelGen;
@@ -32,6 +31,7 @@ import org.antarcticgardens.cna.content.electricity.generation.brushes.CarbonBru
 import org.antarcticgardens.cna.content.electricity.generation.coil.GeneratorCoilBlock;
 import org.antarcticgardens.cna.content.electricity.generation.magnet.ImplementedMagnetBlock;
 import org.antarcticgardens.cna.content.energising.EnergiserBlock;
+import org.antarcticgardens.cna.content.energising.EnergisingBlockItem;
 import org.antarcticgardens.cna.content.heat.heater.HeaterBlock;
 import org.antarcticgardens.cna.content.heat.pipe.HeatPipeBlock;
 import org.antarcticgardens.cna.content.heat.plate.SolarHeatingPlateBlock;
@@ -93,8 +93,7 @@ public class CNABlocks {
                     .transform(setImpact(4.0))
                     .tag(BlockTags.MINEABLE_WITH_AXE)
                     .tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                    .item(AssemblyOperatorBlockItem::new)
-                    .transform(ItemShaftRenderer.itemTransformer(new Vector3f(0.5f, 0.0f, 0.0f), Axis.XP.rotationDegrees(90.0f)))
+                    .item(CreateNewAge.getInstance().getPlatform()::platformEnergisingBlockItem)
                     .build()
                     .register();
 
@@ -106,8 +105,7 @@ public class CNABlocks {
                     .transform(setImpact(8.0))
                     .tag(BlockTags.MINEABLE_WITH_AXE)
                     .tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                    .item(AssemblyOperatorBlockItem::new)
-                    .transform(ItemShaftRenderer.itemTransformer(new Vector3f(0.5f, 0.0f, 0.0f), Axis.XP.rotationDegrees(90.0f)))
+                    .item(CreateNewAge.getInstance().getPlatform()::platformEnergisingBlockItem)
                     .build()
                     .register();
 
@@ -119,8 +117,7 @@ public class CNABlocks {
                     .transform(setImpact(32.0))
                     .tag(BlockTags.MINEABLE_WITH_AXE)
                     .tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                    .item(AssemblyOperatorBlockItem::new)
-                    .transform(ItemShaftRenderer.itemTransformer(new Vector3f(0.5f, 0.0f, 0.0f), Axis.XP.rotationDegrees(90.0f)))
+                    .item(CreateNewAge.getInstance().getPlatform()::platformEnergisingBlockItem)
                     .build()
                     .register();
 
@@ -194,8 +191,7 @@ public class CNABlocks {
                     .properties(BlockBehaviour.Properties::noOcclusion)
                     .tag(BlockTags.MINEABLE_WITH_PICKAXE)
                     .blockstate((c, p) -> p.directionalBlock(c.get(), p.models().getExistingFile(p.modLoc("block/carbon_brushes/base"))))
-                    .item()
-                    .transform(CarbonBrushesItemRenderer.itemTransformer(new Vector3f(0.0f), new Quaternionf()))
+                    .item(CreateNewAge.getInstance().getPlatform()::platformCarbonBrushesItem)
                     .transform(b -> b.model((c, p) -> p.withExistingParent(c.getName(), p.modLoc("block/carbon_brushes/base"))))
                     .build()
                     .register();
@@ -207,9 +203,8 @@ public class CNABlocks {
                     .tag(BlockTags.MINEABLE_WITH_PICKAXE)
                     .blockstate(new MotorBlockStateGen("motor")::generate)
                     .properties(properties -> properties.strength(3.0f))
-                    .item()
-                    .transform(ItemShaftRenderer.itemTransformer(new Vector3f(0.0f), Axis.XP.rotationDegrees(90.0f)))
-                    .transform(b -> b.model((c, p) -> 
+                    .item(CreateNewAge.getInstance().getPlatform()::platformMotorBlockItem)
+                    .transform(b -> b.model((c, p) ->
                             p.withExistingParent(c.getName(), p.modLoc("block/" + c.getName() + "/horizontal"))).build())
                     .register();
 
@@ -220,8 +215,7 @@ public class CNABlocks {
                     .properties(properties -> properties.strength(3.5f))
                     .tag(BlockTags.MINEABLE_WITH_PICKAXE)
                     .blockstate(new MotorBlockStateGen("motor")::generate)
-                    .item()
-                    .transform(ItemShaftRenderer.itemTransformer(new Vector3f(0.0f), Axis.XP.rotationDegrees(90.0f)))
+                    .item(CreateNewAge.getInstance().getPlatform()::platformMotorBlockItem)
                     .transform(b -> b.model((c, p) ->
                             p.withExistingParent(c.getName(), p.modLoc("block/" + c.getName() + "/horizontal"))).build())
                     .register();
@@ -234,8 +228,7 @@ public class CNABlocks {
                     .properties(properties -> properties.strength(4.0f))
                     .tag(BlockTags.MINEABLE_WITH_PICKAXE)
                     .blockstate(new MotorBlockStateGen("motor")::generate)
-                    .item()
-                    .transform(ItemShaftRenderer.itemTransformer(new Vector3f(0.0f), Axis.XP.rotationDegrees(90.0f)))
+                    .item(CreateNewAge.getInstance().getPlatform()::platformMotorBlockItem)
                     .transform(b -> b.model((c, p) ->
                             p.withExistingParent(c.getName(), p.modLoc("block/" + c.getName() + "/horizontal"))).build())
                     .register();
@@ -311,8 +304,7 @@ public class CNABlocks {
                     .tag(BlockTags.MINEABLE_WITH_PICKAXE)
                     .blockstate(CNABlockStateGen.stirlingEngine())
                     .transform(setCapacity(32.0))
-                    .item()
-                    .transform(ItemShaftRenderer.itemTransformer(new Vector3f(0.5f, 0.0f, 0.0f), Axis.XP.rotationDegrees(90.0f)))
+                    .item(CreateNewAge.getInstance().getPlatform()::platformStirlingEngineItem)
                     .build()
                     .register();
 
