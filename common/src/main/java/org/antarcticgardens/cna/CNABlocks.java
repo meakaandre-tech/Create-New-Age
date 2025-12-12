@@ -26,6 +26,7 @@ import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 //import org.antarcticgardens.cna.content.electricity.battery.BatteryModel;
 import org.antarcticgardens.cna.content.electricity.connector.ElectricalConnectorBlock;
 import org.antarcticgardens.cna.content.electricity.generation.brushes.CarbonBrushesBlock;
+import org.antarcticgardens.cna.content.electricity.generation.brushes.CarbonBrushesItemRenderer;
 import org.antarcticgardens.cna.content.electricity.generation.coil.GeneratorCoilBlock;
 import org.antarcticgardens.cna.content.electricity.generation.magnet.ImplementedMagnetBlock;
 import org.antarcticgardens.cna.content.energising.EnergiserBlock;
@@ -50,6 +51,7 @@ import org.antarcticgardens.cna.content.nuclear.reactor.fuelacceptor.ReactorFuel
 import org.antarcticgardens.cna.content.nuclear.reactor.rod.ReactorRodBlock;
 import org.antarcticgardens.cna.content.nuclear.reactor.vent.ReactorHeatVentBlock;
 import org.antarcticgardens.cna.data.CNABlockStateGen;
+import org.antarcticgardens.cna.rendering.ItemShaftRenderer;
 
 import java.util.LinkedList;
 
@@ -88,6 +90,9 @@ public class CNABlocks {
                     .tag(BlockTags.MINEABLE_WITH_AXE)
                     .tag(BlockTags.MINEABLE_WITH_PICKAXE)
                     .item(CreateNewAge.getInstance().getPlatform()::platformEnergisingBlockItem)
+            #if CNA_FABRIC
+                    .transform(CreateRegistrate.customRenderedItem(() -> ItemShaftRenderer::new))
+            #endif
                     .build()
                     .register();
 
@@ -100,6 +105,9 @@ public class CNABlocks {
                     .tag(BlockTags.MINEABLE_WITH_AXE)
                     .tag(BlockTags.MINEABLE_WITH_PICKAXE)
                     .item(CreateNewAge.getInstance().getPlatform()::platformEnergisingBlockItem)
+            #if CNA_FABRIC
+                    .transform(CreateRegistrate.customRenderedItem(() -> ItemShaftRenderer::new))
+            #endif
                     .build()
                     .register();
 
@@ -112,6 +120,9 @@ public class CNABlocks {
                     .tag(BlockTags.MINEABLE_WITH_AXE)
                     .tag(BlockTags.MINEABLE_WITH_PICKAXE)
                     .item(CreateNewAge.getInstance().getPlatform()::platformEnergisingBlockItem)
+            #if CNA_FABRIC
+                    .transform(CreateRegistrate.customRenderedItem(() -> ItemShaftRenderer::new))
+            #endif
                     .build()
                     .register();
 
@@ -186,6 +197,10 @@ public class CNABlocks {
                     .tag(BlockTags.MINEABLE_WITH_PICKAXE)
                     .blockstate((c, p) -> p.directionalBlock(c.get(), p.models().getExistingFile(p.modLoc("block/carbon_brushes/base"))))
                     .item(CreateNewAge.getInstance().getPlatform()::platformCarbonBrushesItem)
+            // TODO: This sucks dick and balls
+            #if CNA_FABRIC
+                    .transform(CreateRegistrate.customRenderedItem(() -> CarbonBrushesItemRenderer::new))
+            #endif
                     .transform(b -> b.model((c, p) -> p.withExistingParent(c.getName(), p.modLoc("block/carbon_brushes/base"))))
                     .build()
                     .register();
@@ -198,6 +213,9 @@ public class CNABlocks {
                     .blockstate(new MotorBlockStateGen("motor")::generate)
                     .properties(properties -> properties.strength(3.0f))
                     .item(CreateNewAge.getInstance().getPlatform()::platformMotorBlockItem)
+            #if CNA_FABRIC
+                    .transform(CreateRegistrate.customRenderedItem(() -> ItemShaftRenderer::new))
+            #endif
                     .transform(b -> b.model((c, p) ->
                             p.withExistingParent(c.getName(), p.modLoc("block/" + c.getName() + "/horizontal"))).build())
                     .register();
@@ -210,6 +228,9 @@ public class CNABlocks {
                     .tag(BlockTags.MINEABLE_WITH_PICKAXE)
                     .blockstate(new MotorBlockStateGen("motor")::generate)
                     .item(CreateNewAge.getInstance().getPlatform()::platformMotorBlockItem)
+            #if CNA_FABRIC
+                    .transform(CreateRegistrate.customRenderedItem(() -> ItemShaftRenderer::new))
+            #endif
                     .transform(b -> b.model((c, p) ->
                             p.withExistingParent(c.getName(), p.modLoc("block/" + c.getName() + "/horizontal"))).build())
                     .register();
@@ -223,6 +244,9 @@ public class CNABlocks {
                     .tag(BlockTags.MINEABLE_WITH_PICKAXE)
                     .blockstate(new MotorBlockStateGen("motor")::generate)
                     .item(CreateNewAge.getInstance().getPlatform()::platformMotorBlockItem)
+            #if CNA_FABRIC
+                    .transform(CreateRegistrate.customRenderedItem(() -> ItemShaftRenderer::new))
+            #endif
                     .transform(b -> b.model((c, p) ->
                             p.withExistingParent(c.getName(), p.modLoc("block/" + c.getName() + "/horizontal"))).build())
                     .register();
@@ -299,6 +323,9 @@ public class CNABlocks {
                     .blockstate(CNABlockStateGen.stirlingEngine())
                     .transform(setCapacity(32.0))
                     .item(CreateNewAge.getInstance().getPlatform()::platformStirlingEngineItem)
+            #if CNA_FABRIC
+                    .transform(CreateRegistrate.customRenderedItem(() -> ItemShaftRenderer::new))
+            #endif
                     .build()
                     .register();
 

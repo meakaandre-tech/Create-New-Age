@@ -6,14 +6,10 @@ import com.simibubi.create.Create;
 import com.simibubi.create.foundation.item.render.CustomRenderedItemModel;
 import com.simibubi.create.foundation.item.render.CustomRenderedItemModelRenderer;
 import com.simibubi.create.foundation.item.render.PartialItemModelRenderer;
-import com.tterrag.registrate.builders.ItemBuilder;
-import com.tterrag.registrate.util.nullness.NonNullUnaryOperator;
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import org.antarcticgardens.cna.CreateNewAge;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
@@ -26,6 +22,10 @@ public class ItemShaftRenderer extends CustomRenderedItemModelRenderer {
     public ItemShaftRenderer(Vector3f offset, Quaternionf rotation) {
         this.offset = offset.div(16.0f);
         this.rotation = rotation;
+    }
+
+    public ItemShaftRenderer() {
+        this(new Vector3f(0.5f, 0.0f, 0.0f), Axis.XP.rotationDegrees(90.0f));
     }
 
     @Override

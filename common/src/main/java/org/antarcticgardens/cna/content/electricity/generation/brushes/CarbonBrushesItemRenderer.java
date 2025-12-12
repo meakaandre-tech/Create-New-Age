@@ -4,14 +4,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.simibubi.create.foundation.item.render.CustomRenderedItemModel;
 import com.simibubi.create.foundation.item.render.PartialItemModelRenderer;
-import com.tterrag.registrate.builders.ItemBuilder;
-import com.tterrag.registrate.util.nullness.NonNullUnaryOperator;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import org.antarcticgardens.cna.CNAPartialModels;
-import org.antarcticgardens.cna.CreateNewAge;
 import org.antarcticgardens.cna.rendering.ItemShaftRenderer;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -19,6 +15,10 @@ import org.joml.Vector3f;
 public class CarbonBrushesItemRenderer extends ItemShaftRenderer {
     public CarbonBrushesItemRenderer(Vector3f offset, Quaternionf rotation) {
         super(offset, rotation);
+    }
+
+    public CarbonBrushesItemRenderer() {
+        super(new Vector3f(0.0f), new Quaternionf());
     }
 
     @Override
