@@ -35,6 +35,8 @@ subprojects {
         maven { url = "https://maven.jamieswhiteshirt.com/libs-release" } // Reach Entity Attributes
         
         maven { url = "https://jitpack.io/" } // Mixin Extras
+
+        maven { url "https://modmaven.dev/" } // Applied Energistics 2
     }
     
     dependencies {

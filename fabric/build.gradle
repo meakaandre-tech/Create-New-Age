@@ -26,7 +26,8 @@ dependencies {
     modImplementation("com.terraformersmc:modmenu:${modmenuVersion}")
     modCompileOnly("dev.emi:emi-fabric:${emiVersion}+${rootProject.minecraftVersion}:api")
     modCompileOnly("me.shedaniel:RoughlyEnoughItems-api-fabric:${reiVersion}")
-    
+    modRuntimeOnly("appeng:appliedenergistics2-fabric:${ae2Version}")
+
     if (recipeViewer == "emi") {
         modRuntimeOnly("dev.emi:emi-fabric:${emiVersion}+${rootProject.minecraftVersion}")
     } else if (recipeViewer == "rei") {
