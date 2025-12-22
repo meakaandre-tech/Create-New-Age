@@ -44,7 +44,7 @@ public class EnergisingRecipe extends ProcessingRecipe<Container> implements IAs
     @Override
     public void readAdditional(JsonObject json) {
         try {
-            energyNeeded = json.get("energyNeeded").getAsInt();
+            energyNeeded = json.get("energy_needed").getAsInt();
         } catch (NullPointerException e) {
             CreateNewAge.LOGGER.error("Failed to load recipe: " + id.toString());
         }
@@ -57,7 +57,7 @@ public class EnergisingRecipe extends ProcessingRecipe<Container> implements IAs
 
     @Override
     public void writeAdditional(JsonObject json) {
-        json.addProperty("energyNeeded", energyNeeded);
+        json.addProperty("energy_needed", energyNeeded);
     }
 
     @Override
