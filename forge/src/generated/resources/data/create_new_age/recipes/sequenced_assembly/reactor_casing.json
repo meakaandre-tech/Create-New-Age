@@ -13,7 +13,7 @@
   "sequence": [
     {
       "type": "create_new_age:energising",
-      "energyNeeded": 500,
+      "energy_needed": 500,
       "ingredients": [
         {
           "item": "create_new_age:incomplete_reactor_casing"

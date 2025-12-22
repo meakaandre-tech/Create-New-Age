@@ -1,6 +1,6 @@
 {
   "type": "create_new_age:energising",
-  "energyNeeded": 10000,
+  "energy_needed": 10000,
   "ingredients": [
     {
       "tag": "forge:gems/diamond"
