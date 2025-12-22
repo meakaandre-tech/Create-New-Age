@@ -15,7 +15,7 @@ snapshot:
     - self-hosted
   cache:
     key: "$CI_COMMIT_REF_NAME"
-    files:
+    paths:
       - .gradle
       - common/build
       - forge/build
