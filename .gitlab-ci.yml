@@ -20,7 +20,7 @@ snapshot:
       - common/build
       - forge/build
       - fabric/build
-    policy: push
+    policy: pull-push
 
 release:
   stage: deploy
