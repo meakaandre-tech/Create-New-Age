@@ -86,7 +86,7 @@ subprojects {
     publishing {
         publications {
             maven(MavenPublication) {
-                artifactId = project.archivesBaseName
+                artifactId = project.archivesBaseName + "-${project.name}-${rootProject.minecraftVersion}"
                 if (!System.getenv("RELEASE").asBoolean())
                     version = project.version + "-build.${System.getenv("GIT_SHA")}"
                 from components.java
