@@ -96,18 +96,24 @@ publishMods {
     changelog = ChangelogText.getChangelogText(rootProject).toString()
     type = STABLE
     version = "$modVersion+mc$minecraftVersion"
-    displayName = "$modVersion+mc$minecraftVersion"
+    displayName = "$modVersion for Fabric $minecraftVersion"
     modLoaders.add("fabric")
 
     curseforge {
         accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
         projectId = "905861"
+        clientRequired = true
+        serverRequired = true
+        requires("create-fabric")
         minecraftVersions.add(minecraftVersion)
     }
 
     modrinth {
         accessToken = providers.environmentVariable("MODRINTH_TOKEN")
         projectId = "FTeXqI9v"
+        requires { // Requires Create
+            id = "Xbc0uyRg"
+        }
         minecraftVersions.add(minecraftVersion)
     }
 }
