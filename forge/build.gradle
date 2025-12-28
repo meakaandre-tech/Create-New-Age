@@ -73,7 +73,7 @@ loom {
 
 // https://modmuss50.github.io/mod-publish-plugin/
 publishMods {
-    file = jar.archiveFile
+    file = remapJar.archiveFile
     changelog = ChangelogText.getChangelogText(rootProject).toString()
     type = STABLE
     version = "$modVersion+mc$minecraftVersion"
