@@ -2,6 +2,12 @@
 Version 1.1.7e
 ------------------------------------------------------
 #### Bug Fixes
+- Fix dedicated server crash for reactors - [!59](https://gitlab.com/antarcticgardens/create-new-age/-/merge_requests/59)
+
+------------------------------------------------------
+Version 1.1.7e
+------------------------------------------------------
+#### Bug Fixes
 - Fix crash when removing CNA blocks from Electrodynamics' networks
 
 ------------------------------------------------------
