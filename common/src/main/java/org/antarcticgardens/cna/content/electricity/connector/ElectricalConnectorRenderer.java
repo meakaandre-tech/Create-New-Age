@@ -109,7 +109,7 @@ public class ElectricalConnectorRenderer implements BlockEntityRenderer<Electric
                     Vec3 endPos = eyePos.add(player.getViewVector(partialTick).normalize().scale(2.0f));
 
                     HitResult hit = RaycastUtil.pickBlockFromPos(blockEntity.getLevel(), eyePos,
-                            player.getViewVector(partialTick), Minecraft.getInstance().gameMode.getPickRange());
+                            player.getViewVector(partialTick), Minecraft.getInstance().gameMode.getPickRange(), Minecraft.getInstance().player);
 
                     if (hit instanceof BlockHitResult blockHit) {
                         Vec3 vec = eyePos.add(blockHit.getLocation().subtract(eyePos).scale(0.9f));
