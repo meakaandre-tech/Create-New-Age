@@ -34,8 +34,20 @@ public class CommonConfig {
     public final ForgeConfigSpec.ConfigValue<Double> advancedMotorExtensionMultiplier;
     public final ForgeConfigSpec.ConfigValue<Integer> advancedMotorExtensionExtraCapacity;
     public final ForgeConfigSpec.ConfigValue<Integer> advancedMotorExtensionScrollStep;
-    
+    public final ForgeConfigSpec.ConfigValue<Double> radiationDamageExplosionScale;
+    public final ForgeConfigSpec.ConfigValue<Boolean> radiationDamageExplosionFire;
+
+
     public CommonConfig(ForgeConfigSpec.Builder builder) {
+
+        radiationDamageExplosionScale = builder
+                .comment("How strong the explosion is on destruction of a charged reactor rod")
+                .defineInRange("radiationDamageExplosionScale", 2.0, 0, Double.MAX_VALUE);
+
+        radiationDamageExplosionFire = builder
+                .comment("Whether the explosion of a charged reactor rod should should cause fire")
+                .define("radiationDamageExplosionFire", true);
+
         suToEnergy = builder
                 .comment(
                         "Responsible for how much energy is generated per 1 stress unit in a tick",
@@ -161,7 +173,7 @@ public class CommonConfig {
         advancedMotorExtensionScrollStep = builder
             .comment("Advanced motor extension scroll step")
             .defineInRange("advancedMotorExtensionScrollStep", 8, 1, Integer.MAX_VALUE);
-        
+
         builder.pop();
     }
 }
