@@ -4,8 +4,6 @@ import com.tterrag.registrate.util.entry.RegistryEntry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.effect.MobEffectCategory;
-import org.antarcticgardens.cna.content.nuclear.RadiationPoisoningEffect;
 
 import static org.antarcticgardens.cna.CreateNewAge.REGISTRATE;
 

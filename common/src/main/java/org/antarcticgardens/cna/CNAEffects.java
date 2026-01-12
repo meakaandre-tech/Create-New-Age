@@ -1,13 +1,8 @@
 package org.antarcticgardens.cna;
 
-import com.simibubi.create.content.processing.sequenced.SequencedAssemblyItem;
-import com.tterrag.registrate.util.entry.ItemEntry;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
-import net.minecraft.world.item.Item;
-import org.antarcticgardens.cna.content.electricity.wire.ElectricWireItem;
 import org.antarcticgardens.cna.content.nuclear.RadiationPoisoningEffect;
 
 import static org.antarcticgardens.cna.CreateNewAge.REGISTRATE;
