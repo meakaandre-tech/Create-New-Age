@@ -13,7 +13,5 @@ public class CNASounds {
                     .simple(Registries.SOUND_EVENT, () ->
                             SoundEvent.createVariableRangeEvent(new ResourceLocation("create_new_age", "geiger_counter")));
 
-    public static void load() {
-        REGISTRATE.addRawLang("subtitles.create_new_age.geiger_counter", "Geiger Counter Clicking");
-    }
+    public static void load() { }
 }

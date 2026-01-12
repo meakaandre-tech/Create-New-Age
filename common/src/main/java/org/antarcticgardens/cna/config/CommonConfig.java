@@ -156,7 +156,7 @@ public class CommonConfig {
             .comment("Advanced motor extension scroll step")
             .defineInRange("advancedMotorExtensionScrollStep", 8, 1, Integer.MAX_VALUE);
 
-        builder.pop().push("Radiation");
+        builder.pop().push("Reactor");
 
         maxRodsInDirection = builder
                 .comment("How many reactor rods can a fuel inserter or a heat vent have in a single direction")

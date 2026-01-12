@@ -12,7 +12,5 @@ public class CNAEffects {
             REGISTRATE.object("radiation_poisoning")
                     .simple(Registries.MOB_EFFECT, () -> new RadiationPoisoningEffect(MobEffectCategory.HARMFUL, 0x48F542));
 
-    public static void load() {
-        REGISTRATE.addRawLang("effect.create_new_age.radiation_poisoning", "Radiation Poisoning");
-    }
+    public static void load() { }
 }
