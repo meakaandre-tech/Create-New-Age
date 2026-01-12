@@ -36,17 +36,11 @@ public class CommonConfig {
     public final ForgeConfigSpec.ConfigValue<Integer> advancedMotorExtensionScrollStep;
     public final ForgeConfigSpec.ConfigValue<Double> radiationDamageExplosionScale;
     public final ForgeConfigSpec.ConfigValue<Boolean> radiationDamageExplosionFire;
+    public final ForgeConfigSpec.ConfigValue<Boolean> geigerCounterSounds;
+    public final ForgeConfigSpec.ConfigValue<Boolean> nauseaInducingRadiation;
 
 
     public CommonConfig(ForgeConfigSpec.Builder builder) {
-
-        radiationDamageExplosionScale = builder
-                .comment("How strong the explosion is on destruction of a charged reactor rod")
-                .defineInRange("radiationDamageExplosionScale", 2.0, 0, Double.MAX_VALUE);
-
-        radiationDamageExplosionFire = builder
-                .comment("Whether the explosion of a charged reactor rod should should cause fire")
-                .define("radiationDamageExplosionFire", true);
 
         suToEnergy = builder
                 .comment(
@@ -57,10 +51,6 @@ public class CommonConfig {
         maxCoils = builder
                 .comment("How many coils can the carbon brushes collect energy from")
                 .defineInRange("maxCoils", 8, 0, Integer.MAX_VALUE);
-
-        maxRodsInDirection = builder
-                .comment("How many reactor rods can a fuel inserter or a heat vent have in a single direction")
-                .defineInRange("maxRodsInDirection", 32, 0, Integer.MAX_VALUE);
 
         conductivityMultiplier = builder
                 .comment("Multiplier of wire conductivity")
@@ -89,14 +79,6 @@ public class CommonConfig {
         heaterRequiredHeatMultiplier = builder
                 .comment("Multiplier for how much heat a boiler needs.")
                 .defineInRange("boilerRequiredHeatMultiplier", 1.0, 0, Double.MAX_VALUE);
-
-        nuclearReactorRodHeat = builder
-                .comment("How much heat per tick a nuclear reactor rod generate.")
-                .defineInRange("ReactorRodHeat", 30.0, 0, Double.MAX_VALUE);
-
-        nuclearReactorRodHeatLoss = builder
-                .comment("How much heat per tick a nuclear reactor rod loses above the 16000*overheatingMultiplier.")
-                .defineInRange("ReactorRodHeatLoss", 25.0, 0, Double.MAX_VALUE);
 
         solarPanelHeatMultiplier = builder
                 .comment("Multiplier for how much heat solar panels output.")
@@ -173,6 +155,36 @@ public class CommonConfig {
         advancedMotorExtensionScrollStep = builder
             .comment("Advanced motor extension scroll step")
             .defineInRange("advancedMotorExtensionScrollStep", 8, 1, Integer.MAX_VALUE);
+
+        builder.pop().push("Radiation");
+
+        maxRodsInDirection = builder
+                .comment("How many reactor rods can a fuel inserter or a heat vent have in a single direction")
+                .defineInRange("maxRodsInDirection", 32, 0, Integer.MAX_VALUE);
+
+        radiationDamageExplosionScale = builder
+                .comment("How strong the explosion is on destruction of a charged reactor rod")
+                .defineInRange("radiationDamageExplosionScale", 2.0, 0, Double.MAX_VALUE);
+
+        radiationDamageExplosionFire = builder
+                .comment("Whether the explosion of a charged reactor rod should should cause fire")
+                .define("radiationDamageExplosionFire", true);
+
+        geigerCounterSounds = builder
+                .comment("Whether radiation poisoning should play a distinct geiger counter sound")
+                .define("geigerCounterSounds", true);
+
+        nauseaInducingRadiation = builder
+                .comment("Whether radiation poisoning should cause nausea")
+                .define("nauseaInducingRadiation", true);
+
+        nuclearReactorRodHeat = builder
+                .comment("How much heat per tick a nuclear reactor rod generate.")
+                .defineInRange("ReactorRodHeat", 30.0, 0, Double.MAX_VALUE);
+
+        nuclearReactorRodHeatLoss = builder
+                .comment("How much heat per tick a nuclear reactor rod loses above the 16000*overheatingMultiplier.")
+                .defineInRange("ReactorRodHeatLoss", 25.0, 0, Double.MAX_VALUE);
 
         builder.pop();
     }
