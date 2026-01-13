@@ -69,14 +69,17 @@ public class ReactorRodBlock extends ReactorBlock implements EntityBlock {
 
     @Override
     public void destroy(LevelAccessor level, BlockPos pos, BlockState state) {
+        this.explode(level, pos, state, CNAConfig.getCommon().radiationDamageExplosionScale.get().floatValue(),
+                CNAConfig.getCommon().radiationDamageExplosionFire.get());
+    }
+
+    public void explode(LevelAccessor level, BlockPos pos, BlockState state, float explosionRadius, boolean useFire) {
         if (state.getValue(ACTIVE)) {
-            if (level instanceof ServerLevel lvl) {
+            if (level instanceof ServerLevel lvl && explosionRadius > 0) {
                 //Remove block first, so that explosion rays are not stopped immediately
                 lvl.removeBlock(pos, false);
 
                 //Explosion Logic, uses Config for Scale and fire
-                float explosionRadius = CNAConfig.getCommon().radiationDamageExplosionScale.get().floatValue();
-                boolean useFire = CNAConfig.getCommon().radiationDamageExplosionFire.get();
                 lvl.explode(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, explosionRadius, useFire, Level.ExplosionInteraction.TNT);
             }
             //Add block after explosion logic

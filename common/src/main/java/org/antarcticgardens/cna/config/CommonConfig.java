@@ -35,6 +35,7 @@ public class CommonConfig {
     public final ForgeConfigSpec.ConfigValue<Integer> advancedMotorExtensionExtraCapacity;
     public final ForgeConfigSpec.ConfigValue<Integer> advancedMotorExtensionScrollStep;
     public final ForgeConfigSpec.ConfigValue<Double> radiationDamageExplosionScale;
+    public final ForgeConfigSpec.ConfigValue<Double> reactorOverheatExplosionMultiplier;
     public final ForgeConfigSpec.ConfigValue<Boolean> radiationDamageExplosionFire;
     public final ForgeConfigSpec.ConfigValue<Boolean> geigerCounterSounds;
     public final ForgeConfigSpec.ConfigValue<Boolean> nauseaInducingRadiation;
@@ -169,6 +170,10 @@ public class CommonConfig {
         radiationDamageExplosionFire = builder
                 .comment("Whether the explosion of a charged reactor rod should should cause fire")
                 .define("radiationDamageExplosionFire", true);
+
+        reactorOverheatExplosionMultiplier = builder
+                .comment("The multiplier of the explosion caused when reactor rods overheat")
+                .defineInRange("reactorOverheatExplosionMultiplier", 0.9, 0, Double.MAX_VALUE);
 
         geigerCounterSounds = builder
                 .comment("Whether radiation poisoning should play a distinct geiger counter sound")
