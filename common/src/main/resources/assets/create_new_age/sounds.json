@@ -1,0 +1,8 @@
+{
+  "geiger_counter": {
+    "subtitle": "subtitles.create_new_age.geiger_counter",
+    "sounds": [
+      "create_new_age:geiger_counter"
+    ]
+  }
+}

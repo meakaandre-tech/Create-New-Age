@@ -129,6 +129,7 @@
   "create_new_age.ponder.wires.text_2": "¿ʇɐɥʇ op ʇ,upıp ʇı ɟı ʇɐɥʍ ʇnᗺ ˙sʞɔoןq buıɹoqɥbıǝu oʇ ʎbɹǝuǝ sʇı sǝɥsnd ʎןןɐɔıʇɐɯoʇnɐ ʞɔoןq sıɥ⟘",
   "create_new_age.ponder.wires.text_3": "ɥɔuǝɹʍ ɐ ɥʇıʍ pǝɥɔʇıʍs ǝɹɐ sǝpoW ˙pǝןqɐuǝ sı ǝpoɯ ,ןןnԀ, uǝɥʍ uo spuɐʇs ʇı ʞɔoןq ǝɥʇ ɯoɹɟ ʎbɹǝuǝ ןןnd uɐɔ ɹoʇɔǝuuoƆ",
   "create_new_age.ponder.wires.text_4": "ǝbɐɹoʇs ןɐuɹǝʇuı ɹoʇoɯ/ɹǝzıbɹǝuǝ ɯoɹɟ ʎbɹǝuǝ ʇɔɐɹʇxǝ oʇ pǝsn ǝq ʇ,uɐɔ puɐ spoɯ ɹǝɥʇo ɥʇıʍ ʎʇıןıqıʇɐdɯoɔ ɹoɟ ʎןuo sı ǝpoɯ ,ןןnԀ, ʇɐɥʇ ǝʇoN",
+  "effect.create_new_age.radiation_poisoning": "buıuosıoԀ uoıʇɐıpɐᴚ",
   "emi.category.create_new_age.energising": "buızıbɹǝuƎ",
   "item.create_new_age.blank_circuit": "ʇınɔɹıƆ ʞuɐןᗺ",
   "item.create_new_age.copper_circuit": "ʇınɔɹıƆ ɹǝddoƆ",
@@ -154,6 +155,7 @@
   "item.create_new_age.wire.message.too_far": "sʞɔoןq %d sı ɥʇbuǝן ǝɹıʍ ɯnɯıxɐW ¡ʎɐʍɐ ɹɐɟ oo⟘",
   "item.create_new_age.wire.message.unbound": "ɹoʇɔǝuuoɔ ɯoɹɟ punoqu∩",
   "recipe.assembly.energising": "buızıbɹǝuƎ",
+  "subtitles.create_new_age.geiger_counter": "buıʞɔıןƆ ɹǝʇunoƆ ɹǝbıǝ⅁",
   "tab.create_new_age.tab": "ǝbⱯ ʍǝN :ǝʇɐǝɹƆ",
   "tooltip.create_new_age.motor_extension": "ɹoʇoɯ ɐ puıɥǝq pǝɔɐןԀ"
 }
