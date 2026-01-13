@@ -1,5 +1,5 @@
 ------------------------------------------------------
-Version 1.1.7e
+Version 1.1.7f
 ------------------------------------------------------
 #### Bug Fixes
 - Fix dedicated server crash for reactors - [!59 Thank you Graphite0](https://gitlab.com/antarcticgardens/create-new-age/-/merge_requests/59)
