@@ -21,7 +21,7 @@ public class RadiationPoisoningEffect extends MobEffect {
                 float clickChance = 0.15f + (amplifier * 0.10f);
                 if(livingEntity.getRandom().nextFloat() < clickChance) {
                     float pitch = 0.95f + livingEntity.getRandom().nextFloat() * 0.1f;
-                    livingEntity.level().playSound(null, livingEntity.blockPosition(), CNASounds.GEIGER_COUNTER.get(), SoundSource.PLAYERS, 0.75f, pitch);
+                    CNASounds.GEIGER_COUNTER.playOnServer(livingEntity.level(), livingEntity.blockPosition(), .75f, pitch);
                 }
             }
             if(CNAConfig.getCommon().nauseaInducingRadiation.get()) {
