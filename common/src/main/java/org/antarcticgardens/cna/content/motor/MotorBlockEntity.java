@@ -2,6 +2,7 @@ package org.antarcticgardens.cna.content.motor;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
+import com.simibubi.create.compat.computercraft.AbstractComputerBehaviour;
 import com.simibubi.create.content.kinetics.KineticNetwork;
 import com.simibubi.create.content.kinetics.base.DirectionalKineticBlock;
 import com.simibubi.create.content.kinetics.base.GeneratingKineticBlockEntity;
@@ -24,9 +25,13 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.antarcticgardens.cna.CNABlockEntityTypes;
+import org.antarcticgardens.cna.compat.computercraft.CNAComputerCraftProxy;
 import org.antarcticgardens.cna.config.CNAConfig;
 import org.antarcticgardens.cna.content.motor.extension.MotorExtensionBlockEntity;
+import org.antarcticgardens.cna.content.motor.variants.AdvancedMotorVariant;
+import org.antarcticgardens.cna.content.motor.variants.BasicMotorVariant;
 import org.antarcticgardens.cna.content.motor.variants.IMotorVariant;
+import org.antarcticgardens.cna.content.motor.variants.ReinforcedMotorVariant;
 import org.antarcticgardens.cna.util.RunnableUtil;
 import org.antarcticgardens.cna.util.StringFormatUtil;
 import org.antarcticgardens.esl.energy.EnergyStorage;
@@ -39,11 +44,14 @@ public class MotorBlockEntity extends GeneratingKineticBlockEntity implements IH
     
     public boolean needsPower = false;
     private final IMotorVariant variant;
+    public final int tier;
     public MotorScrollValueBehaviour speedBehavior;
     public boolean powered = false;
     private float actualSpeed = 0;
     private float actualStress = 0;
     private long prvEnergy = -100000;
+
+    public AbstractComputerBehaviour computerBehaviour;
 
     private float speed = 0;
     private float stress = 0;
@@ -51,7 +59,13 @@ public class MotorBlockEntity extends GeneratingKineticBlockEntity implements IH
     public MotorBlockEntity(BlockEntityType<?> arg, BlockPos arg2, BlockState arg3, IMotorVariant variant) {
         super(arg, arg2, arg3);
         this.variant = variant;
-        
+        switch (variant) {
+            case BasicMotorVariant basicMotorVariant -> this.tier = 1;
+            case AdvancedMotorVariant advancedMotorVariant -> this.tier = 2;
+            case ReinforcedMotorVariant reinforcedMotorVariant -> this.tier = 3;
+            case null, default -> this.tier = 0;
+        }
+
         storage = new SimpleEnergyStorage(variant.getMaxCapacity())
                 .onFinalCommit(RunnableUtil.createBlockEntityUpdater(this))
                 .setSupportsExtraction(false);
@@ -79,6 +93,7 @@ public class MotorBlockEntity extends GeneratingKineticBlockEntity implements IH
         speedBehavior.value = getDefaultSpeed();
         speedBehavior.withCallback(i -> this.updateGeneratedRotation());
         behaviours.add(speedBehavior);
+        behaviours.add(computerBehaviour = CNAComputerCraftProxy.behaviour(this));
     }
 
     static class MotorValueBox extends ValueBoxTransform.Sided {

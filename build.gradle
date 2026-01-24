@@ -43,6 +43,13 @@ subprojects {
         maven { url = "https://jitpack.io/" } // Mixin Extras
 
         maven { url "https://modmaven.dev/" } // Applied Energistics 2
+
+        maven {
+            url "https://maven.squiddev.cc" // Computer Craft Tweaked
+            content {
+                includeGroup("cc.tweaked")
+            }
+        }
     }
     
     dependencies {

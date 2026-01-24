@@ -20,6 +20,11 @@ dependencies {
 
     compileOnly("io.github.llamalad7:mixinextras-common:0.4.1")
     annotationProcessor(implementation(include("io.github.llamalad7:mixinextras-forge:0.4.1")))
+
+    compileOnly("cc.tweaked:cc-tweaked-${rootProject.minecraftVersion}-core-api:${cctVersion}")
+    modCompileOnly("cc.tweaked:cc-tweaked-${rootProject.minecraftVersion}-forge-api:${cctVersion}")
+    modRuntimeOnly("cc.tweaked:cc-tweaked-${rootProject.minecraftVersion}-forge:${cctVersion}")
+    forgeRuntimeLibrary("cc.tweaked:cobalt:0.9.7")
 }
 
 processResources {

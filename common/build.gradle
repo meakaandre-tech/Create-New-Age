@@ -16,6 +16,9 @@ dependencies {
 
     modCompileOnly("com.google.code.findbugs:findbugs:3.0.1")
     annotationProcessor(implementation("io.github.llamalad7:mixinextras-common:0.4.1"))
+
+    compileOnly("cc.tweaked:cc-tweaked-${rootProject.minecraftVersion}-common-api:${cctVersion}")
+    compileOnly("cc.tweaked:cc-tweaked-${rootProject.minecraftVersion}-core-api:${cctVersion}")
 }
 
 loom {

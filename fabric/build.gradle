@@ -21,6 +21,9 @@ dependencies {
     modCompileOnly("dev.engine-room.flywheel:flywheel-fabric-api-${minecraftVersion}:${flywheelVersion}")
     modRuntimeOnly("dev.engine-room.flywheel:flywheel-fabric-${minecraftVersion}:${flywheelVersion}")
 
+    modCompileOnly("cc.tweaked:cc-tweaked-${rootProject.minecraftVersion}-fabric-api:${cctVersion}")
+    modRuntimeOnly("cc.tweaked:cc-tweaked-${rootProject.minecraftVersion}-fabric:${cctVersion}")
+
     // Fabric 0.15.0+ should already have mixinextras
 //    annotationProcessor(implementation(include("io.github.llamalad7:mixinextras-fabric:0.4.1")))
 
