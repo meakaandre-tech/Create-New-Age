@@ -59,12 +59,14 @@ public class MotorBlockEntity extends GeneratingKineticBlockEntity implements IH
     public MotorBlockEntity(BlockEntityType<?> arg, BlockPos arg2, BlockState arg3, IMotorVariant variant) {
         super(arg, arg2, arg3);
         this.variant = variant;
-        switch (variant) {
-            case BasicMotorVariant basicMotorVariant -> this.tier = 1;
-            case AdvancedMotorVariant advancedMotorVariant -> this.tier = 2;
-            case ReinforcedMotorVariant reinforcedMotorVariant -> this.tier = 3;
-            case null, default -> this.tier = 0;
-        }
+        if (variant instanceof BasicMotorVariant)
+            this.tier = 1;
+        else if (variant instanceof AdvancedMotorVariant)
+            this.tier = 2;
+        else if (variant instanceof ReinforcedMotorVariant)
+            this.tier = 3;
+        else
+            this.tier = 0;
 
         storage = new SimpleEnergyStorage(variant.getMaxCapacity())
                 .onFinalCommit(RunnableUtil.createBlockEntityUpdater(this))
