@@ -9,6 +9,7 @@ import dan200.computercraft.api.peripheral.IPeripheral;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.Level;
+import org.antarcticgardens.cna.CreateNewAge;
 import org.antarcticgardens.cna.compat.computercraft.peripherals.CarbonBrushesBlockEntityPeripheral;
 import org.antarcticgardens.cna.compat.computercraft.peripherals.EnergiserBlockEntityPeripheral;
 import org.antarcticgardens.cna.compat.computercraft.peripherals.MotorBlockEntityPeripheral;
@@ -19,11 +20,10 @@ import org.jspecify.annotations.Nullable;
 
 public class FabricComputerBehaviour extends AbstractComputerBehaviour {
 
-    // TODO: register peripheralProvider
     @Nullable
     public static IPeripheral peripheralProvider(Level level, BlockPos blockPos) {
         AbstractComputerBehaviour behavior = BlockEntityBehaviour.get(level, blockPos, AbstractComputerBehaviour.TYPE);
-        if (behavior instanceof ComputerBehaviour real)
+        if (behavior instanceof FabricComputerBehaviour real)
             return real.getPeripheral();
         return null;
     }
@@ -48,7 +48,9 @@ public class FabricComputerBehaviour extends AbstractComputerBehaviour {
     }
 
     @Override
-    public @Nullable <T> T getPeripheral() {
-        return super.getPeripheral();
+    @Nullable
+    public <T> T getPeripheral() {
+        //noinspection unchecked
+        return (T) peripheral;
     }
 }
