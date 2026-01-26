@@ -9,25 +9,20 @@ import org.antarcticgardens.cna.CreateNewAge;
 
 import java.util.function.Function;
 
-public class CNAComputerCraftProxy {
+public abstract class CNAComputerCraftProxy {
     public static void register() {
         fallbackFactory = FallbackComputerBehaviour::new;
-        Mods.COMPUTERCRAFT.executeIfInstalled(() -> CNAComputerCraftProxy::registerWithDependency);
+        Mods.COMPUTERCRAFT.executeIfInstalled(() -> CreateNewAge.getInstance().getPlatform().getCNAComputerProxy()::registerWithDependency);
     }
 
-    private static void registerWithDependency() {
-        /* Comment if computercraft.implementation is not in the source set */
-        computerFactory = CreateNewAge.getInstance().getPlatform().getCNAComputerBehaviour();
-        ComputerBehaviour.registerItemDetailProviders();
-    }
+    public abstract void registerWithDependency();
 
-    private static Function<SmartBlockEntity, ? extends AbstractComputerBehaviour> fallbackFactory;
-    private static Function<SmartBlockEntity, ? extends AbstractComputerBehaviour> computerFactory;
+    protected static Function<SmartBlockEntity, ? extends AbstractComputerBehaviour> fallbackFactory;
+    protected static Function<SmartBlockEntity, ? extends AbstractComputerBehaviour> computerFactory;
 
     public static AbstractComputerBehaviour behaviour(SmartBlockEntity sbe) {
         if (computerFactory == null)
             return fallbackFactory.apply(sbe);
         return computerFactory.apply(sbe);
     }
-
 }
