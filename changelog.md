@@ -1,11 +1,14 @@
 ------------------------------------------------------
 Version 1.2.0
 ------------------------------------------------------
-### Additions
+#### Additions
 - Added radiation effect & Geiger counter ticking - [!60 Thank you Auralyn](https://gitlab.com/antarcticgardens/create-new-age/-/merge_requests/60)
 - Reactors now explode upon overheating
 - Added CC:Tweaked compatibility
 - New Simplified Chinese translations from abandon0320
+
+#### Bug Fixes
+- Fix dedicated server crash on newer forge versions - [#129](https://gitlab.com/antarcticgardens/create-new-age/-/issues/129)
 
 ------------------------------------------------------
 Version 1.1.7f
