@@ -1,5 +1,6 @@
 package org.antarcticgardens.cna.forge.compat.computercraft;
 
+import com.simibubi.create.compat.Mods;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -22,6 +23,8 @@ public class ForgeComputerCraftCompat {
 
     @SubscribeEvent
     public static void registerComputerCraftCapabilities(AttachCapabilitiesEvent<BlockEntity> event) {
+        if (!Mods.COMPUTERCRAFT.isLoaded())
+            return;
         if (event.getObject() instanceof CarbonBrushesBlockEntity be)
             event.addCapability(CNABlockEntityTypes.CARBON_BRUSHES.getId(),
                     new CCCapability(be));
