@@ -43,7 +43,10 @@ public class ForgeComputerCraftCompat {
         @Override
         @NonNull
         public <T> LazyOptional<T> getCapability(@NotNull Capability<T> capability, @Nullable Direction arg) {
-            return blockEntity.getBehaviour(ForgeComputerBehaviour.TYPE).getPeripheralCapability();
+            ForgeComputerBehaviour behaviour = (ForgeComputerBehaviour) blockEntity.getBehaviour(ForgeComputerBehaviour.TYPE);
+            if (behaviour.isPeripheralCap(capability))
+                return behaviour.getPeripheralCapability();
+            return LazyOptional.empty();
         }
     }
 }
