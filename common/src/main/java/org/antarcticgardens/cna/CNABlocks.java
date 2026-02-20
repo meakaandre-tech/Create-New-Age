@@ -29,6 +29,7 @@ import org.antarcticgardens.cna.content.electricity.generation.brushes.CarbonBru
 import org.antarcticgardens.cna.content.electricity.generation.brushes.CarbonBrushesItemRenderer;
 import org.antarcticgardens.cna.content.electricity.generation.coil.GeneratorCoilBlock;
 import org.antarcticgardens.cna.content.electricity.generation.magnet.ImplementedMagnetBlock;
+import org.antarcticgardens.cna.content.electricity.light.StreetLightBlock;
 import org.antarcticgardens.cna.content.energising.EnergiserBlock;
 import org.antarcticgardens.cna.content.heat.heater.HeaterBlock;
 import org.antarcticgardens.cna.content.heat.pipe.HeatPipeBlock;
@@ -489,6 +490,12 @@ public class CNABlocks {
                     .simpleItem()
                     .register();
 
+    public static final BlockEntry<StreetLightBlock> STREET_LIGHT =
+            REGISTRATE.block("street_light", StreetLightBlock::new)
+                    .initialProperties(() -> Blocks.REDSTONE_LAMP)
+                    .properties(p -> p.lightLevel(s -> s.getValue(StreetLightBlock.LIGHT_LEVEL)))
+                    .simpleItem()
+                    .register();
 
 //    public static final BlockEntry<BatteryBlock> BATTERY =
 //            REGISTRATE.block("battery", BatteryBlock::new)

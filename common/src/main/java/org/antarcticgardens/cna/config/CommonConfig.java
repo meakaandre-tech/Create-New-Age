@@ -39,6 +39,8 @@ public class CommonConfig {
     public final ForgeConfigSpec.ConfigValue<Boolean> radiationDamageExplosionFire;
     public final ForgeConfigSpec.ConfigValue<Boolean> geigerCounterSounds;
     public final ForgeConfigSpec.ConfigValue<Boolean> nauseaInducingRadiation;
+    public final ForgeConfigSpec.ConfigValue<Integer> streetLightLevelExtraction;
+    public final ForgeConfigSpec.ConfigValue<Integer> streetLightCapacity;
 
 
     public CommonConfig(ForgeConfigSpec.Builder builder) {
@@ -88,6 +90,14 @@ public class CommonConfig {
         maxWireLength = builder
                 .comment("Maximum wire length")
                 .defineInRange("maxWireLength", 16, 1, Integer.MAX_VALUE);
+
+        streetLightCapacity = builder
+                .comment("Internal energy capacity of a street light")
+                .defineInRange("streetLightCapacity", 10000, 0, Integer.MAX_VALUE);
+
+        streetLightLevelExtraction = builder
+                .comment("How much extracted per tick multiplied by current light level")
+                .defineInRange("streetLightLevelExtraction", 10, 0, Integer.MAX_VALUE);
 
         builder.push("Motors");
 

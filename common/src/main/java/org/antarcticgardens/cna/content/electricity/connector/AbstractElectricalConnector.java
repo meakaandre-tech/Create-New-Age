@@ -16,6 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import org.antarcticgardens.cna.content.electricity.network.ElectricalNetwork;
 import org.antarcticgardens.cna.content.electricity.wire.WireType;
 
@@ -89,6 +90,11 @@ public abstract class AbstractElectricalConnector extends SmartBlockEntity {
 
     public abstract Direction getFacing();
 
+    @Override
+    public AABB getRenderBoundingBox() {
+        return INFINITE_EXTENT_AABB;
+    }
+
     protected void serverTick() {
         if (network == null)
             setNetwork(new ElectricalNetwork(this));
@@ -99,7 +105,7 @@ public abstract class AbstractElectricalConnector extends SmartBlockEntity {
         }
     }
 
-    protected void neighborChanged() {
+    public void neighborChanged() {
         if (network != null) {
             network.updateConsumersAndSources();
         }
@@ -114,7 +120,7 @@ public abstract class AbstractElectricalConnector extends SmartBlockEntity {
         needsInstanceUpdate = true;
     }
 
-    protected void remove(Level level) {
+    public void remove(Level level) {
         if (!level.isClientSide())
             network.destroy();
 
