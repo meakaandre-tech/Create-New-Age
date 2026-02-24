@@ -63,15 +63,24 @@ public class ElectricalConnectorRenderer implements BlockEntityRenderer<Abstract
 
         ResourceLocation texture = wireType.getTextureLocation();
 
-        double distance = pos.getCenter().distanceTo(endPos.getCenter());
+        var originConnectorPreCast = level.getBlockEntity(pos);
+        var endConnectorPreCast = level.getBlockEntity(endPos);
+        if (!(originConnectorPreCast instanceof AbstractElectricalConnector originConnector) ||
+                !(endConnectorPreCast instanceof AbstractElectricalConnector endConnector)) {return;}
+
+        var originPoint = originConnector.getConnectionPoint().add(Vec3.atLowerCornerOf(pos));
+        var endPoint = endConnector.getConnectionPoint().add(Vec3.atLowerCornerOf(endPos));
+
+        double distance = pos.getCenter().distanceTo(endPoint);
         int sections = (int) Math.ceil(distance * CNAConfig.getClient().wireSectionsPerMeter.get());
-        Vector3f direction = endPos.getCenter().subtract(pos.getCenter()).normalize().toVector3f();
+        Vector3f direction = endPoint.subtract(originPoint).normalize().toVector3f();
 
         Wire wire = new Wire(direction, (float) distance, sections);
         VertexConsumer consumer = buffer.getBuffer(CNARenderTypes.wire(texture));
 
         poseStack.pushPose();
-        poseStack.translate(0.5f, 0.5f, 0.5f);
+        var midPoint = originConnector.getConnectionPoint();
+        poseStack.translate(midPoint.x(), midPoint.y(), midPoint.z());
         poseStack.mulPoseMatrix(new Matrix4f().rotateTowards(wire.getDirection(), wire.getUp()));
 
         for (int i = 0; i < wire.getSections().size(); i++) {
@@ -102,6 +111,7 @@ public class ElectricalConnectorRenderer implements BlockEntityRenderer<Abstract
                 itemInHand = player.getOffhandItem();
 
             if (itemInHand.getItem() instanceof ElectricWireItem wireItem) {
+                var midPoint = blockEntity.getConnectionPoint();
                 BlockPos bound = wireItem.getBoundConnector(itemInHand);
 
                 if (bound != null && bound.equals(blockEntity.getBlockPos())) {
@@ -121,12 +131,14 @@ public class ElectricalConnectorRenderer implements BlockEntityRenderer<Abstract
                     BlockPos pos = blockEntity.getBlockPos();
 
                     Vector3f to = new Vector3f(
-                            (float) (endPos.x - pos.getX() - 0.5),
-                            (float) (endPos.y - pos.getY() - 0.5),
-                            (float) (endPos.z - pos.getZ() - 0.5)
+                            (float) (endPos.x - pos.getX() - midPoint.x),
+                            (float) (endPos.y - pos.getY() - midPoint.y),
+                            (float) (endPos.z - pos.getZ() - midPoint.z)
                     );
 
-                    double distance = endPos.distanceTo(bound.getCenter());
+                    var originPoint = blockEntity.getConnectionPoint().add(Vec3.atLowerCornerOf(bound));
+
+                    double distance = endPos.distanceTo(originPoint);
                     int maxDistance = CNAConfig.getCommon().maxWireLength.get();
 
                     if (distance > maxDistance * 2)
@@ -137,10 +149,12 @@ public class ElectricalConnectorRenderer implements BlockEntityRenderer<Abstract
                             if (connector.isConnected(blockEntity.getBlockPos()))
                                 return;
 
+                            var point = connector.getConnectionPoint();
+
                             to = new Vector3f(
-                                    blockHit.getBlockPos().getX() - pos.getX(),
-                                    blockHit.getBlockPos().getY() - pos.getY(),
-                                    blockHit.getBlockPos().getZ() - pos.getZ()
+                                    blockHit.getBlockPos().getX() - pos.getX() + (float)point.x() - (float)midPoint.x(),
+                                    blockHit.getBlockPos().getY() - pos.getY() + (float)point.y() - (float)midPoint.y(),
+                                    blockHit.getBlockPos().getZ() - pos.getZ() + (float)point.z() - (float)midPoint.z()
                             );
 
                             distance = connector.getBlockPos().getCenter().distanceTo(blockEntity.getBlockPos().getCenter());
@@ -161,7 +175,7 @@ public class ElectricalConnectorRenderer implements BlockEntityRenderer<Abstract
                     VertexConsumer consumer = buffer.getBuffer(CNARenderTypes.wire(texture));
 
                     poseStack.pushPose();
-                    poseStack.translate(0.5f, 0.5f, 0.5f);
+                    poseStack.translate(midPoint.x(), midPoint.y(), midPoint.z());
                     poseStack.mulPoseMatrix(new Matrix4f().rotateTowards(wire.getDirection(), wire.getUp()));
 
                     for (int i = 0; i < wire.getSections().size(); i++) {
