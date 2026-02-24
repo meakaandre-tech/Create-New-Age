@@ -62,7 +62,7 @@ public class CNAStandardRecipeGen extends CNARecipeProvider {
             .shaped(b -> b
                     .define('P', CNABlocks.HEAT_PIPE)
                     .define('I', CNAItems.OVERCHARGED_IRON)
-                    .define('G', Blocks.GLASS)
+                    .define('G', Tags.Items.GLASS)
                     .pattern("GGG")
                     .pattern("IPI")
                     .pattern("IPI"));
@@ -93,7 +93,7 @@ public class CNAStandardRecipeGen extends CNARecipeProvider {
             .shaped(b -> b
                     .define('P', CNABlocks.HEAT_PIPE)
                     .define('I', Tags.Items.INGOTS_IRON)
-                    .define('G', Blocks.GLASS)
+                    .define('G', Tags.Items.GLASS)
                     .pattern("GGG")
                     .pattern("IPI")
                     .pattern("IPI"));
@@ -272,22 +272,12 @@ public class CNAStandardRecipeGen extends CNARecipeProvider {
                     .pattern("WW")
                     .pattern("WW"));
 
-    GeneratedRecipe COPPER_WIRE_FROM_BLOCK = builder(CNAItems.COPPER_WIRE)
-            .unlockedBy(CNAItems.COPPER_WIRE)
-            .amount(4)
-            .shapeless(b -> b.requires(CNABlocks.COPPER_WIRE_BLOCK));
-
     GeneratedRecipe OVERCHARGED_IRON_WIRE_BLOCK = builder(CNABlocks.OVERCHARGED_IRON_WIRE_BLOCK)
             .unlockedBy(CNAItems.OVERCHARGED_IRON_WIRE)
             .shaped(b -> b
                     .define('W', CNAItems.OVERCHARGED_IRON_WIRE)
                     .pattern("WW")
                     .pattern("WW"));
-
-    GeneratedRecipe OVERCHARGED_IRON_WIRE_FROM_BLOCK = builder(CNAItems.OVERCHARGED_IRON_WIRE)
-            .unlockedBy(CNAItems.OVERCHARGED_IRON_WIRE)
-            .amount(4)
-            .shapeless(b -> b.requires(CNABlocks.OVERCHARGED_IRON_WIRE_BLOCK));
 
     GeneratedRecipe OVERCHARGED_GOLDEN_WIRE_BLOCK = builder(CNABlocks.OVERCHARGED_GOLDEN_WIRE_BLOCK)
             .unlockedBy(CNAItems.OVERCHARGED_GOLDEN_WIRE)
@@ -296,11 +286,6 @@ public class CNAStandardRecipeGen extends CNARecipeProvider {
                     .pattern("WW")
                     .pattern("WW"));
 
-    GeneratedRecipe OVERCHARGED_GOLDEN_WIRE_FROM_BLOCK = builder(CNAItems.OVERCHARGED_GOLDEN_WIRE)
-            .unlockedBy(CNAItems.OVERCHARGED_GOLDEN_WIRE)
-            .amount(4)
-            .shapeless(b -> b.requires(CNABlocks.OVERCHARGED_GOLDEN_WIRE_BLOCK));
-
     GeneratedRecipe OVERCHARGED_DIAMOND_WIRE_BLOCK = builder(CNABlocks.OVERCHARGED_DIAMOND_WIRE_BLOCK)
             .unlockedBy(CNAItems.OVERCHARGED_DIAMOND_WIRE)
             .shaped(b -> b
@@ -308,10 +293,25 @@ public class CNAStandardRecipeGen extends CNARecipeProvider {
                     .pattern("WW")
                     .pattern("WW"));
 
-    GeneratedRecipe OVERCHARGED_DIAMOND_WIRE_FROM_BLOCK = builder(CNAItems.OVERCHARGED_DIAMOND_WIRE)
-            .unlockedBy(CNAItems.OVERCHARGED_DIAMOND_WIRE)
-            .amount(4)
-            .shapeless(b -> b.requires(CNABlocks.OVERCHARGED_DIAMOND_WIRE_BLOCK));
+    GeneratedRecipe STREET_LIGHT = builder(CNABlocks.STREET_LIGHT)
+            .unlockedBy(CNABlocks.ELECTRICAL_CONNECTOR)
+            .shaped(b -> b
+                    .define('S', CNATags.Common.PLATES_IRON)
+                    .define('G', Tags.Items.GLASS)
+                    .define('C', CNABlocks.ELECTRICAL_CONNECTOR)
+                    .pattern("S")
+                    .pattern("G")
+                    .pattern("C"));
+
+    GeneratedRecipe LAMP_POST = builder(CNABlocks.LAMP_POST)
+            .amount(8)
+            .unlockedBy(AllItems.ANDESITE_ALLOY)
+            .shaped(b -> b
+                    .define('S', CNATags.Common.PLATES_IRON)
+                    .define('A', AllItems.ANDESITE_ALLOY)
+                    .pattern("S")
+                    .pattern("A")
+                    .pattern("A"));
 
     // ======================================================================================================= Shapeless
     
@@ -319,6 +319,26 @@ public class CNAStandardRecipeGen extends CNARecipeProvider {
             .unlockedBy(AllBlocks.ANDESITE_CASING)
             .shapeless(b -> b.requires(AllBlocks.ANDESITE_CASING)
                     .requires(Blocks.LIGHTNING_ROD));
+
+    GeneratedRecipe COPPER_WIRE_FROM_BLOCK = builder(CNAItems.COPPER_WIRE)
+            .unlockedBy(CNAItems.COPPER_WIRE)
+            .amount(4)
+            .shapeless(b -> b.requires(CNABlocks.COPPER_WIRE_BLOCK));
+
+    GeneratedRecipe OVERCHARGED_IRON_WIRE_FROM_BLOCK = builder(CNAItems.OVERCHARGED_IRON_WIRE)
+            .unlockedBy(CNAItems.OVERCHARGED_IRON_WIRE)
+            .amount(4)
+            .shapeless(b -> b.requires(CNABlocks.OVERCHARGED_IRON_WIRE_BLOCK));
+
+    GeneratedRecipe OVERCHARGED_GOLDEN_WIRE_FROM_BLOCK = builder(CNAItems.OVERCHARGED_GOLDEN_WIRE)
+            .unlockedBy(CNAItems.OVERCHARGED_GOLDEN_WIRE)
+            .amount(4)
+            .shapeless(b -> b.requires(CNABlocks.OVERCHARGED_GOLDEN_WIRE_BLOCK));
+
+    GeneratedRecipe OVERCHARGED_DIAMOND_WIRE_FROM_BLOCK = builder(CNAItems.OVERCHARGED_DIAMOND_WIRE)
+            .unlockedBy(CNAItems.OVERCHARGED_DIAMOND_WIRE)
+            .amount(4)
+            .shapeless(b -> b.requires(CNABlocks.OVERCHARGED_DIAMOND_WIRE_BLOCK));
 
     // =================================================================================================================
     
