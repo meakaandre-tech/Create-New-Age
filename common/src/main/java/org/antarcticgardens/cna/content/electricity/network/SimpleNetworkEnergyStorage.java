@@ -7,7 +7,7 @@ import org.antarcticgardens.esl.transaction.TransactionContext;
 
 import java.util.Map;
 
-public class SimpleNetworkEnergyStorage extends SnapshotParticipant<Object> implements EnergyStorage {
+public class SimpleNetworkEnergyStorage extends NetworkEnergyStorage {
     private long capacity;
     private long stored = 0;
     private boolean supportsInsertion = true;
@@ -17,26 +17,14 @@ public class SimpleNetworkEnergyStorage extends SnapshotParticipant<Object> impl
 
     private Runnable finalCommitCallback = () -> {};
 
-    private final AbstractElectricalConnector connector;
-    private ElectricalNetwork network;
-
     public SimpleNetworkEnergyStorage(AbstractElectricalConnector connector, ElectricalNetwork network, long capacity) {
-        this.connector = connector;
-        this.network = network;
+        super(connector, network);
 
         if (capacity < 0) {
             throw new IllegalArgumentException("SimpleEnergyStorage capacity can't be negative");
         }
 
         this.capacity = capacity;
-    }
-
-    public ElectricalNetwork getNetwork() {
-        return network;
-    }
-
-    public void setNetwork(ElectricalNetwork network) {
-        this.network = network;
     }
 
     public SimpleNetworkEnergyStorage onFinalCommit(Runnable callback) {
@@ -89,14 +77,6 @@ public class SimpleNetworkEnergyStorage extends SnapshotParticipant<Object> impl
     @Override
     public long getStoredEnergy() {
         return stored;
-    }
-
-    @Override
-    public Object createSnapshot() {
-        if (network == null)
-            return null;
-
-        return new NetworkSnapshot(network);
     }
 
     @Override
@@ -157,22 +137,5 @@ public class SimpleNetworkEnergyStorage extends SnapshotParticipant<Object> impl
     @Override
     public boolean supportsInsertion() {
         return supportsInsertion;
-    }
-
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    @Override
-    public void restoreSnapshot(Object object) {
-        if (object instanceof NetworkSnapshot snapshot) {
-            getNetwork().getPathManager().setConductivityContext(new NetworkPathConductivityContext(snapshot.getContext()));
-
-            for (Map.Entry<AbstractElectricalConnector, Object> e : snapshot.getSnapshots().entrySet()) {
-                EnergyStorage storage = EnergyStorage.findForBlock(e.getKey().getLevel(), e.getKey().getSupportingBlockPos(),
-                        e.getKey().getFacing());
-
-                if (storage instanceof SnapshotParticipant sp) {
-                    sp.restoreSnapshot(e.getValue());
-                }
-            }
-        }
     }
 }
