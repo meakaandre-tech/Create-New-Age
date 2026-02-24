@@ -12,6 +12,7 @@ import org.antarcticgardens.cna.content.electricity.connector.ElectricalConnecto
 import org.antarcticgardens.cna.content.electricity.generation.brushes.CarbonBrushesBlockEntity;
 import org.antarcticgardens.cna.content.electricity.generation.brushes.CarbonBrushesRenderer;
 import org.antarcticgardens.cna.content.electricity.generation.coil.GeneratorCoilBlockEntity;
+import org.antarcticgardens.cna.content.electricity.light.StreetLightBlockEntity;
 import org.antarcticgardens.cna.content.energising.EnergiserBlockEntity;
 import org.antarcticgardens.cna.content.energising.EnergiserRenderer;
 import org.antarcticgardens.cna.content.heat.heater.HeaterBlockEntity;
@@ -144,6 +145,12 @@ public class CNABlockEntityTypes {
     public static final BlockEntityEntry<MotorExtensionBlockEntity> ADVANCED_MOTOR_EXTENSION = REGISTRATE
             .blockEntity("advanced_motor_extension", MotorExtensionBlockEntity.create(new AdvancedMotorExtensionVariant()))
             .validBlocks(CNABlocks.ADVANCED_MOTOR_EXTENSION)
+            .register();
+
+    public static final BlockEntityEntry<StreetLightBlockEntity> STREET_LIGHT = REGISTRATE
+            .blockEntity("street_light", StreetLightBlockEntity::new)
+            .validBlocks(CNABlocks.STREET_LIGHT)
+            .renderer(() -> ElectricalConnectorRenderer::new)
             .register();
 
 //    public static final BlockEntityEntry<BatteryBlockEntity> BATTERY = REGISTRATE
