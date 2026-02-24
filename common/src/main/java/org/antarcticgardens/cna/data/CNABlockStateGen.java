@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.antarcticgardens.cna.CNABlocks;
 import org.antarcticgardens.cna.content.electricity.connector.ElectricalConnectorBlock;
 import org.antarcticgardens.cna.content.electricity.connector.ElectricalConnectorMode;
+import org.antarcticgardens.cna.content.electricity.light.LampPostBlock;
 import org.antarcticgardens.cna.content.electricity.light.StreetLightBlock;
 import org.antarcticgardens.cna.content.energising.EnergiserBlock;
 import org.antarcticgardens.cna.content.heat.heater.HeaterBlock;
@@ -231,4 +232,57 @@ public class CNABlockStateGen {
             }
         };
     }
+
+    public static <P extends LampPostBlock> NonNullBiConsumer<DataGenContext<Block, P>, RegistrateBlockstateProvider> lampPost() {
+        return (c, p) -> {
+            MultiPartBlockStateBuilder builder = p.getMultipartBuilder(c.get());
+
+            ModelFile.ExistingModelFile pole = p.models().getExistingFile(p.modLoc("block/" + c.getName() + "/pole"));
+            ModelFile.ExistingModelFile top = p.models().getExistingFile(p.modLoc("block/" + c.getName() + "/top"));
+            ModelFile.ExistingModelFile bottom = p.models().getExistingFile(p.modLoc("block/" + c.getName() + "/bottom"));
+            ModelFile.ExistingModelFile center = p.models().getExistingFile(p.modLoc("block/" + c.getName() + "/center"));
+            ModelFile.ExistingModelFile side = p.models().getExistingFile(p.modLoc("block/" + c.getName() + "/side"));
+
+            builder.part()
+                    .modelFile(pole)
+                    .addModel()
+                    .end();
+
+            builder.part()
+                    .modelFile(top)
+                    .addModel()
+                    .condition(LampPostBlock.TOP, true)
+                    .end();
+
+            builder.part()
+                    .modelFile(bottom)
+                    .addModel()
+                    .condition(LampPostBlock.BOTTOM, true)
+                    .condition(LampPostBlock.NORTH, false)
+                    .condition(LampPostBlock.EAST, false)
+                    .condition(LampPostBlock.SOUTH, false)
+                    .condition(LampPostBlock.WEST, false)
+                    .end();
+
+            builder.part()
+                    .modelFile(center)
+                    .addModel()
+                    .useOr()
+                    .condition(LampPostBlock.NORTH, true)
+                    .condition(LampPostBlock.EAST, true)
+                    .condition(LampPostBlock.SOUTH, true)
+                    .condition(LampPostBlock.WEST, true)
+                    .end();
+
+            for (Direction dir : Direction.Plane.HORIZONTAL) {
+                builder.part()
+                        .modelFile(side)
+                        .rotationY((int) dir.getOpposite().toYRot())
+                        .addModel()
+                        .condition(LampPostBlock.getDirectionProperty(dir), true)
+                        .end();
+            }
+        };
+    }
+
 }
