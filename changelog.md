@@ -10,6 +10,7 @@ Version 1.2.0
 
 #### Bug Fixes
 - Fix dedicated server crash on newer forge versions - [#129](https://gitlab.com/antarcticgardens/create-new-age/-/issues/129)
+- Fix motors not rendering correctly on fabric
 
 ------------------------------------------------------
 Version 1.1.7f

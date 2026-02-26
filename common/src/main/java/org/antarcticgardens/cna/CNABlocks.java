@@ -222,6 +222,7 @@ public class CNABlocks {
             #endif
                     .transform(b -> b.model((c, p) ->
                             p.withExistingParent(c.getName(), p.modLoc("block/" + c.getName() + "/horizontal"))).build())
+                    .addLayer(() -> RenderType::cutout)
                     .register();
 
     public static final BlockEntry<MotorBlock> ADVANCED_MOTOR =
@@ -237,6 +238,7 @@ public class CNABlocks {
             #endif
                     .transform(b -> b.model((c, p) ->
                             p.withExistingParent(c.getName(), p.modLoc("block/" + c.getName() + "/horizontal"))).build())
+                    .addLayer(() -> RenderType::cutout)
                     .register();
 
 
@@ -253,6 +255,7 @@ public class CNABlocks {
             #endif
                     .transform(b -> b.model((c, p) ->
                             p.withExistingParent(c.getName(), p.modLoc("block/" + c.getName() + "/horizontal"))).build())
+                    .addLayer(() -> RenderType::cutout)
                     .register();
 
     public static final BlockEntry<MotorExtensionBlock> BASIC_MOTOR_EXTENSION =
@@ -516,6 +519,7 @@ public class CNABlocks {
                     .blockstate(CNABlockStateGen.lampPost())
                     .item()
                     .transform(ModelGen.customItemModel())
+                    .addLayer(() -> RenderType::cutout)
                     .register();
 
 //    public static final BlockEntry<BatteryBlock> BATTERY =
