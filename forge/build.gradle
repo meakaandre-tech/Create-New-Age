@@ -1,7 +1,7 @@
 import dev.ithundxr.silk.ChangelogText
 
 repositories {
-    maven { url "https://maven.neoforged.net/" }
+    maven { url "https://maven.neoforged.net/releases/" }
 }
 
 dependencies {

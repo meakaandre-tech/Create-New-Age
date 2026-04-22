@@ -18,7 +18,9 @@ subprojects {
     apply plugin: "me.modmuss50.mod-publish-plugin"
     apply plugin: "dev.ithundxr.silk"
 
-    archivesBaseName = "create-new-age"
+    base {
+        archivesName = "create-new-age"
+    }
 
     repositories {
         mavenLocal()
@@ -97,7 +99,7 @@ subprojects {
     publishing {
         publications {
             maven(MavenPublication) {
-                artifactId = project.archivesBaseName + "-${project.name}-${rootProject.minecraftVersion}"
+                artifactId = base.archivesName.get() + "-${project.name}-${rootProject.minecraftVersion}"
                 if (!System.getenv("RELEASE").asBoolean())
                     version = "${rootProject.modVersion}-build.${System.getenv("GIT_SHA")}+${project.name}-mc${rootProject.minecraftVersion}"
                 from components.java
