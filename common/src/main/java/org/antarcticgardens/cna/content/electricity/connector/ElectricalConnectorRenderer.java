@@ -170,27 +170,6 @@ public class ElectricalConnectorRenderer implements BlockEntityRenderer<Abstract
 
     @Override
     public AABB getRenderBoundingBox(AbstractElectricalConnector blockEntity) {
-        Stream<AbstractElectricalConnector> connectors = blockEntity.connectors.keySet().stream();
-        double[] coordinates = Streams.concat(connectors, Stream.of(blockEntity))
-                .map(AbstractElectricalConnector::getConnectionPoint)
-                .collect(() -> new double[]{
-                        Double.POSITIVE_INFINITY, // minX
-                        Double.POSITIVE_INFINITY, // minY
-                        Double.POSITIVE_INFINITY, // minZ
-                        Double.NEGATIVE_INFINITY, // maxX
-                        Double.NEGATIVE_INFINITY, // maxY
-                        Double.NEGATIVE_INFINITY, // maxZ
-                }, (acc, point) -> {
-                    acc[0] = Math.min(acc[0], point.x);
-                    acc[1] = Math.min(acc[1], point.y);
-                    acc[2] = Math.min(acc[2], point.z);
-                    acc[3] = Math.max(acc[3], point.x);
-                    acc[4] = Math.max(acc[4], point.y);
-                    acc[5] = Math.max(acc[5], point.z);
-                }, (a, b) -> {
-                });
-
-        AABB box = new AABB(coordinates[0], coordinates[1], coordinates[2], coordinates[3], coordinates[4], coordinates[5]);
-        return box.inflate(1.0);
+        return AABB.INFINITE;
     }
 }
