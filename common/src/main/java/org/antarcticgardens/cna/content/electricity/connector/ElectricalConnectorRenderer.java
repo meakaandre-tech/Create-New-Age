@@ -1,6 +1,5 @@
 package org.antarcticgardens.cna.content.electricity.connector;
 
-import com.google.common.collect.Streams;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
@@ -21,8 +20,6 @@ import org.antarcticgardens.cna.CreateNewAge;
 import org.antarcticgardens.cna.config.CNAConfig;
 import org.antarcticgardens.cna.content.electricity.wire.ElectricWireItem;
 import org.antarcticgardens.cna.content.electricity.wire.WireType;
-
-import java.util.stream.Stream;
 
 public class ElectricalConnectorRenderer implements BlockEntityRenderer<AbstractElectricalConnector> {
     @Override
@@ -63,7 +60,8 @@ public class ElectricalConnectorRenderer implements BlockEntityRenderer<Abstract
                 originPoint.toVector3f(),
                 endPoint.toVector3f(),
                 CNAConfig.getClient().wireSectionsPerMeter.get(),
-                CNAConfig.getClient().wireThickness.get().floatValue()
+                CNAConfig.getClient().wireThickness.get().floatValue(),
+                CNAConfig.getServer().maxWireLength.get()
         );
         VertexConsumer consumer = buffer.getBuffer(CNARenderTypes.wire(texture));
 
@@ -153,7 +151,8 @@ public class ElectricalConnectorRenderer implements BlockEntityRenderer<Abstract
                 wireStart.toVector3f(),
                 wireEnd.toVector3f(),
                 CNAConfig.getClient().wireSectionsPerMeter.get(),
-                CNAConfig.getClient().wireThickness.get().floatValue()
+                CNAConfig.getClient().wireThickness.get().floatValue(),
+                CNAConfig.getServer().maxWireLength.get()
         );
         VertexConsumer consumer = buffer.getBuffer(CNARenderTypes.wire(texture));
 
