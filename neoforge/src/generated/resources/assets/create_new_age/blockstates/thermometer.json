@@ -1,0 +1,125 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "create_new_age:block/thermometer/ceiling"
+      },
+      "when": {
+        "facing": "south",
+        "up": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "create_new_age:block/thermometer/floor"
+      },
+      "when": {
+        "down": "true",
+        "facing": "south"
+      }
+    },
+    {
+      "apply": {
+        "model": "create_new_age:block/thermometer/wall"
+      },
+      "when": {
+        "down": "false",
+        "facing": "south",
+        "up": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "create_new_age:block/thermometer/ceiling",
+        "y": 90
+      },
+      "when": {
+        "facing": "west",
+        "up": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "create_new_age:block/thermometer/floor",
+        "y": 90
+      },
+      "when": {
+        "down": "true",
+        "facing": "west"
+      }
+    },
+    {
+      "apply": {
+        "model": "create_new_age:block/thermometer/wall",
+        "y": 90
+      },
+      "when": {
+        "down": "false",
+        "facing": "west",
+        "up": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "create_new_age:block/thermometer/ceiling",
+        "y": 180
+      },
+      "when": {
+        "facing": "north",
+        "up": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "create_new_age:block/thermometer/floor",
+        "y": 180
+      },
+      "when": {
+        "down": "true",
+        "facing": "north"
+      }
+    },
+    {
+      "apply": {
+        "model": "create_new_age:block/thermometer/wall",
+        "y": 180
+      },
+      "when": {
+        "down": "false",
+        "facing": "north",
+        "up": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "create_new_age:block/thermometer/ceiling",
+        "y": 270
+      },
+      "when": {
+        "facing": "east",
+        "up": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "create_new_age:block/thermometer/floor",
+        "y": 270
+      },
+      "when": {
+        "down": "true",
+        "facing": "east"
+      }
+    },
+    {
+      "apply": {
+        "model": "create_new_age:block/thermometer/wall",
+        "y": 270
+      },
+      "when": {
+        "down": "false",
+        "facing": "east",
+        "up": "false"
+      }
+    }
+  ]
+}

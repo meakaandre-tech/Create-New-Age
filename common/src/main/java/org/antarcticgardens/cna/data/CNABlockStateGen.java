@@ -17,6 +17,7 @@ import org.antarcticgardens.cna.content.heat.heater.HeaterBlock;
 import org.antarcticgardens.cna.content.heat.pipe.HeatPipeBlock;
 import org.antarcticgardens.cna.content.heat.pump.HeatPumpBlock;
 import org.antarcticgardens.cna.content.heat.stirling.StirlingEngineBlock;
+import org.antarcticgardens.cna.content.heat.thermometer.ThermometerBlock;
 import org.antarcticgardens.cna.content.nuclear.reactor.rod.ReactorRodBlock;
 import org.joml.Vector3f;
 
@@ -274,6 +275,43 @@ public class CNABlockStateGen {
                         .rotationY((int) dir.getOpposite().toYRot())
                         .addModel()
                         .condition(LampPostBlock.getDirectionProperty(dir), true)
+                        .end();
+            }
+        };
+    }
+
+    public static <P extends ThermometerBlock> NonNullBiConsumer<DataGenContext<Block, P>, RegistrateBlockstateProvider> thermometer() {
+        return (c, p) -> {
+            MultiPartBlockStateBuilder builder = p.getMultipartBuilder(c.get());
+
+            ModelFile.ExistingModelFile ceiling = p.models().getExistingFile(p.modLoc("block/" + c.getName() + "/ceiling"));
+            ModelFile.ExistingModelFile floor = p.models().getExistingFile(p.modLoc("block/" + c.getName() + "/floor"));
+            ModelFile.ExistingModelFile wall = p.models().getExistingFile(p.modLoc("block/" + c.getName() + "/wall"));
+
+            for (Direction dir : Direction.Plane.HORIZONTAL) {
+                builder.part()
+                        .modelFile(ceiling)
+                        .rotationY((int) dir.getOpposite().toYRot())
+                        .addModel()
+                        .condition(BlockStateProperties.UP, true)
+                        .condition(BlockStateProperties.HORIZONTAL_FACING, dir.getOpposite())
+                        .end();
+
+                builder.part()
+                        .modelFile(floor)
+                        .rotationY((int) dir.getOpposite().toYRot())
+                        .addModel()
+                        .condition(BlockStateProperties.DOWN, true)
+                        .condition(BlockStateProperties.HORIZONTAL_FACING, dir.getOpposite())
+                        .end();
+
+                builder.part()
+                        .modelFile(wall)
+                        .rotationY((int) dir.getOpposite().toYRot())
+                        .addModel()
+                        .condition(BlockStateProperties.UP, false)
+                        .condition(BlockStateProperties.DOWN, false)
+                        .condition(BlockStateProperties.HORIZONTAL_FACING, dir.getOpposite())
                         .end();
             }
         };

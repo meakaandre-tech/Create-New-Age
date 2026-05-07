@@ -404,7 +404,11 @@ public class CNABlocks {
                     .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
                     .properties(BlockBehaviour.Properties::noOcclusion)
                     .tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                    .simpleItem()
+                    .blockstate(CNABlockStateGen.thermometer())
+                    .addLayer(() -> RenderType::cutout)
+                    // TODO: Visuals
+                    .item()
+                    .transform(ModelGen.customItemModel())
                     .register();
 
 

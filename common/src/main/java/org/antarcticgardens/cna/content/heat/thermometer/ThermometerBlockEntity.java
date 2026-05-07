@@ -57,12 +57,23 @@ public class ThermometerBlockEntity extends SmartBlockEntity implements HeatBloc
 
     @Override
     public boolean canConnect(Direction from) {
-        return from == getBlockState().getValue(BlockStateProperties.FACING).getOpposite();
+        if ((getBlockState().getValue(BlockStateProperties.DOWN) || getBlockState().getValue(BlockStateProperties.UP)) && Direction.Plane.VERTICAL.test(from)) {
+            return true;
+        } else if (getBlockState().getValue(BlockStateProperties.UP) || getBlockState().getValue(BlockStateProperties.DOWN)) {
+            return false;
+        }
+        return from == getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING).getOpposite();
     }
 
     @Override
     public float getHeat() {
-        BlockEntity be = getLevel().getBlockEntity(getBlockPos().relative(getBlockState().getValue(BlockStateProperties.FACING)));
+        Direction dir = getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
+        if (getBlockState().getValue(BlockStateProperties.UP)) {
+            dir = Direction.UP;
+        } else if (getBlockState().getValue(BlockStateProperties.DOWN)) {
+            dir = Direction.DOWN;
+        }
+        BlockEntity be = getLevel().getBlockEntity(getBlockPos().relative(dir));
         if (be instanceof HeatPipeBlockEntity heatPipe) {
             return heatPipe.getHeat();
         }
