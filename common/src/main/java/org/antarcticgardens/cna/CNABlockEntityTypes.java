@@ -20,6 +20,7 @@ import org.antarcticgardens.cna.content.heat.pump.HeatPumpBlockEntity;
 import org.antarcticgardens.cna.content.heat.stirling.StirlingEngineBlockEntity;
 import org.antarcticgardens.cna.content.heat.stirling.StirlingEngineVisual;
 import org.antarcticgardens.cna.content.heat.stirling.StirlingEngineRenderer;
+import org.antarcticgardens.cna.content.heat.thermometer.ThermometerBlockEntity;
 import org.antarcticgardens.cna.content.motor.MotorBlockEntity;
 import org.antarcticgardens.cna.content.motor.extension.MotorExtensionBlockEntity;
 import org.antarcticgardens.cna.content.motor.extension.variants.AdvancedMotorExtensionVariant;
@@ -86,6 +87,11 @@ public class CNABlockEntityTypes {
     public static final BlockEntityEntry<SolarHeatingPlateBlockEntity> ADVANCED_SOLAR_HEATING_PLATE = REGISTRATE
             .blockEntity("advanced_solar_heating_plate", SolarHeatingPlateBlockEntity::createAdvanced)
             .validBlocks(CNABlocks.ADVANCED_SOLAR_HEATING_PLATE)
+            .register();
+
+    public static final BlockEntityEntry<ThermometerBlockEntity> THERMOMETER = REGISTRATE
+            .blockEntity("thermometer", ThermometerBlockEntity::new)
+            .validBlocks(CNABlocks.THERMOMETER)
             .register();
 
 

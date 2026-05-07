@@ -8,8 +8,10 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import org.antarcticgardens.cna.compat.computercraft.peripherals.CarbonBrushesBlockEntityPeripheral;
 import org.antarcticgardens.cna.compat.computercraft.peripherals.EnergiserBlockEntityPeripheral;
 import org.antarcticgardens.cna.compat.computercraft.peripherals.MotorBlockEntityPeripheral;
+import org.antarcticgardens.cna.compat.computercraft.peripherals.ThermometerBlockEntityPeripheral;
 import org.antarcticgardens.cna.content.electricity.generation.brushes.CarbonBrushesBlockEntity;
 import org.antarcticgardens.cna.content.energising.EnergiserBlockEntity;
+import org.antarcticgardens.cna.content.heat.thermometer.ThermometerBlockEntity;
 import org.antarcticgardens.cna.content.motor.MotorBlockEntity;
 
 import java.util.function.Supplier;
@@ -30,6 +32,8 @@ public class CNAComputerBehaviour extends AbstractComputerBehaviour {
             return () -> new MotorBlockEntityPeripheral(motorBlockEntity);
         if (be instanceof CarbonBrushesBlockEntity carbonBrushesBlockEntity)
             return () -> new CarbonBrushesBlockEntityPeripheral(carbonBrushesBlockEntity);
+        if (be instanceof ThermometerBlockEntity thermometerBlockEntity)
+            return () -> new ThermometerBlockEntityPeripheral(thermometerBlockEntity);
 
         throw new IllegalArgumentException(
                 "No peripheral registered for " + BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(be.getType()));

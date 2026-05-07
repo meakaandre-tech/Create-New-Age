@@ -39,6 +39,7 @@ import org.antarcticgardens.cna.content.heat.plate.SolarHeatingPlateBlock;
 import org.antarcticgardens.cna.content.heat.pump.HeatPumpBlock;
 import org.antarcticgardens.cna.content.heat.stirling.StirlingEngineBlock;
 import org.antarcticgardens.cna.content.heat.stirling.StirlingEngineItem;
+import org.antarcticgardens.cna.content.heat.thermometer.ThermometerBlock;
 import org.antarcticgardens.cna.content.motor.MotorBlock;
 import org.antarcticgardens.cna.content.motor.MotorBlockItem;
 import org.antarcticgardens.cna.content.motor.MotorBlockStateGen;
@@ -395,6 +396,14 @@ public class CNABlocks {
                     .blockstate((c, p) -> p.simpleBlock(c.get(), p.models().getExistingFile(p.modLoc(c.getName()))))
                     .tag(BlockTags.MINEABLE_WITH_PICKAXE)
                     .addLayer(() -> RenderType::cutout)
+                    .simpleItem()
+                    .register();
+
+    public static final BlockEntry<ThermometerBlock> THERMOMETER =
+            REGISTRATE.block("thermometer", ThermometerBlock::new)
+                    .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
+                    .properties(BlockBehaviour.Properties::noOcclusion)
+                    .tag(BlockTags.MINEABLE_WITH_PICKAXE)
                     .simpleItem()
                     .register();
 

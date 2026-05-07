@@ -38,6 +38,12 @@ public class NeoComputerCraftCompat {
                     CNABlockEntityTypes.CARBON_BRUSHES.get(),
                     (be, context) -> be.computerBehaviour.getPeripheralCapability()
             );
+
+            event.registerBlockEntity(
+                    PeripheralCapability.get(),
+                    CNABlockEntityTypes.THERMOMETER.get(),
+                    (be, context) -> be.computerBehaviour.getPeripheralCapability()
+            );
         }
     }
 
