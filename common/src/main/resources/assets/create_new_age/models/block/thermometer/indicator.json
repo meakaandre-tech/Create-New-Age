@@ -1,0 +1,29 @@
+{
+	"format_version": "1.9.0",
+	"credit": "Made by AndromedaGalaxy29",
+	"texture_size": [32, 32],
+	"textures": {
+		"0": "create_new_age:block/thermometer",
+		"particle": "create_new_age:block/thermometer"
+	},
+	"elements": [
+		{
+			"name": "indicator",
+			"from": [7.5, 8, 7.98],
+			"to": [8.5, 15, 7.98],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 7.98]},
+			"faces": {
+				"north": {"uv": [5.5, 6.5, 6, 7], "texture": "#0"},
+				"south": {"uv": [5.5, 6.5, 6, 7], "texture": "#0"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "indicator",
+			"origin": [8, 11, 6.725],
+			"color": 0,
+			"children": [0]
+		}
+	]
+}
