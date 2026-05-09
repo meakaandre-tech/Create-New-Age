@@ -4,7 +4,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.antarcticgardens.cna.content.electricity.connector.AbstractElectricalConnector;
 import org.antarcticgardens.cna.content.electricity.connector.ElectricalConnectorBlock;
 import org.antarcticgardens.esl.energy.EnergyStorage;
@@ -130,8 +129,12 @@ public class ElectricalNetwork {
                 BlockEntity be = to.getValue().entity();
 
                 be.setChanged();
-                if (be.getLevel() instanceof ServerLevel serverLevel)
-                    serverLevel.getChunkSource().blockChanged(be.getBlockPos());
+
+                try {
+                    if (be.getLevel() instanceof ServerLevel serverLevel)
+                        serverLevel.getChunkSource().blockChanged(be.getBlockPos());
+                } catch (UnsupportedOperationException ignore) {
+                }
             } // TODO: Move to final commit?
 
             inserted += insertedThroughThisPath;

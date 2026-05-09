@@ -21,6 +21,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.antarcticgardens.cna.CNABlockEntityTypes;
 import org.antarcticgardens.cna.CNABlocks;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 
 public class ElectricalConnectorBlock extends DirectionalBlock implements IBE<ElectricalConnectorBlockEntity>, IWrenchable {
     public static final EnumProperty<ElectricalConnectorMode> MODE = EnumProperty.create("mode", ElectricalConnectorMode.class);
@@ -45,11 +46,25 @@ public class ElectricalConnectorBlock extends DirectionalBlock implements IBE<El
         if (newState.is(CNABlocks.ELECTRICAL_CONNECTOR.get()))
             return;
 
+        // do not treat sublevel tricks as real block break
+        if (isCapturedBlockChange(level)) {
+            super.onRemove(state, level, pos, newState, movedByPiston);
+            return;
+        }
+
         if (level.getBlockEntity(pos) instanceof ElectricalConnectorBlockEntity connector) {
             connector.remove(level);
         }
 
         super.onRemove(state, level, pos, newState, movedByPiston);
+    }
+
+    private static boolean isCapturedBlockChange(Level level) {
+        try {
+            return Level.class.getField("captureBlockSnapshots").getBoolean(level);
+        } catch (ReflectiveOperationException | RuntimeException ignored) {
+            return false;
+        }
     }
 
     @Nullable
@@ -93,19 +108,19 @@ public class ElectricalConnectorBlock extends DirectionalBlock implements IBE<El
     @Override
     public InteractionResult onWrenched(BlockState state, UseOnContext context) {
         Level world = context.getLevel();
-        
+
         if (!world.isClientSide()) {
             ElectricalConnectorMode nextMode = ElectricalConnectorMode.values()[(state.getValue(MODE).ordinal() + 1) % ElectricalConnectorMode.values().length];
             world.setBlock(context.getClickedPos(), state.setValue(MODE, nextMode), 1 | 2);
-            
+
             if (world.getBlockEntity(context.getClickedPos()) instanceof ElectricalConnectorBlockEntity connector)
                 connector.getNetwork().updateConsumersAndSources();
-            
+
             IWrenchable.playRotateSound(world, context.getClickedPos());
-            
+
             return InteractionResult.SUCCESS;
         }
-        
+
         return InteractionResult.PASS;
     }
 
@@ -117,5 +132,11 @@ public class ElectricalConnectorBlock extends DirectionalBlock implements IBE<El
     @Override
     public BlockEntityType<? extends ElectricalConnectorBlockEntity> getBlockEntityType() {
         return CNABlockEntityTypes.ELECTRICAL_CONNECTOR.get();
+    }
+
+    @Override
+    protected @NonNull BlockState rotate(BlockState state, Rotation rotation) {
+        var facing = rotation.rotate(state.getValue(FACING));
+        return state.setValue(FACING, facing);
     }
 }
