@@ -4,6 +4,8 @@ import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.compat.computercraft.AbstractComputerBehaviour;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
+import com.simibubi.create.foundation.utility.CreateLang;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -28,7 +30,11 @@ public class ThermometerBlockEntity extends SmartBlockEntity implements HeatBloc
 
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-        HeatBlockEntity.addToolTips(this, tooltip);
+        if (getConnectedHeatBlock() != null) {
+            HeatBlockEntity.addToolTips(this, tooltip);
+        }else {
+            CreateLang.translate("tooltip.create_new_age.no_connected_block").forGoggles(tooltip, 1);
+        }
 
         return IHaveGoggleInformation.super.addToGoggleTooltip(tooltip, isPlayerSneaking);
     }
@@ -66,7 +72,11 @@ public class ThermometerBlockEntity extends SmartBlockEntity implements HeatBloc
     }
 
     @Override
-    public float getHeat() {
+    public boolean canAdd(Direction from) {
+        return false;
+    }
+
+    public HeatBlockEntity getConnectedHeatBlock() {
         Direction dir = getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
         if (getBlockState().getValue(BlockStateProperties.UP)) {
             dir = Direction.UP;
@@ -74,8 +84,26 @@ public class ThermometerBlockEntity extends SmartBlockEntity implements HeatBloc
             dir = Direction.DOWN;
         }
         BlockEntity be = getLevel().getBlockEntity(getBlockPos().relative(dir));
-        if (be instanceof HeatPipeBlockEntity heatPipe) {
-            return heatPipe.getHeat();
+        if (be instanceof HeatBlockEntity hbe) {
+            return hbe;
+        }
+        return null;
+    }
+
+    @Override
+    public float getHeat() {
+        HeatBlockEntity hbe = getConnectedHeatBlock();
+        if (hbe != null) {
+            return hbe.getHeat();
+        }
+        return 0;
+    }
+
+    @Override
+    public float maxHeat() {
+        HeatBlockEntity hbe = getConnectedHeatBlock();
+        if (hbe != null) {
+            return hbe.maxHeat();
         }
         return 0;
     }
