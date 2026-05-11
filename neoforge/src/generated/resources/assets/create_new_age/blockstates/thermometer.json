@@ -1,48 +1,93 @@
 {
   "variants": {
-    "face=ceiling,facing=east": {
+    "face=ceiling,facing=east,powered=false": {
       "model": "create_new_age:block/thermometer/ceiling",
       "y": 90
     },
-    "face=ceiling,facing=north": {
+    "face=ceiling,facing=east,powered=true": {
+      "model": "create_new_age:block/thermometer/ceiling_powered",
+      "y": 90
+    },
+    "face=ceiling,facing=north,powered=false": {
       "model": "create_new_age:block/thermometer/ceiling"
     },
-    "face=ceiling,facing=south": {
+    "face=ceiling,facing=north,powered=true": {
+      "model": "create_new_age:block/thermometer/ceiling_powered"
+    },
+    "face=ceiling,facing=south,powered=false": {
       "model": "create_new_age:block/thermometer/ceiling",
       "y": 180
     },
-    "face=ceiling,facing=west": {
+    "face=ceiling,facing=south,powered=true": {
+      "model": "create_new_age:block/thermometer/ceiling_powered",
+      "y": 180
+    },
+    "face=ceiling,facing=west,powered=false": {
       "model": "create_new_age:block/thermometer/ceiling",
       "y": 270
     },
-    "face=floor,facing=east": {
+    "face=ceiling,facing=west,powered=true": {
+      "model": "create_new_age:block/thermometer/ceiling_powered",
+      "y": 270
+    },
+    "face=floor,facing=east,powered=false": {
       "model": "create_new_age:block/thermometer/floor",
       "y": 90
     },
-    "face=floor,facing=north": {
+    "face=floor,facing=east,powered=true": {
+      "model": "create_new_age:block/thermometer/floor_powered",
+      "y": 90
+    },
+    "face=floor,facing=north,powered=false": {
       "model": "create_new_age:block/thermometer/floor"
     },
-    "face=floor,facing=south": {
+    "face=floor,facing=north,powered=true": {
+      "model": "create_new_age:block/thermometer/floor_powered"
+    },
+    "face=floor,facing=south,powered=false": {
       "model": "create_new_age:block/thermometer/floor",
       "y": 180
     },
-    "face=floor,facing=west": {
+    "face=floor,facing=south,powered=true": {
+      "model": "create_new_age:block/thermometer/floor_powered",
+      "y": 180
+    },
+    "face=floor,facing=west,powered=false": {
       "model": "create_new_age:block/thermometer/floor",
       "y": 270
     },
-    "face=wall,facing=east": {
+    "face=floor,facing=west,powered=true": {
+      "model": "create_new_age:block/thermometer/floor_powered",
+      "y": 270
+    },
+    "face=wall,facing=east,powered=false": {
       "model": "create_new_age:block/thermometer/wall",
       "y": 90
     },
-    "face=wall,facing=north": {
+    "face=wall,facing=east,powered=true": {
+      "model": "create_new_age:block/thermometer/wall_powered",
+      "y": 90
+    },
+    "face=wall,facing=north,powered=false": {
       "model": "create_new_age:block/thermometer/wall"
     },
-    "face=wall,facing=south": {
+    "face=wall,facing=north,powered=true": {
+      "model": "create_new_age:block/thermometer/wall_powered"
+    },
+    "face=wall,facing=south,powered=false": {
       "model": "create_new_age:block/thermometer/wall",
       "y": 180
     },
-    "face=wall,facing=west": {
+    "face=wall,facing=south,powered=true": {
+      "model": "create_new_age:block/thermometer/wall_powered",
+      "y": 180
+    },
+    "face=wall,facing=west,powered=false": {
       "model": "create_new_age:block/thermometer/wall",
+      "y": 270
+    },
+    "face=wall,facing=west,powered=true": {
+      "model": "create_new_age:block/thermometer/wall_powered",
       "y": 270
     }
   }

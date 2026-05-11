@@ -288,12 +288,16 @@ public class CNABlockStateGen {
             ModelFile.ExistingModelFile ceiling = p.models().getExistingFile(p.modLoc("block/" + c.getName() + "/ceiling"));
             ModelFile.ExistingModelFile floor = p.models().getExistingFile(p.modLoc("block/" + c.getName() + "/floor"));
             ModelFile.ExistingModelFile wall = p.models().getExistingFile(p.modLoc("block/" + c.getName() + "/wall"));
+            ModelFile.ExistingModelFile ceilingPowered = p.models().getExistingFile(p.modLoc("block/" + c.getName() + "/ceiling_powered"));
+            ModelFile.ExistingModelFile floorPowered = p.models().getExistingFile(p.modLoc("block/" + c.getName() + "/floor_powered"));
+            ModelFile.ExistingModelFile wallPowered = p.models().getExistingFile(p.modLoc("block/" + c.getName() + "/wall_powered"));
 
             builder.forAllStates(state -> {
+                boolean powered = state.getValue(BlockStateProperties.POWERED);
                 ModelFile model = switch (state.getValue(BlockStateProperties.ATTACH_FACE)) {
-                    case CEILING -> ceiling;
-                    case FLOOR -> floor;
-                    case WALL -> wall;
+                    case CEILING -> !powered ? ceiling : ceilingPowered;
+                    case FLOOR -> !powered ? floor : floorPowered;
+                    case WALL -> !powered ? wall : wallPowered;
                 };
                 int rotation = (int) state.getValue(BlockStateProperties.HORIZONTAL_FACING).getOpposite().toYRot();
 

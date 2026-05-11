@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -25,6 +26,7 @@ import org.jspecify.annotations.Nullable;
 
 public class ThermometerBlock extends FaceAttachedHorizontalDirectionalBlock implements IBE<ThermometerBlockEntity>, IWrenchable {
     public static final MapCodec<ThermometerBlock> CODEC = simpleCodec(ThermometerBlock::new);
+    public static BooleanProperty POWERED = BlockStateProperties.POWERED;
 
     public static final VoxelShaper FLOOR_SHAPER = VoxelShaper.forHorizontal(Shapes.or(
             Shapes.box(3.0 /16, 0.0, 3.0 /16, 13.0 /16, 2.0 /16, 13.0 /16),
@@ -54,7 +56,7 @@ public class ThermometerBlock extends FaceAttachedHorizontalDirectionalBlock imp
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING, FACE);
+        builder.add(FACING, FACE, POWERED);
         super.createBlockStateDefinition(builder);
     }
 
@@ -75,7 +77,7 @@ public class ThermometerBlock extends FaceAttachedHorizontalDirectionalBlock imp
             facing = context.getClickedFace();
         }
 
-        return this.defaultBlockState().setValue(FACING, facing).setValue(FACE, face);
+        return this.defaultBlockState().setValue(FACING, facing).setValue(FACE, face).setValue(POWERED, false);
     }
 
     @Override

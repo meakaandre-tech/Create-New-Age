@@ -100,7 +100,7 @@ public class ThermometerBlockEntity extends SmartBlockEntity implements HeatBloc
     }
 
     public void updateSignal() {
-        getLevel().setBlockAndUpdate(getBlockPos(), getBlockState());
+        getLevel().setBlockAndUpdate(getBlockPos(), getBlockState().setValue(BlockStateProperties.POWERED, isPowered()));
         getLevel().updateNeighborsAt(getBlockPos(), getBlockState().getBlock());
     }
 
