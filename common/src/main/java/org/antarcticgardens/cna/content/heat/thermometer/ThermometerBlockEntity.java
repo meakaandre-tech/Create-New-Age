@@ -1,17 +1,23 @@
 package org.antarcticgardens.cna.content.heat.thermometer;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.compat.computercraft.AbstractComputerBehaviour;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueBoxTransform;
+import com.simibubi.create.foundation.blockEntity.behaviour.scrollValue.ScrollValueBehaviour;
 import com.simibubi.create.foundation.utility.CreateLang;
+import dev.engine_room.flywheel.lib.transform.TransformStack;
+import net.createmod.catnip.math.AngleHelper;
+import net.createmod.catnip.math.VecHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -19,6 +25,8 @@ import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec3;
 import org.antarcticgardens.cna.compat.computercraft.CNAComputerCraftProxy;
+import org.antarcticgardens.cna.content.electricity.light.StreetLightBlock;
+import org.antarcticgardens.cna.content.electricity.light.StreetLightBlockEntity;
 import org.antarcticgardens.cna.content.heat.HeatBlockEntity;
 import org.antarcticgardens.cna.content.heat.pipe.HeatPipeBlockEntity;
 
@@ -26,6 +34,9 @@ import java.util.List;
 
 public class ThermometerBlockEntity extends SmartBlockEntity implements HeatBlockEntity, IHaveGoggleInformation {
     public AbstractComputerBehaviour computerBehaviour;
+    public ScrollValueBehaviour thresholdBehaviour;
+
+    boolean powered = false;
 
     public ThermometerBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -56,6 +67,12 @@ public class ThermometerBlockEntity extends SmartBlockEntity implements HeatBloc
     @Override
     public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
         behaviours.add(computerBehaviour = CNAComputerCraftProxy.behaviour(this));
+
+        thresholdBehaviour = new ScrollValueBehaviour(CreateLang.translateDirect("create_new_age.thermometer.threshold"), this, new ThermometerBox())
+                .between(0, 100)
+                .withFormatter(value -> value.toString() + "%");
+        thresholdBehaviour.value = 0;
+        behaviours.add(thresholdBehaviour);
     }
 
     @Override
@@ -65,9 +82,37 @@ public class ThermometerBlockEntity extends SmartBlockEntity implements HeatBloc
     }
 
     @Override
+    public void tick() {
+        super.tick();
+
+        boolean lastPowered = powered;
+        powered = isPowered();
+
+        if (lastPowered != powered) {
+            updateSignal();
+        }
+    }
+
+    @Override
+    public void notifyUpdate() {
+        super.notifyUpdate();
+        updateSignal();
+    }
+
+    public void updateSignal() {
+        getLevel().setBlockAndUpdate(getBlockPos(), getBlockState());
+        getLevel().updateNeighborsAt(getBlockPos(), getBlockState().getBlock());
+    }
+
+    public boolean isPowered() {
+        if (getConnectedHeatBlock() == null) return false;
+        return getHeat() / maxHeat() >= thresholdBehaviour.getValue() / 100f;
+    }
+
+    @Override
     public boolean canConnect(Direction from) {
-        if (from.getAxis().isVertical()) {
-            AttachFace face = getBlockState().getValue(BlockStateProperties.ATTACH_FACE);
+        AttachFace face = getBlockState().getValue(BlockStateProperties.ATTACH_FACE);
+        if (face != AttachFace.WALL) {
             return from == Direction.UP && face == AttachFace.FLOOR || from == Direction.DOWN && face == AttachFace.CEILING;
         }
         return from == getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
@@ -116,5 +161,35 @@ public class ThermometerBlockEntity extends SmartBlockEntity implements HeatBloc
 
     @Override
     public void setHeat(float amount) {
+    }
+
+    static class ThermometerBox extends ValueBoxTransform.Sided {
+
+        @Override
+        protected Vec3 getSouthLocation() {
+            return VecHelper.voxelSpace(8, 8, 16);
+        }
+
+        @Override
+        public void rotate(LevelAccessor level, BlockPos pos, BlockState state, PoseStack ms) {
+            super.rotate(level, pos, state, ms);
+            if (state.getValue(BlockStateProperties.ATTACH_FACE) == AttachFace.WALL)
+                return;
+            int flip = -1;
+            if (state.getValue(BlockStateProperties.ATTACH_FACE) == AttachFace.CEILING) {
+                flip = 1;
+            }
+            TransformStack.of(ms).rotateZDegrees(flip * AngleHelper.horizontalAngle(state.getValue(BlockStateProperties.HORIZONTAL_FACING)));
+        }
+
+        @Override
+        protected boolean isSideActive(BlockState state, Direction direction) {
+            if (state.getValue(BlockStateProperties.ATTACH_FACE) == AttachFace.CEILING) {
+                return direction == Direction.DOWN;
+            } else if (state.getValue(BlockStateProperties.ATTACH_FACE) == AttachFace.FLOOR) {
+                return direction == Direction.UP;
+            }
+            return direction == state.getValue(BlockStateProperties.HORIZONTAL_FACING);
+        }
     }
 }

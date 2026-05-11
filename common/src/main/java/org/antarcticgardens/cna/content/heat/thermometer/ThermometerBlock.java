@@ -6,9 +6,11 @@ import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FaceAttachedHorizontalDirectionalBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -69,5 +71,19 @@ public class ThermometerBlock extends FaceAttachedHorizontalDirectionalBlock imp
     @Override
     public BlockEntityType<? extends ThermometerBlockEntity> getBlockEntityType() {
         return CNABlockEntityTypes.THERMOMETER.get();
+    }
+
+    @Override
+    protected boolean isSignalSource(BlockState state) {
+        return true;
+    }
+
+    @Override
+    protected int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+        BlockEntity be = level.getBlockEntity(pos);
+        if (be instanceof ThermometerBlockEntity thermometer) {
+            return thermometer.powered ? 15 : 0;
+        }
+        return 0;
     }
 }
