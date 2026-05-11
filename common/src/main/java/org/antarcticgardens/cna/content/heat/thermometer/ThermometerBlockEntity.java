@@ -4,6 +4,7 @@ import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.compat.computercraft.AbstractComputerBehaviour;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
+import com.simibubi.create.foundation.blockEntity.behaviour.ValueBoxTransform;
 import com.simibubi.create.foundation.utility.CreateLang;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -14,7 +15,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.phys.Vec3;
 import org.antarcticgardens.cna.compat.computercraft.CNAComputerCraftProxy;
 import org.antarcticgardens.cna.content.heat.HeatBlockEntity;
 import org.antarcticgardens.cna.content.heat.pipe.HeatPipeBlockEntity;
@@ -63,12 +66,11 @@ public class ThermometerBlockEntity extends SmartBlockEntity implements HeatBloc
 
     @Override
     public boolean canConnect(Direction from) {
-        if ((getBlockState().getValue(BlockStateProperties.DOWN) || getBlockState().getValue(BlockStateProperties.UP)) && Direction.Plane.VERTICAL.test(from)) {
-            return true;
-        } else if (getBlockState().getValue(BlockStateProperties.UP) || getBlockState().getValue(BlockStateProperties.DOWN)) {
-            return false;
+        if (from.getAxis().isVertical()) {
+            AttachFace face = getBlockState().getValue(BlockStateProperties.ATTACH_FACE);
+            return from == Direction.UP && face == AttachFace.FLOOR || from == Direction.DOWN && face == AttachFace.CEILING;
         }
-        return from == getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING).getOpposite();
+        return from == getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
     }
 
     @Override
@@ -77,14 +79,14 @@ public class ThermometerBlockEntity extends SmartBlockEntity implements HeatBloc
     }
 
     public HeatBlockEntity getConnectedHeatBlock() {
-        Direction dir = getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
-        if (getBlockState().getValue(BlockStateProperties.UP)) {
+        Direction dir = getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING).getOpposite();
+        if (getBlockState().getValue(BlockStateProperties.ATTACH_FACE) == AttachFace.CEILING) {
             dir = Direction.UP;
-        } else if (getBlockState().getValue(BlockStateProperties.DOWN)) {
+        } else if (getBlockState().getValue(BlockStateProperties.ATTACH_FACE) == AttachFace.FLOOR) {
             dir = Direction.DOWN;
         }
         BlockEntity be = getLevel().getBlockEntity(getBlockPos().relative(dir));
-        if (be instanceof HeatBlockEntity hbe) {
+        if (be instanceof HeatBlockEntity hbe && !(be instanceof ThermometerBlockEntity)) {
             return hbe;
         }
         return null;

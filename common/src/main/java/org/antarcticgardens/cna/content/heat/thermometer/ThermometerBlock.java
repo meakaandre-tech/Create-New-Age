@@ -1,57 +1,64 @@
 package org.antarcticgardens.cna.content.heat.thermometer;
 
+import com.mojang.serialization.MapCodec;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.FaceAttachedHorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.AttachFace;
 import org.antarcticgardens.cna.CNABlockEntityTypes;
-import org.antarcticgardens.cna.content.heat.pipe.HeatPipeBlock;
 import org.jspecify.annotations.Nullable;
 
-public class ThermometerBlock extends Block implements IBE<ThermometerBlockEntity>, IWrenchable {
+public class ThermometerBlock extends FaceAttachedHorizontalDirectionalBlock implements IBE<ThermometerBlockEntity>, IWrenchable {
+    public static final MapCodec<ThermometerBlock> CODEC = simpleCodec(ThermometerBlock::new);
 
     public ThermometerBlock(Properties properties) {
         super(properties);
     }
+
     // TODO: Colision shape
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(BlockStateProperties.HORIZONTAL_FACING).add(BlockStateProperties.UP).add(BlockStateProperties.DOWN);
+        builder.add(FACING, FACE);
+        super.createBlockStateDefinition(builder);
+    }
+
+    @Override
+    protected MapCodec<? extends FaceAttachedHorizontalDirectionalBlock> codec() {
+        return CODEC;
     }
 
     @Override
     public @Nullable BlockState getStateForPlacement(BlockPlaceContext context) {
-        Direction direction = context.getClickedFace().getOpposite();
-        BlockPos pos = context.getClickedPos();
-        boolean facingUp = direction == Direction.UP;
-        boolean facingDown = direction == Direction.DOWN;
-
-        if (Direction.Plane.VERTICAL.test(direction)) {
-            direction = context.getHorizontalDirection();
+        Direction facing = context.getHorizontalDirection().getOpposite();
+        AttachFace face = switch (context.getClickedFace()) {
+            case DOWN -> AttachFace.CEILING;
+            case UP -> AttachFace.FLOOR;
+            default -> AttachFace.WALL;
+        };
+        if (face == AttachFace.WALL) {
+            facing = context.getClickedFace();
         }
 
-        if (context.getPlayer() != null && context.getPlayer().isCrouching()) {
-            direction = direction.getOpposite();
-        } else if (!(context.getLevel().getBlockState(pos.relative(direction)).getBlock() instanceof HeatPipeBlock) && !facingUp && !facingDown) {
-            for (Direction d : Direction.values()) {
-                if (context.getLevel().getBlockState(pos.relative(d)).getBlock() instanceof HeatPipeBlock) {
-                    direction = d;
-                    break;
-                }
-            }
-        }
+        return this.defaultBlockState().setValue(FACING, facing).setValue(FACE, face);
+    }
 
-        return this.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, direction)
-                .setValue(BlockStateProperties.UP, facingUp)
-                .setValue(BlockStateProperties.DOWN, facingDown);
+    @Override
+    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+        return canAttach(level, pos, getConnectedDirection(state).getOpposite());
+    }
 
+    public static boolean canAttach(LevelReader reader, BlockPos pos, Direction direction) {
+        BlockPos blockPos = pos.relative(direction);
+        return !reader.getBlockState(blockPos).isAir();
     }
 
     @Override
