@@ -71,7 +71,7 @@ public class ThermometerBlockEntity extends SmartBlockEntity implements HeatBloc
         thresholdBehaviour = new ScrollValueBehaviour(CreateLang.translateDirect("create_new_age.thermometer.threshold"), this, new ThermometerBox())
                 .between(0, 100)
                 .withFormatter(value -> value.toString() + "%");
-        thresholdBehaviour.value = 0;
+        thresholdBehaviour.value = 50;
         behaviours.add(thresholdBehaviour);
     }
 
@@ -167,7 +167,7 @@ public class ThermometerBlockEntity extends SmartBlockEntity implements HeatBloc
 
         @Override
         protected Vec3 getSouthLocation() {
-            return VecHelper.voxelSpace(8, 8, 16);
+            return VecHelper.voxelSpace(8, 8, 1.5);
         }
 
         @Override
