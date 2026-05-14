@@ -68,7 +68,7 @@ public class ThermometerBlockEntity extends SmartBlockEntity implements HeatBloc
     public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
         behaviours.add(computerBehaviour = CNAComputerCraftProxy.behaviour(this));
 
-        thresholdBehaviour = new ThermometerScrollValueBehaviour(CreateLang.translateDirect("create_new_age.thermometer.threshold"), this, new ThermometerBox());
+        thresholdBehaviour = new ThermometerScrollValueBehaviour(CreateLang.translateDirect("scroll.create_new_age.thermometer.threshold"), this, new ThermometerBox());
         thresholdBehaviour.value = 50;
         behaviours.add(thresholdBehaviour);
     }

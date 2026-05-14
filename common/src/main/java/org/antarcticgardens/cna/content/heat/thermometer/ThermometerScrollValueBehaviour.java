@@ -7,7 +7,6 @@ import com.simibubi.create.foundation.blockEntity.behaviour.ValueSettingsBoard;
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueSettingsFormatter;
 import com.simibubi.create.foundation.blockEntity.behaviour.scrollValue.ScrollValueBehaviour;
 import com.simibubi.create.foundation.utility.CreateLang;
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Player;
@@ -28,8 +27,8 @@ public class ThermometerScrollValueBehaviour extends ScrollValueBehaviour {
     @Override
     public ValueSettingsBoard createBoard(Player player, BlockHitResult hitResult) {
         ImmutableList<Component> rows = ImmutableList.of(
-                CreateLang.translateDirect("create_new_age.thermometer.less_or_equal"),
-                CreateLang.translateDirect("create_new_age.thermometer.greater_or_equal")
+                CreateLang.translateDirect("scroll.create_new_age.thermometer.less_or_equal"),
+                CreateLang.translateDirect("scroll.create_new_age.thermometer.greater_or_equal")
         );
         ValueSettingsFormatter formatter = new ValueSettingsFormatter(this::formatSettings);
         return new ValueSettingsBoard(label, 100, 10, rows, formatter);

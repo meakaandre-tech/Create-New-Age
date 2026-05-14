@@ -61,7 +61,7 @@ public class StreetLightBlockEntity extends AbstractElectricalConnector implemen
 
     @Override
     public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
-        lightLevelBehaviour = new ScrollValueBehaviour(CreateLang.translateDirect("create_new_age.street_light.light_level"), this, new StreetLightBox())
+        lightLevelBehaviour = new ScrollValueBehaviour(CreateLang.translateDirect("scroll.create_new_age.street_light.light_level"), this, new StreetLightBox())
                 .between(0, 15);
         lightLevelBehaviour.value = 15;
         lightLevelBehaviour.requiresWrench();

@@ -17,6 +17,10 @@
     "create_new_age.subtitle.geiger_counter": "Geiger Counter Clicking",
 
     "create.scroll.create_new_age.motor.stress_multiplier": "Stress Capacity Multiplier",
+    "create.scroll.create_new_age.street_light.light_level": "Light Level",
+    "create.scroll.create_new_age.thermometer.threshold": "Temperature threshold",
+    "create.scroll.create_new_age.thermometer.less_or_equal": "At or below",
+    "create.scroll.create_new_age.thermometer.greater_or_equal": "At or above",
 
     "create_new_age.ponder.heating.header": "Heating System",
 
