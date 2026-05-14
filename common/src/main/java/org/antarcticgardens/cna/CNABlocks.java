@@ -1,5 +1,6 @@
 package org.antarcticgardens.cna;
 
+import com.simibubi.create.api.behaviour.display.DisplaySource;
 import com.simibubi.create.api.stress.BlockStressValues;
 import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
 import com.simibubi.create.foundation.block.connected.SimpleCTBehaviour;
@@ -403,6 +404,7 @@ public class CNABlocks {
             REGISTRATE.block("thermometer", ThermometerBlock::new)
                     .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
                     .properties(BlockBehaviour.Properties::noOcclusion)
+                    .transform(DisplaySource.displaySource(CNADisplaySources.TEMPERATURE))
                     .tag(BlockTags.MINEABLE_WITH_PICKAXE)
                     .blockstate(CNABlockStateGen.thermometer())
                     .addLayer(() -> RenderType::cutout)

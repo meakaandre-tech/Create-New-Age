@@ -37,7 +37,8 @@ public abstract class CreateNewAge {
         LOGGER.info("Hello 1.21.1 Create!");
 
         platform.getRegistrar().beforeRegistration();
-        
+
+        CNADisplaySources.load();
         CNABlocks.load();
         CNABlockEntityTypes.load();
         CNAItems.load();
