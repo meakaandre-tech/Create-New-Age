@@ -39,5 +39,7 @@
     "create.tooltip.create_new_age.per_light_level": "per Light Level",
     "create.create_new_age.street_light.light_level": "Light Level",
 
-    "create.create_new_age.thermometer.threshold": "Temperature threshold"
+    "create.create_new_age.thermometer.threshold": "Temperature threshold",
+    "create.create_new_age.thermometer.less_or_equal": "At or below",
+    "create.create_new_age.thermometer.greater_or_equal": "At or above"
 }

@@ -68,9 +68,7 @@ public class ThermometerBlockEntity extends SmartBlockEntity implements HeatBloc
     public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
         behaviours.add(computerBehaviour = CNAComputerCraftProxy.behaviour(this));
 
-        thresholdBehaviour = new ScrollValueBehaviour(CreateLang.translateDirect("create_new_age.thermometer.threshold"), this, new ThermometerBox())
-                .between(0, 100)
-                .withFormatter(value -> value.toString() + "%");
+        thresholdBehaviour = new ThermometerScrollValueBehaviour(CreateLang.translateDirect("create_new_age.thermometer.threshold"), this, new ThermometerBox());
         thresholdBehaviour.value = 50;
         behaviours.add(thresholdBehaviour);
     }
@@ -106,7 +104,9 @@ public class ThermometerBlockEntity extends SmartBlockEntity implements HeatBloc
 
     public boolean isPowered() {
         if (getConnectedHeatBlock() == null) return false;
-        return getHeat() / maxHeat() >= thresholdBehaviour.getValue() / 100f;
+        float current = getHeat() / maxHeat();
+        float threshold = Math.abs(thresholdBehaviour.getValue()) / 100f;
+        return thresholdBehaviour.getValue() < 0 ? current <= threshold : current >= threshold;
     }
 
     @Override
