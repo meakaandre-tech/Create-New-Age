@@ -1,5 +1,6 @@
 package org.antarcticgardens.cna;
 
+import com.simibubi.create.AllBlocks;
 import com.simibubi.create.api.behaviour.display.DisplaySource;
 import com.simibubi.create.api.stress.BlockStressValues;
 import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
@@ -34,6 +35,7 @@ import org.antarcticgardens.cna.content.electricity.light.LampPostBlock;
 import org.antarcticgardens.cna.content.electricity.light.StreetLightBlock;
 import org.antarcticgardens.cna.content.energising.EnergiserBlock;
 import org.antarcticgardens.cna.content.energising.EnergisingBlockItem;
+import org.antarcticgardens.cna.content.heat.creative.CreativeHeatGeneratorBlock;
 import org.antarcticgardens.cna.content.heat.heater.HeaterBlock;
 import org.antarcticgardens.cna.content.heat.pipe.HeatPipeBlock;
 import org.antarcticgardens.cna.content.heat.plate.SolarHeatingPlateBlock;
@@ -408,9 +410,15 @@ public class CNABlocks {
                     .tag(BlockTags.MINEABLE_WITH_PICKAXE)
                     .blockstate(CNABlockStateGen.thermometer())
                     .addLayer(() -> RenderType::cutout)
-                    // TODO: Visuals
                     .item()
                     .transform(ModelGen.customItemModel())
+                    .register();
+
+    public static final BlockEntry<CreativeHeatGeneratorBlock> CREATIVE_HEAT_GENERATOR =
+            REGISTRATE.block("creative_heat", CreativeHeatGeneratorBlock::new)
+                    .initialProperties(AllBlocks.CREATIVE_MOTOR)
+                    .item()
+                    .build()
                     .register();
 
 

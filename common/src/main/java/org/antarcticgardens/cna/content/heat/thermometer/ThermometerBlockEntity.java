@@ -38,6 +38,8 @@ public class ThermometerBlockEntity extends SmartBlockEntity implements HeatBloc
 
     boolean powered = false;
 
+    public int tickCount = 0;
+
     public ThermometerBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }
@@ -82,6 +84,8 @@ public class ThermometerBlockEntity extends SmartBlockEntity implements HeatBloc
     @Override
     public void tick() {
         super.tick();
+
+        this.tickCount++;
 
         boolean lastPowered = powered;
         powered = isPowered();

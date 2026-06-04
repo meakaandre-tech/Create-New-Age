@@ -13,6 +13,7 @@ import org.antarcticgardens.cna.content.electricity.generation.coil.GeneratorCoi
 import org.antarcticgardens.cna.content.electricity.light.StreetLightBlockEntity;
 import org.antarcticgardens.cna.content.energising.EnergiserBlockEntity;
 import org.antarcticgardens.cna.content.energising.EnergiserRenderer;
+import org.antarcticgardens.cna.content.heat.creative.CreativeHeatGeneratorBlockEntity;
 import org.antarcticgardens.cna.content.heat.heater.HeaterBlockEntity;
 import org.antarcticgardens.cna.content.heat.pipe.HeatPipeBlockEntity;
 import org.antarcticgardens.cna.content.heat.plate.SolarHeatingPlateBlockEntity;
@@ -21,6 +22,7 @@ import org.antarcticgardens.cna.content.heat.stirling.StirlingEngineBlockEntity;
 import org.antarcticgardens.cna.content.heat.stirling.StirlingEngineVisual;
 import org.antarcticgardens.cna.content.heat.stirling.StirlingEngineRenderer;
 import org.antarcticgardens.cna.content.heat.thermometer.ThermometerBlockEntity;
+import org.antarcticgardens.cna.content.heat.thermometer.ThermometerBlockRenderer;
 import org.antarcticgardens.cna.content.motor.MotorBlockEntity;
 import org.antarcticgardens.cna.content.motor.extension.MotorExtensionBlockEntity;
 import org.antarcticgardens.cna.content.motor.extension.variants.AdvancedMotorExtensionVariant;
@@ -92,6 +94,12 @@ public class CNABlockEntityTypes {
     public static final BlockEntityEntry<ThermometerBlockEntity> THERMOMETER = REGISTRATE
             .blockEntity("thermometer", ThermometerBlockEntity::new)
             .validBlocks(CNABlocks.THERMOMETER)
+            .renderer(() -> ThermometerBlockRenderer::new)
+            .register();
+
+    public static final BlockEntityEntry<CreativeHeatGeneratorBlockEntity> CREATIVE_HEAT_GENERATOR = REGISTRATE
+            .blockEntity("creative_heat", CreativeHeatGeneratorBlockEntity::new)
+            .validBlocks(CNABlocks.CREATIVE_HEAT_GENERATOR)
             .register();
 
 

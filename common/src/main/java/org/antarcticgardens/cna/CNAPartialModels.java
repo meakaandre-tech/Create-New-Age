@@ -10,6 +10,9 @@ public class CNAPartialModels {
     public static final PartialModel GENERATOR_COIL = PartialModel.of(
             ResourceLocation.fromNamespaceAndPath(CreateNewAge.MOD_ID, "block/generator_coil/block"));
 
+    public static final PartialModel THERMOMETER_INDICATOR = PartialModel.of(
+            ResourceLocation.fromNamespaceAndPath(CreateNewAge.MOD_ID, "block/thermometer/indicator"));
+
 
     public static void load() {  }
 }
