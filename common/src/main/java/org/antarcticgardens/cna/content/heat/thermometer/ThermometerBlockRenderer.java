@@ -24,15 +24,13 @@ public class ThermometerBlockRenderer extends SmartBlockEntityRenderer<Thermomet
 
         final SuperByteBuffer indicator = CachedBuffers.partial(CNAPartialModels.THERMOMETER_INDICATOR, blockState);
 
-
-        indicator.translateY((dialValue * 8f) / 16f - dialValue/16f);
-//        indicator.scaleY(dialValue);
-//        indicator.scaleY((dialValue * 8f) / 16f);
-
-//        if (dialValue != 0)
-//            CreateNewAge.LOGGER.info(dialValue);
+        poseStack.translate(0, ((dialValue-1) * 8f) / 16f - (dialValue-1)/16f, 0);
 
         final Direction direction = blockState.getValue(BlockStateProperties.HORIZONTAL_FACING);
+        final float yRot = !direction.getAxis().equals(Direction.Axis.Z) ?
+                (float) Math.toRadians(blockState.getValue(BlockStateProperties.HORIZONTAL_FACING).getOpposite().toYRot()) :
+                (float) Math.toRadians(blockState.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot());
+        indicator.rotateCentered((float) (yRot + Math.PI), Direction.UP);
 
         indicator.light(light);
         indicator.renderInto(poseStack, vb);
