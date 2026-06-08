@@ -82,12 +82,7 @@ public class ThermometerBlock extends FaceAttachedHorizontalDirectionalBlock imp
 
     @Override
     protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-        return canAttach(level, pos, getConnectedDirection(state).getOpposite());
-    }
-
-    public static boolean canAttach(LevelReader reader, BlockPos pos, Direction direction) {
-        BlockPos blockPos = pos.relative(direction);
-        return !reader.getBlockState(blockPos).isAir();
+        return true;
     }
 
     @Override
