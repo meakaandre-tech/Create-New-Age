@@ -40,7 +40,6 @@ public class ThermometerBlockRenderer extends SmartBlockEntityRenderer<Thermomet
     protected void renderSafe(ThermometerBlockEntity blockEntity, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
         super.renderSafe(blockEntity, partialTicks, ms, buffer, light, overlay);
 
-        render(blockEntity.getBlockState(), blockEntity.tickCount, blockEntity.getHeat()/ blockEntity.maxHeat(),
-                ms, buffer, light);
+        render(blockEntity.getBlockState(), blockEntity.tickCount, blockEntity.dialValue, ms, buffer, light);
     }
 }

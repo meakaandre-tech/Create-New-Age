@@ -38,6 +38,7 @@ public class ThermometerBlockEntity extends SmartBlockEntity implements HeatBloc
 
     boolean powered = false;
 
+    public float dialValue = 0;
     public int tickCount = 0;
 
     public ThermometerBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -86,6 +87,8 @@ public class ThermometerBlockEntity extends SmartBlockEntity implements HeatBloc
         super.tick();
 
         this.tickCount++;
+
+        dialValue += (getHeat() / maxHeat() - dialValue) * .125f;
 
         boolean lastPowered = powered;
         powered = isPowered();
