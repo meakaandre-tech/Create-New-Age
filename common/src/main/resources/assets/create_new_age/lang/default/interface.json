@@ -22,6 +22,8 @@
     "create.scroll.create_new_age.thermometer.less_or_equal": "At or below",
     "create.scroll.create_new_age.thermometer.greater_or_equal": "At or above",
 
+    "create.scroll.create_new_age.creative_heat.temperature": "Temperature",
+
     "create_new_age.display_source.temperature": "Temperature",
     "create.display_source.create_new_age.temperature.display": "Displayed Info",
     "create.display_source.create_new_age.temperature.amount": "Temperature in °T",

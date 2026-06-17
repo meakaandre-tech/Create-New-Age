@@ -404,6 +404,7 @@ public class CNABlocks {
 
     public static final BlockEntry<ThermometerBlock> THERMOMETER =
             REGISTRATE.block("thermometer", ThermometerBlock::new)
+                    .properties(p -> p.strength(1.5f))
                     .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
                     .properties(BlockBehaviour.Properties::noOcclusion)
                     .transform(DisplaySource.displaySource(CNADisplaySources.TEMPERATURE))
@@ -415,10 +416,13 @@ public class CNABlocks {
                     .register();
 
     public static final BlockEntry<CreativeHeatGeneratorBlock> CREATIVE_HEAT_GENERATOR =
-            REGISTRATE.block("creative_heat", CreativeHeatGeneratorBlock::new)
+            REGISTRATE.block("creative_heat_generator", CreativeHeatGeneratorBlock::new)
                     .initialProperties(AllBlocks.CREATIVE_MOTOR)
-                    .item()
-                    .build()
+                    .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
+                    .properties(BlockBehaviour.Properties::noOcclusion)
+                    .blockstate((c, p) -> p.directionalBlock(c.get(), p.models().getExistingFile(p.modLoc("block/" + c.getName()))))
+                    .tag(BlockTags.MINEABLE_WITH_PICKAXE)
+                    .simpleItem()
                     .register();
 
 

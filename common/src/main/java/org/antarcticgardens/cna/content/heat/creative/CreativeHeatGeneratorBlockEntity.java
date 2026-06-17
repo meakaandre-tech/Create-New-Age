@@ -9,10 +9,12 @@ import com.simibubi.create.foundation.blockEntity.behaviour.scrollValue.ScrollVa
 import com.simibubi.create.foundation.utility.CreateLang;
 import net.createmod.catnip.math.VecHelper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec3;
 import org.antarcticgardens.cna.content.heat.HeatBlockEntity;
 
@@ -33,19 +35,9 @@ public class CreativeHeatGeneratorBlockEntity extends SmartBlockEntity implement
 
     @Override
     public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
-        currentOutput = new HeatValueBehaviour(CreateLang.translateDirect("current_heat"), this, this, new HeatValueBox());
-        currentOutput.value = 100;
+        currentOutput = new HeatScrollValueBehaviour(CreateLang.translateDirect("scroll.create_new_age.creative_heat.temperature"), this, this, new HeatValueBox());
+        currentOutput.value = 50;
         behaviours.add(currentOutput);
-    }
-
-    static class HeatValueBehaviour extends ScrollValueBehaviour {
-        public HeatValueBehaviour(Component label, SmartBlockEntity be, HeatBlockEntity hbe, ValueBoxTransform slot) {
-            super(label, be, slot);
-            this.max = (int) hbe.maxHeat()/100;
-            this.withFormatter(i -> Integer.toString(i*100));
-        }
-
-
     }
 
     static class HeatValueBox extends ValueBoxTransform.Sided {
@@ -56,8 +48,13 @@ public class CreativeHeatGeneratorBlockEntity extends SmartBlockEntity implement
         }
 
         @Override
+        protected boolean isSideActive(BlockState state, Direction direction) {
+            return direction == state.getValue(BlockStateProperties.FACING);
+        }
+
+        @Override
         protected Vec3 getSouthLocation() {
-            return VecHelper.voxelSpace(8, 8, 16);
+            return VecHelper.voxelSpace(8, 8, 15.5f);
         }
 
         @Override
@@ -67,8 +64,18 @@ public class CreativeHeatGeneratorBlockEntity extends SmartBlockEntity implement
     }
 
     @Override
+    public boolean canConnect(Direction from) {
+        return true;
+    }
+
+    @Override
+    public boolean canAdd(Direction from) {
+        return false;
+    }
+
+    @Override
     public float getHeat() {
-        return currentOutput.getValue()*100;
+        return currentOutput.getValue() * 100;
     }
 
     @Override
