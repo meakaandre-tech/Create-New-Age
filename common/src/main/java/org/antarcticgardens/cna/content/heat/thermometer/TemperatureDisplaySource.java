@@ -8,7 +8,6 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import org.antarcticgardens.cna.util.StringFormatUtil;
 import org.jetbrains.annotations.Nullable;
 
 public class TemperatureDisplaySource extends PercentOrProgressBarDisplaySource {
@@ -20,7 +19,7 @@ public class TemperatureDisplaySource extends PercentOrProgressBarDisplaySource 
         if (mode == 2)
             return super.formatNumeric(context, currentLevel);
 
-        return CreateLang.translate("tooltip.create_new_age.temperature", StringFormatUtil.formatFloat(currentLevel)).component();
+        return CreateLang.translate("tooltip.create_new_age.temperature", Math.round(currentLevel)).component();
     }
 
     @Override
