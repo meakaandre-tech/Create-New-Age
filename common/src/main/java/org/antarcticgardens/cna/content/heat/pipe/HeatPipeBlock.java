@@ -1,10 +1,17 @@
 package org.antarcticgardens.cna.content.heat.pipe;
 
 import com.simibubi.create.api.boiler.BoilerHeater;
+import com.simibubi.create.content.decoration.encasing.EncasableBlock;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -17,6 +24,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -26,7 +34,7 @@ import org.antarcticgardens.cna.config.CNAConfig;
 import org.antarcticgardens.cna.content.heat.HeatBlockEntity;
 import org.jetbrains.annotations.Nullable;
 
-public class HeatPipeBlock extends Block implements EntityBlock, IWrenchable {
+public class HeatPipeBlock extends Block implements EntityBlock, IWrenchable, EncasableBlock {
     public HeatPipeBlock(Properties properties) {
         super(properties);
     }
@@ -43,6 +51,14 @@ public class HeatPipeBlock extends Block implements EntityBlock, IWrenchable {
         builder.add(UP, DOWN, NORTH, EAST, SOUTH, WEST);
     }
 
+    @Override
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        ItemInteractionResult result = tryEncase(state, level, pos, stack, player, hand, hitResult);
+        if (result.consumesAction())
+            return result;
+
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+    }
 
     private static BlockState checkHeatBlock(BlockState state, LevelAccessor world, BlockPos pos, Direction dir, BooleanProperty property) {
         return state.setValue(property,
@@ -60,23 +76,28 @@ public class HeatPipeBlock extends Block implements EntityBlock, IWrenchable {
         return updateState(state, world, pos);
     }
 
-    public static BlockState updateState(BlockState state, LevelAccessor world, BlockPos pos) {
-        state = checkHeatBlock(state, world, pos, Direction.DOWN, DOWN);
-        state = checkHeatBlock(state, world, pos, Direction.UP, UP);
-        state = checkHeatBlock(state, world, pos, Direction.NORTH, NORTH);
-        state = checkHeatBlock(state, world, pos, Direction.EAST, EAST);
-        state = checkHeatBlock(state, world, pos, Direction.SOUTH, SOUTH);
-        state = checkHeatBlock(state, world, pos, Direction.WEST, WEST);
-        return state;
+    public static BooleanProperty getDirectionProperty(Direction dir) {
+        return switch (dir) {
+            case Direction.DOWN -> DOWN;
+            case Direction.UP -> UP;
+            case Direction.NORTH -> NORTH;
+            case Direction.SOUTH -> SOUTH;
+            case Direction.WEST -> WEST;
+            case Direction.EAST -> EAST;
+        };
     }
 
-
+    public static BlockState updateState(BlockState state, LevelAccessor world, BlockPos pos) {
+        for (Direction dir : Direction.values()) {
+            state = checkHeatBlock(state, world, pos, dir, getDirectionProperty(dir));
+        }
+        return state;
+    }
 
     @Override
     public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor world, BlockPos pos, BlockPos neighborPos) {
         return updateState(state, world, pos);
     }
-
 
     @Override
     public void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean movedByPiston) {
