@@ -88,7 +88,8 @@ public class ThermometerBlockEntity extends SmartBlockEntity implements HeatBloc
 
         this.tickCount++;
 
-        dialValue += (getHeat() / maxHeat() - dialValue) * .125f;
+        float dialTarget = getConnectedHeatBlock() != null ? getHeat() / maxHeat() : 0;
+        dialValue += (dialTarget - dialValue) * .125f;
 
         boolean lastPowered = powered;
         powered = isPowered();

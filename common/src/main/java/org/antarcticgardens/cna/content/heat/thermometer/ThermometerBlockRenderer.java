@@ -3,6 +3,7 @@ package org.antarcticgardens.cna.content.heat.thermometer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.simibubi.create.foundation.blockEntity.renderer.SmartBlockEntityRenderer;
+import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 import net.createmod.catnip.render.CachedBuffers;
 import net.createmod.catnip.render.SuperByteBuffer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -22,9 +23,18 @@ public class ThermometerBlockRenderer extends SmartBlockEntityRenderer<Thermomet
                               MultiBufferSource buffer, int light) {
         final VertexConsumer vb = buffer.getBuffer(RenderType.cutout());
 
-        final SuperByteBuffer indicator = CachedBuffers.partial(CNAPartialModels.THERMOMETER_INDICATOR, blockState);
+        final PartialModel partialModel = switch (blockState.getValue(BlockStateProperties.ATTACH_FACE)) {
+            case FLOOR -> CNAPartialModels.FLOOR_THERMOMETER_INDICATOR;
+            case WALL -> CNAPartialModels.WALL_THERMOMETER_INDICATOR;
+            case CEILING -> CNAPartialModels.CEILING_THERMOMETER_INDICATOR;
+        };
+        float indicatorPivot = switch (blockState.getValue(BlockStateProperties.ATTACH_FACE)) {
+            case FLOOR -> 7.5f / 16;
+            case WALL -> 5.5f / 16;
+            case CEILING -> 3.5f / 16;
+        };
 
-        poseStack.translate(0, ((dialValue-1) * 8f) / 16f - (dialValue-1)/16f, 0);
+        final SuperByteBuffer indicator = CachedBuffers.partial(partialModel, blockState);
 
         final Direction direction = blockState.getValue(BlockStateProperties.HORIZONTAL_FACING);
         final float yRot = !direction.getAxis().equals(Direction.Axis.Z) ?
@@ -32,8 +42,11 @@ public class ThermometerBlockRenderer extends SmartBlockEntityRenderer<Thermomet
                 (float) Math.toRadians(blockState.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot());
         indicator.rotateCentered((float) (yRot + Math.PI), Direction.UP);
 
-        indicator.light(light);
-        indicator.renderInto(poseStack, vb);
+        indicator.translate(0, indicatorPivot, 0)
+                .scaleY(dialValue)
+                .translate(0, -indicatorPivot, 0)
+                .light(light)
+                .renderInto(poseStack, vb);
     }
 
     @Override
