@@ -62,6 +62,10 @@ public class CNAPonders implements PonderPlugin {
         HELPER.addStoryBoard(CNABlocks.REACTOR_HEAT_VENT, "reactor", ReactorPonder::ponder);
         HELPER.addStoryBoard(CNAItems.NUCLEAR_FUEL, "reactor", ReactorPonder::ponder);
 
+        HELPER.addStoryBoard(CNABlocks.HEAT_PIPE, "encased_heat_pipe", HeatPipeEncasingPonder::ponder);
+        HELPER.addStoryBoard(CNABlocks.HEAT_CASING, "encased_heat_pipe", HeatPipeEncasingPonder::ponder);
+        HELPER.addStoryBoard(CNABlocks.REACTOR_CASING, "encased_heat_pipe", HeatPipeEncasingPonder::ponder);
+
         HELPER.addStoryBoard(CNABlocks.ELECTRICAL_CONNECTOR, "wires", ElectricityPonder::ponder);
         HELPER.addStoryBoard(CNAItems.COPPER_WIRE, "wires", ElectricityPonder::ponder);
         HELPER.addStoryBoard(CNAItems.OVERCHARGED_DIAMOND_WIRE, "wires", ElectricityPonder::ponder);
@@ -174,7 +178,9 @@ public class CNAPonders implements PonderPlugin {
                 .add(CNABlocks.STIRLING_ENGINE)
                 .add(CNABlocks.REACTOR_ROD)
                 .add(CNABlocks.BASIC_SOLAR_HEATING_PLATE)
-                .add(CNABlocks.ADVANCED_SOLAR_HEATING_PLATE);
+                .add(CNABlocks.ADVANCED_SOLAR_HEATING_PLATE)
+                .add(CNABlocks.HEAT_CASING)
+                .add(CNABlocks.REACTOR_CASING);
 
         HELPER.addToTag(REACTOR)
                 .add(CNABlocks.REACTOR_CASING)

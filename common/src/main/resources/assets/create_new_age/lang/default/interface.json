@@ -58,6 +58,12 @@
 
     "create_new_age.ponder.reactor.text_7": "Additionally you must have something use the heat from the reactor, otherwise you will get a fun little meltdown.",
 
+    "create_new_age.ponder.encased_heat_pipe.header": "Encasing Heat Pipes",
+    "create_new_age.ponder.encased_heat_pipe.text_1": "Heat Casing or Reactor Casing can be used to decorate Heat Pipes.",
+    "create_new_age.ponder.encased_heat_pipe.text_2": "Once encased, Heat Pipes will be locked into their current connectivity state.",
+    "create_new_age.ponder.encased_heat_pipe.text_3": "They will no longer connect to new pipes added nearby.",
+    "create_new_age.ponder.encased_heat_pipe.text_4": "Reactor Encased Heat Pipes will also block radiation!",
+
     "create_new_age.ponder.energiser.header": "Energizer",
 
     "create_new_age.ponder.energiser.text_1": "When provided with electricity and rotation, the Energizer will energize items in depots and on belts under it.",
