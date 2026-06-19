@@ -32,6 +32,8 @@ public class NetworkPathManager {
         if (path != null && context.calculatePathConductivity(path) > 0)
             return path;
 
+        // Only the shortest route is eligible. If it is saturated this tick,
+        // do not fall back to longer alternate paths.
         return null;
     }
 
