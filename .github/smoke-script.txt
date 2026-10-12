@@ -1,15 +1,22 @@
-sleep 25
+sleep 5
+cmd setblock 0 200 10 create_new_age:reactor_fuel_acceptor[facing=east]{contents:[{id:"create_new_age:nuclear_fuel",count:16}]}
+cmd setblock 1 200 10 create_new_age:reactor_rod[axis=x]
+cmd setblock 2 200 10 create_new_age:reactor_rod[axis=x]
+cmd setblock 3 200 10 create_new_age:reactor_rod[axis=x]
+cmd setblock 4 200 10 create_new_age:reactor_heat_vent[facing=west]
+sleep 30
 cmd data get block 9 203 0 Speed
 cmd data get block 8 203 0 energy
 cmd data get block 8 203 0 aSpeed
 cmd execute unless data block 9 203 0 {Speed:0.0f} run say CHECK shaft turned by the electric motor
+cmd execute if data block 9 203 0 {Speed:0.0f} run say CHECK FAIL shaft is not turning
 cmd data get block 2 203 0 lastOutput
 cmd data get block 2 204 0 connections
 cmd data get block 1 200 10 fuel
 cmd data get block 1 200 10 heat
 cmd data get block 4 200 10 heat
-cmd execute if block 1 200 10 create_new_age:reactor_rod[active=true] run say CHECK reactor rod active
-cmd execute if data block 1 200 10 {fuel:0} run say CHECK FAIL reactor rod has no fuel
+cmd execute if block 1 200 10 create_new_age:reactor_rod[lit=true] run say CHECK reactor rod active
+cmd execute if block 1 200 10 create_new_age:reactor_rod[lit=false] run say CHECK FAIL reactor rod not active
 cmd item replace entity @a armor.head with create:goggles
 cmd tp @a 5.5 205 -6.5 0 25
 sleep 4
@@ -23,6 +30,7 @@ shot
 cmd tp @a 8.5 205 1.5 135 40
 sleep 3
 shot
+cmd fill 0 200 10 4 200 10 minecraft:air
 cmd item replace entity @a hotbar.0 with create_new_age:copper_wire
 key 1
 sleep 1
@@ -35,7 +43,3 @@ shot
 cmd tp @a 19.5 204 27.5 180 35
 sleep 5
 shot
-key t
-sleep 1
-key Escape
-sleep 1

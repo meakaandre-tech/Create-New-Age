@@ -13,6 +13,7 @@
     {
       "type": "create:cutting",
       "ingredient": "$ingredient",
+      "processing_time": 100,
       "results": [
         "$result"
       ]

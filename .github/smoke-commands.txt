@@ -25,11 +25,6 @@ setblock 8 203 0 create_new_age:basic_motor[facing=east]
 setblock 8 204 0 create_new_age:electrical_connector[facing=up]{connections:[{position:[I;2,204,0],wire:"COPPER"}]}
 setblock 9 203 0 create:shaft[axis=x]
 fill 0 200 -3 10 200 3 minecraft:smooth_stone
-setblock 0 200 10 create_new_age:reactor_fuel_acceptor[facing=east]{contents:[{id:"create_new_age:nuclear_fuel",count:16}]}
-setblock 1 200 10 create_new_age:reactor_rod[axis=x]
-setblock 2 200 10 create_new_age:reactor_rod[axis=x]
-setblock 3 200 10 create_new_age:reactor_rod[axis=x]
-setblock 4 200 10 create_new_age:reactor_heat_vent[facing=west]
 setblock -10 200 20 create_new_age:basic_energiser
 setblock -8 200 20 create_new_age:advanced_energiser
 setblock -6 200 20 create_new_age:reinforced_energiser

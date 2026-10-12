@@ -3,10 +3,6 @@ data get block 9 203 0 Speed
 data get block 8 203 0 energy
 data get block 8 203 0 aSpeed
 execute unless data block 9 203 0 {Speed:0.0f} run say CHECK shaft turned by the electric motor
+execute if data block 9 203 0 {Speed:0.0f} run say CHECK FAIL shaft is not turning
 data get block 2 203 0 lastOutput
 data get block 2 204 0 connections
-data get block 1 200 10 fuel
-data get block 1 200 10 heat
-data get block 4 200 10 heat
-execute if block 1 200 10 create_new_age:reactor_rod[active=true] run say CHECK reactor rod active
-execute if data block 1 200 10 {fuel:0} run say CHECK FAIL reactor rod has no fuel
