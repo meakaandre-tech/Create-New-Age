@@ -90,7 +90,7 @@ jobs:
             ls -l /tmp/cpjars
             (cd /tmp/cpjars && zip -q -r /tmp/classpath.zip .)
             # the JDK 25 CI builds with, for hosts that cannot download one
-            tar czf /tmp/jdk.tar.gz -C "$(dirname "$JAVA_HOME")" "$(basename "$JAVA_HOME")"
+            tar czhf /tmp/jdk.tar.gz -C "$(readlink -f "$JAVA_HOME")" .
             ls -l /tmp/classpath.zip /tmp/jdk.tar.gz
             gh release delete ci-classpath -y --cleanup-tag -R "${{ github.repository }}"
             sleep 3
