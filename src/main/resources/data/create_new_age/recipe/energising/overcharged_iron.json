@@ -1,11 +1,7 @@
 {
   "type": "create_new_age:energising",
+  "ingredient": "#c:ingots/iron",
   "energy_needed": 1000,
-  "ingredients": [
-    {
-      "tag": "c:ingots/iron"
-    }
-  ],
   "results": [
     {
       "id": "create_new_age:overcharged_iron"

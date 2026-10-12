@@ -1,11 +1,7 @@
 {
   "type": "create_new_age:energising",
+  "ingredient": "#c:ingots/gold",
   "energy_needed": 2000,
-  "ingredients": [
-    {
-      "tag": "c:ingots/gold"
-    }
-  ],
   "results": [
     {
       "id": "create_new_age:overcharged_gold"

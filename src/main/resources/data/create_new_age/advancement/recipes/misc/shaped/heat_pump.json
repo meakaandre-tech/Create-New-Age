@@ -16,7 +16,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "create_new_age:shaped/heat_pump"
+        "recipes": "create_new_age:shaped/heat_pump"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

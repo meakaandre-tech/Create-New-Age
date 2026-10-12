@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "create_new_age:shaped/layered_magnet"
+        "recipes": "create_new_age:shaped/layered_magnet"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

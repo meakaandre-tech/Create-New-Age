@@ -1,11 +1,7 @@
 {
   "type": "create_new_age:energising",
+  "ingredient": "#c:plates/iron",
   "energy_needed": 1000,
-  "ingredients": [
-    {
-      "tag": "c:plates/iron"
-    }
-  ],
   "results": [
     {
       "id": "create_new_age:overcharged_iron_sheet"

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "create_new_age:shaped/reactor_fuel_acceptor"
+        "recipes": "create_new_age:shaped/reactor_fuel_acceptor"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

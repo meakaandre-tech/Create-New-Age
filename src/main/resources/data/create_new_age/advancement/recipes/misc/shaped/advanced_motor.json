@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "create_new_age:shaped/advanced_motor"
+        "recipes": "create_new_age:shaped/advanced_motor"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

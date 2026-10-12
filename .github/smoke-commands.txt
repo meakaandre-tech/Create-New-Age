@@ -1,0 +1,72 @@
+gamerule minecraft:respawn_radius 0
+gamerule minecraft:advance_time false
+gamerule minecraft:spawn_mobs false
+time set noon
+forceload add -16 -16 111 31
+fill -12 199 -12 100 199 31 minecraft:stone
+setworldspawn 5 200 -7 0 0
+setblock 0 203 0 create:creative_motor[facing=east]
+setblock 1 203 0 create_new_age:generator_coil[axis=x]
+setblock 1 205 -1 create_new_age:netherite_magnet
+setblock 1 201 -1 create_new_age:netherite_magnet
+setblock 1 205 0 create_new_age:netherite_magnet
+setblock 1 201 0 create_new_age:netherite_magnet
+setblock 1 205 1 create_new_age:netherite_magnet
+setblock 1 201 1 create_new_age:netherite_magnet
+setblock 1 202 2 create_new_age:netherite_magnet
+setblock 1 202 -2 create_new_age:netherite_magnet
+setblock 1 203 2 create_new_age:netherite_magnet
+setblock 1 203 -2 create_new_age:netherite_magnet
+setblock 1 204 2 create_new_age:netherite_magnet
+setblock 1 204 -2 create_new_age:netherite_magnet
+setblock 2 203 0 create_new_age:carbon_brushes[facing=west]
+setblock 2 204 0 create_new_age:electrical_connector[facing=up]{connections:[{position:[I;8,204,0],wire:"COPPER"}]}
+setblock 8 203 0 create_new_age:basic_motor[facing=east]
+setblock 8 204 0 create_new_age:electrical_connector[facing=up]{connections:[{position:[I;2,204,0],wire:"COPPER"}]}
+setblock 9 203 0 create:shaft[axis=x]
+fill 0 200 -3 10 200 3 minecraft:smooth_stone
+setblock 0 200 10 create_new_age:reactor_fuel_acceptor[facing=east]{contents:[{id:"create_new_age:nuclear_fuel",count:16}]}
+setblock 1 200 10 create_new_age:reactor_rod[axis=x]
+setblock 2 200 10 create_new_age:reactor_rod[axis=x]
+setblock 3 200 10 create_new_age:reactor_rod[axis=x]
+setblock 4 200 10 create_new_age:reactor_heat_vent[facing=west]
+setblock -10 200 20 create_new_age:basic_energiser
+setblock -8 200 20 create_new_age:advanced_energiser
+setblock -6 200 20 create_new_age:reinforced_energiser
+setblock -4 200 20 create_new_age:electrical_connector
+setblock -2 200 20 create_new_age:generator_coil
+setblock 0 200 20 create_new_age:magnetite_block
+setblock 2 200 20 create_new_age:redstone_magnet
+setblock 4 200 20 create_new_age:layered_magnet
+setblock 6 200 20 create_new_age:fluxuated_magnetite
+setblock 8 200 20 create_new_age:netherite_magnet
+setblock 10 200 20 create_new_age:carbon_brushes
+setblock 12 200 20 create_new_age:basic_motor
+setblock 14 200 20 create_new_age:advanced_motor
+setblock 16 200 20 create_new_age:reinforced_motor
+setblock 18 200 20 create_new_age:basic_motor_extension
+setblock 20 200 20 create_new_age:advanced_motor_extension
+setblock 22 200 20 create_new_age:heat_casing
+setblock 24 200 20 create_new_age:heat_pipe
+setblock 26 200 20 create_new_age:encased_heat_pipe
+setblock 28 200 20 create_new_age:heat_pump
+setblock 30 200 20 create_new_age:heater
+setblock 32 200 20 create_new_age:stirling_engine
+setblock 34 200 20 create_new_age:solid_corium
+setblock 36 200 20 create_new_age:corium
+setblock 38 200 20 create_new_age:reactor_casing
+setblock 40 200 20 create_new_age:reactor_encased_heat_pipe
+setblock 42 200 20 create_new_age:reactor_rod
+setblock 44 200 20 create_new_age:reactor_glass
+setblock 46 200 20 create_new_age:reactor_fuel_acceptor
+setblock 48 200 20 create_new_age:reactor_heat_vent
+setblock -10 200 23 create_new_age:basic_solar_heating_plate
+setblock -8 200 23 create_new_age:advanced_solar_heating_plate
+setblock -6 200 23 create_new_age:thorium_ore
+setblock -4 200 23 create_new_age:copper_wire_block
+setblock -2 200 23 create_new_age:overcharged_iron_wire_block
+setblock 0 200 23 create_new_age:overcharged_golden_wire_block
+setblock 2 200 23 create_new_age:overcharged_diamond_wire_block
+setblock 4 200 23 create_new_age:street_light
+setblock 6 200 23 create_new_age:lamp_post
+say CHECK placed every block

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "create_new_age:shaped/reactor_glass"
+        "recipes": "create_new_age:shaped/reactor_glass"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

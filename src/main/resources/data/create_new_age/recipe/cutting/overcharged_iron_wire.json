@@ -1,10 +1,6 @@
 {
   "type": "create:cutting",
-  "ingredients": [
-    {
-      "item": "create_new_age:overcharged_iron_sheet"
-    }
-  ],
+  "ingredient": "create_new_age:overcharged_iron_sheet",
   "processing_time": 100,
   "results": [
     {

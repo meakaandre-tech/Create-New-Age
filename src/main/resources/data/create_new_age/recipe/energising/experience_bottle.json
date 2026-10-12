@@ -1,11 +1,7 @@
 {
   "type": "create_new_age:energising",
+  "ingredient": "minecraft:glass_bottle",
   "energy_needed": 50000,
-  "ingredients": [
-    {
-      "item": "minecraft:glass_bottle"
-    }
-  ],
   "results": [
     {
       "id": "minecraft:experience_bottle"
