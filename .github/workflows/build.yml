@@ -68,23 +68,34 @@ jobs:
           # Only when .github/dump-classpath exists: zips every jar on the main compile classpath (Minecraft, Fabric
           # loader and API, their libraries) and publishes it as the ci-classpath release, so ports can compile offline.
           if [ -f .github/dump-classpath ]; then
+            mkdir -p /tmp/ci
+            exec > >(tee /tmp/ci/classpath.txt) 2>&1
+            set +e
             cat > /tmp/cp.gradle <<'GRADLE'
           allprojects {
-            tasks.register("printCompileClasspath") {
-              def cp = project.sourceSets.main.compileClasspath
-              doLast { cp.files.each { println "CPJAR " + it.absolutePath } }
+            afterEvaluate {
+              tasks.register("printCompileClasspath") {
+                def cp = project.sourceSets.main.compileClasspath
+                doLast { cp.files.each { println "CPJAR " + it.absolutePath } }
+              }
             }
           }
           GRADLE
-            ./gradlew printCompileClasspath --no-daemon -q -I /tmp/cp.gradle | grep '^CPJAR ' | sed 's/^CPJAR //' > /tmp/cp.txt || true
+            ./gradlew printCompileClasspath --no-daemon -I /tmp/cp.gradle > /tmp/cp-raw.txt 2>&1
+            grep '^CPJAR ' /tmp/cp-raw.txt | sed 's/^CPJAR //' > /tmp/cp.txt
+            echo "classpath entries: $(wc -l < /tmp/cp.txt)"
+            [ -s /tmp/cp.txt ] || tail -50 /tmp/cp-raw.txt
             mkdir -p /tmp/cpjars
             while read -r f; do [ -f "$f" ] && cp "$f" /tmp/cpjars/; done < /tmp/cp.txt
-            (cd /tmp/cpjars && ls -l && zip -q -r /tmp/classpath.zip .)
+            ls -l /tmp/cpjars
+            (cd /tmp/cpjars && zip -q -r /tmp/classpath.zip .)
             # the JDK 25 CI builds with, for hosts that cannot download one
             tar czf /tmp/jdk.tar.gz -C "$(dirname "$JAVA_HOME")" "$(basename "$JAVA_HOME")"
-            gh release delete ci-classpath -y --cleanup-tag -R "${{ github.repository }}" || true
+            ls -l /tmp/classpath.zip /tmp/jdk.tar.gz
+            gh release delete ci-classpath -y --cleanup-tag -R "${{ github.repository }}"
             sleep 3
             gh release create ci-classpath /tmp/classpath.zip /tmp/jdk.tar.gz -R "${{ github.repository }}" --target "${GITHUB_SHA}" --prerelease --title "CI compile classpath" --notes "Compile classpath jars for offline builds of the fabric-26.3 branch. Not a mod release."
+            echo "release exit: $?"
           fi
       - name: Dump game data files
         if: always()
