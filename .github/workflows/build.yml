@@ -59,6 +59,31 @@ jobs:
             cp=$(echo $jars | tr ' ' ':')
             (xargs -a .github/dump-bytecode javap -p -c -cp "$cp" 2>/dev/null || true) | gzip -9 > /tmp/ci/bytecode.txt.gz
           fi
+      - name: Publish the compile classpath for local builds
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          # Only when .github/dump-classpath exists: zips every jar on the main compile classpath (Minecraft, Fabric
+          # loader and API, their libraries) and publishes it as the ci-classpath release, so ports can compile offline.
+          if [ -f .github/dump-classpath ]; then
+            cat > /tmp/cp.gradle <<'GRADLE'
+          allprojects {
+            tasks.register("printCompileClasspath") {
+              def cp = project.sourceSets.main.compileClasspath
+              doLast { cp.files.each { println "CPJAR " + it.absolutePath } }
+            }
+          }
+          GRADLE
+            ./gradlew printCompileClasspath --no-daemon -q -I /tmp/cp.gradle | grep '^CPJAR ' | sed 's/^CPJAR //' > /tmp/cp.txt || true
+            mkdir -p /tmp/cpjars
+            while read -r f; do [ -f "$f" ] && cp "$f" /tmp/cpjars/; done < /tmp/cp.txt
+            (cd /tmp/cpjars && ls -l && zip -q -r /tmp/classpath.zip .)
+            gh release delete ci-classpath -y --cleanup-tag -R "${{ github.repository }}" || true
+            sleep 3
+            gh release create ci-classpath /tmp/classpath.zip -R "${{ github.repository }}" --target "${GITHUB_SHA}" --prerelease --title "CI compile classpath" --notes "Compile classpath jars for offline builds of the fabric-26.3 branch. Not a mod release."
+          fi
       - name: Dump game data files
         if: always()
         shell: bash
