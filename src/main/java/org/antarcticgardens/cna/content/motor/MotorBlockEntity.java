@@ -68,9 +68,10 @@ public class MotorBlockEntity extends GeneratingKineticBlockEntity {
     @Override
     public void addBehaviours(List<BlockEntityBehaviour<?>> behaviours) {
         super.addBehaviours(behaviours);
+        // runs from the SmartBlockEntity constructor, before this class's fields are set; the
+        // variant's real speed range is applied in tick()
         speedBehavior = new ServerKineticScrollValueBehaviour(this);
-        int max = (int) variant.getSpeed();
-        speedBehavior.between(-max, max);
+        speedBehavior.between(-256, 256);
         speedBehavior.setValue(getDefaultSpeed());
         speedBehavior.withCallback(i -> this.updateGeneratedRotation());
         behaviours.add(speedBehavior);

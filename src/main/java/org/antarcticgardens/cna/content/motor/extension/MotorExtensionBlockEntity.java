@@ -36,8 +36,10 @@ public class MotorExtensionBlockEntity extends SmartBlockEntity {
 
     @Override
     public void addBehaviours(List<BlockEntityBehaviour<?>> behaviours) {
+        // runs from the SmartBlockEntity constructor, before this class's fields are set; the
+        // variant's range is applied in tick()
         stressBehavior = new MotorExtensionValueBehaviour(this);
-        stressBehavior.between(1, (int) (100 * variant.getMultiplier()));
+        stressBehavior.between(1, 100000);
         stressBehavior.setValue(100);
         stressBehavior.withCallback(i -> {
             multiplier = i / 100f;
