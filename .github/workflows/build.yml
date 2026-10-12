@@ -80,9 +80,11 @@ jobs:
             mkdir -p /tmp/cpjars
             while read -r f; do [ -f "$f" ] && cp "$f" /tmp/cpjars/; done < /tmp/cp.txt
             (cd /tmp/cpjars && ls -l && zip -q -r /tmp/classpath.zip .)
+            # the JDK 25 CI builds with, for hosts that cannot download one
+            tar czf /tmp/jdk.tar.gz -C "$(dirname "$JAVA_HOME")" "$(basename "$JAVA_HOME")"
             gh release delete ci-classpath -y --cleanup-tag -R "${{ github.repository }}" || true
             sleep 3
-            gh release create ci-classpath /tmp/classpath.zip -R "${{ github.repository }}" --target "${GITHUB_SHA}" --prerelease --title "CI compile classpath" --notes "Compile classpath jars for offline builds of the fabric-26.3 branch. Not a mod release."
+            gh release create ci-classpath /tmp/classpath.zip /tmp/jdk.tar.gz -R "${{ github.repository }}" --target "${GITHUB_SHA}" --prerelease --title "CI compile classpath" --notes "Compile classpath jars for offline builds of the fabric-26.3 branch. Not a mod release."
           fi
       - name: Dump game data files
         if: always()
