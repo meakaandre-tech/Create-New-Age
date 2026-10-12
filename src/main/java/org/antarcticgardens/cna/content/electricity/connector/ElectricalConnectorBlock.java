@@ -1,8 +1,7 @@
 package org.antarcticgardens.cna.content.electricity.connector;
 
-import com.mojang.serialization.MapCodec;
-import com.simibubi.create.content.equipment.wrench.IWrenchable;
-import com.simibubi.create.foundation.block.IBE;
+import com.zurrtum.create.content.equipment.wrench.IWrenchable;
+import com.zurrtum.create.foundation.block.IBE;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -24,33 +23,17 @@ import org.jetbrains.annotations.Nullable;
 
 public class ElectricalConnectorBlock extends DirectionalBlock implements IBE<ElectricalConnectorBlockEntity>, IWrenchable {
     public static final EnumProperty<ElectricalConnectorMode> MODE = EnumProperty.create("mode", ElectricalConnectorMode.class);
-    public static final MapCodec<ElectricalConnectorBlock> CODEC = simpleCodec(ElectricalConnectorBlock::new);
 
     public ElectricalConnectorBlock(Properties properties) {
         super(properties);
     }
 
-    @Override
-    protected MapCodec<? extends DirectionalBlock> codec() {
-        return CODEC;
-    }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(FACING, MODE);
     }
 
-    @Override
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
-        if (newState.is(CNABlocks.ELECTRICAL_CONNECTOR.get()))
-            return;
-
-        if (level.getBlockEntity(pos) instanceof ElectricalConnectorBlockEntity connector) {
-            connector.remove(level);
-        }
-
-        super.onRemove(state, level, pos, newState, movedByPiston);
-    }
 
     @Nullable
     @Override
@@ -79,13 +62,13 @@ public class ElectricalConnectorBlock extends DirectionalBlock implements IBE<El
     @Override
     public <S extends BlockEntity> BlockEntityTicker<S> getTicker(Level p_153212_, BlockState p_153213_, BlockEntityType<S> p_153214_) {
         return (level, blockPos, blockState, blockEntity) -> {
-            if (blockEntity instanceof ElectricalConnectorBlockEntity connector && !level.isClientSide)
+            if (blockEntity instanceof ElectricalConnectorBlockEntity connector && !level.isClientSide())
                 connector.serverTick();
         };
     }
 
     @Override
-    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean movedByPiston) {
+    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, @org.jetbrains.annotations.Nullable net.minecraft.world.level.redstone.Orientation orientation, boolean movedByPiston) {
         if (level.getBlockEntity(pos) instanceof ElectricalConnectorBlockEntity connector)
             connector.neighborChanged();
     }

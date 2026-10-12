@@ -1,8 +1,7 @@
 package org.antarcticgardens.cna.content.heat.plate;
 
-import com.simibubi.create.content.equipment.wrench.IWrenchable;
-import com.simibubi.create.foundation.utility.CreateLang;
-import com.tterrag.registrate.util.entry.BlockEntityEntry;
+import com.zurrtum.create.content.equipment.wrench.IWrenchable;
+import org.antarcticgardens.cna.registry.BlockEntityEntry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -62,10 +61,8 @@ public class SolarHeatingPlateBlock extends Block implements EntityBlock, IWrenc
         return  new SolarHeatingPlateBlock(properties, CNABlockEntityTypes.BASIC_SOLAR_HEATING_PLATE, 20);
     }
 
-    @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.add(CreateLang.translate("tooltip.create_new_age.generates").style(ChatFormatting.GRAY)
-                .component());
-        tooltipComponents.add(CreateLang.text(" ").translate("tooltip.create_new_age.temperature.ps", strength * CNAConfig.getServer().solarPanelHeatMultiplier.get()).style(ChatFormatting.AQUA).component());
+
+    public int getStrength() {
+        return strength;
     }
 }

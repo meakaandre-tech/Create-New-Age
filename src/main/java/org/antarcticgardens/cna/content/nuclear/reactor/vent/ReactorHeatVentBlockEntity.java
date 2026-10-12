@@ -1,12 +1,10 @@
 package org.antarcticgardens.cna.content.nuclear.reactor.vent;
 
-import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
-import com.simibubi.create.foundation.utility.CreateLang;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -22,7 +20,7 @@ import org.antarcticgardens.cna.util.StringFormatUtil;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ReactorHeatVentBlockEntity extends RodFindingReactorBlockEntity implements HeatBlockEntity, IHaveGoggleInformation {
+public class ReactorHeatVentBlockEntity extends RodFindingReactorBlockEntity implements HeatBlockEntity {
 
     private float extract;
 
@@ -33,17 +31,17 @@ public class ReactorHeatVentBlockEntity extends RodFindingReactorBlockEntity imp
     public float heat = 0;
 
     @Override
-    protected void read(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
-        heat = tag.getFloat("heat");
-        extract = tag.getFloat("extract");
-        super.read(tag, registries, clientPacket);
+    protected void read(ValueInput tag, boolean clientPacket) {
+        heat = tag.getFloatOr("heat", 0);
+        extract = tag.getFloatOr("extract", 0);
+        super.read(tag, clientPacket);
     }
 
     @Override
-    protected void write(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
+    protected void write(ValueOutput tag, boolean clientPacket) {
         tag.putFloat("heat", heat);
         tag.putFloat("extract", extract);
-        super.write(tag, registries, clientPacket);
+        super.write(tag, clientPacket);
     }
 
     @Override
@@ -68,10 +66,6 @@ public class ReactorHeatVentBlockEntity extends RodFindingReactorBlockEntity imp
         setChanged();
     }
 
-    @Override
-    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-        return saveWithoutMetadata(registries);
-    }
 
     int tick = 0;
     public void tick(BlockPos pos, Level world, BlockState state) {
@@ -122,14 +116,7 @@ public class ReactorHeatVentBlockEntity extends RodFindingReactorBlockEntity imp
         HeatBlockEntity.average(self, totalToAverage, totalBlocks, setters);
     }
 
-    @Override
-    public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-        HeatBlockEntity.addToolTips(this, tooltip);
-
-        CreateLang.translate("tooltip.create_new_age.extracting")
-                .style(ChatFormatting.GRAY).forGoggles(tooltip, 1);
-        CreateLang.translate("tooltip.create_new_age.temperature", StringFormatUtil.formatFloat(extract))
-                .style(ChatFormatting.AQUA).forGoggles(tooltip, 2);
-        return true;
+    public float getExtract() {
+        return extract;
     }
 }

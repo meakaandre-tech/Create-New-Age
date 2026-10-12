@@ -1,11 +1,10 @@
 package org.antarcticgardens.cna.content.motor;
 
-import com.simibubi.create.content.equipment.wrench.IWrenchable;
-import com.simibubi.create.content.kinetics.base.DirectionalKineticBlock;
-import com.simibubi.create.content.kinetics.base.IRotate;
-import com.simibubi.create.foundation.block.IBE;
-import com.simibubi.create.foundation.utility.CreateLang;
-import com.tterrag.registrate.util.entry.BlockEntityEntry;
+import com.zurrtum.create.content.equipment.wrench.IWrenchable;
+import com.zurrtum.create.content.kinetics.base.DirectionalKineticBlock;
+import com.zurrtum.create.content.kinetics.base.IRotate;
+import com.zurrtum.create.foundation.block.IBE;
+import org.antarcticgardens.cna.registry.BlockEntityEntry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -47,22 +46,6 @@ public class MotorBlock extends DirectionalKineticBlock implements IRotate, IBE<
         this.entry = entry;
     }
 
-    @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.add(CreateLang.translate("tooltip.create_new_age.generates").style(ChatFormatting.GRAY)
-                .component());
-        tooltipComponents.add(CreateLang.text(" ").add(CreateLang.number(variant.getStress() * CNAConfig.getServer().motorSUMultiplier.get()).text(" ")
-                .translate("generic.unit.stress").style(ChatFormatting.AQUA)).component());
-
-        tooltipComponents.add(CreateLang.translate("tooltip.create_new_age.stores").style(ChatFormatting.GRAY)
-                .component());
-        tooltipComponents.add(CreateLang.text(" ").translate("tooltip.create_new_age.energy",
-                                             StringFormatUtil.formatLong(variant.getMaxCapacity())).style(ChatFormatting.AQUA).component());
-
-        tooltipComponents.add(CreateLang.translate("tooltip.create_new_age.max_speed").style(ChatFormatting.GRAY)
-                .component());
-        tooltipComponents.add(CreateLang.text(" ").translate("tooltip.create_new_age.rpm", variant.getSpeed()).style(ChatFormatting.AQUA).component());
-    }
 
     @Override
     public SpeedLevel getMinimumRequiredSpeedLevel() {
@@ -74,7 +57,7 @@ public class MotorBlock extends DirectionalKineticBlock implements IRotate, IBE<
         if (arg3.hasBlockEntity()) {
             BlockEntity entity = arg.getBlockEntity(arg2);
             if (entity instanceof MotorBlockEntity en) {
-                en.speedBehavior.value = 0;
+                en.speedBehavior.setValue(0);
                 en.updateGeneratedRotation();
             }
         }
@@ -93,25 +76,6 @@ public class MotorBlock extends DirectionalKineticBlock implements IRotate, IBE<
     }
 
 
-    @Override
-    public InteractionResult onSneakWrenched(BlockState state, UseOnContext context) {
-        Level world = context.getLevel();
-        BlockPos pos = context.getClickedPos();
-        Player player = context.getPlayer();
-        if (world instanceof ServerLevel) {
-            if (player != null && !player.isCreative()) {
-                Block.getDrops(state, (ServerLevel)world, pos, world.getBlockEntity(pos), player, context.getItemInHand()).forEach((itemStack) -> {
-                    player.getInventory().placeItemBackInInventory(itemStack);
-                });
-            }
-
-            state.spawnAfterBreak((ServerLevel)world, pos, ItemStack.EMPTY, true);
-            world.destroyBlock(pos, false);
-            IWrenchable.playRemoveSound(world, pos);
-        }
-
-        return InteractionResult.SUCCESS;
-    }
 
     @Override
     public InteractionResult onWrenched(BlockState state, UseOnContext context) {
@@ -126,8 +90,8 @@ public class MotorBlock extends DirectionalKineticBlock implements IRotate, IBE<
     }
 
     @Override
-    public void neighborChanged(BlockState arg, Level arg2, BlockPos arg3, Block arg4, BlockPos arg5, boolean bl) {
-        if (arg.hasBlockEntity() && !arg2.isClientSide) {
+    public void neighborChanged(BlockState arg, Level arg2, BlockPos arg3, Block arg4, @org.jetbrains.annotations.Nullable net.minecraft.world.level.redstone.Orientation orientation, boolean bl) {
+        if (arg.hasBlockEntity() && !arg2.isClientSide()) {
             BlockEntity entity = arg2.getBlockEntity(arg3);
             if (entity instanceof MotorBlockEntity en) {
                 en.powered = arg2.hasNeighborSignal(arg3);
@@ -156,5 +120,9 @@ public class MotorBlock extends DirectionalKineticBlock implements IRotate, IBE<
     @Override
     public BlockEntityType<? extends MotorBlockEntity> getBlockEntityType() {
         return entry.get();
+    }
+
+    public IMotorVariant getVariant() {
+        return variant;
     }
 }

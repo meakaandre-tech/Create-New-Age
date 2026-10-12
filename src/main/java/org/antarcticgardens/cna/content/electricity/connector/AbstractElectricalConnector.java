@@ -1,22 +1,19 @@
 package org.antarcticgardens.cna.content.electricity.connector;
 
-import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
-import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
-import net.createmod.catnip.nbt.NBTHelper;
+import com.zurrtum.create.foundation.blockEntity.SmartBlockEntity;
+import com.zurrtum.create.api.behaviour.BlockEntityBehaviour;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Containers;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.antarcticgardens.cna.content.electricity.network.ElectricalNetwork;
 import org.antarcticgardens.cna.content.electricity.wire.WireType;
@@ -40,45 +37,38 @@ public abstract class AbstractElectricalConnector extends SmartBlockEntity {
     }
 
     @Override
-    public void addBehaviours(List<BlockEntityBehaviour> behaviours) {}
+    public void addBehaviours(List<BlockEntityBehaviour<?>> behaviours) {}
 
     @Override
-    protected void write(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
-        ListTag list = new ListTag();
+    protected void write(ValueOutput tag, boolean clientPacket) {
+        ValueOutput.ValueOutputList list = tag.childrenList("connections");
 
         for (Map.Entry<BlockPos, WireType> e : connectorPositions.entrySet()) {
-            CompoundTag compound = new CompoundTag();
-            compound.put("position", NBTHelper.writeVec3i(e.getKey()));
-            compound.put("wire", StringTag.valueOf(e.getValue().name()));
-
-            list.add(compound);
+            ValueOutput connection = list.addChild();
+            connection.store("position", BlockPos.CODEC, e.getKey());
+            connection.putString("wire", e.getValue().name());
         }
 
-        tag.put("connections", list);
-        super.write(tag, registries, clientPacket);
+        super.write(tag, clientPacket);
     }
 
     @Override
-    protected void read(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
-        ListTag list = tag.getList("connections", Tag.TAG_COMPOUND);
+    protected void read(ValueInput tag, boolean clientPacket) {
         connectorPositions.clear();
 
-        for (Tag listTag : list.toArray(new Tag[0])) {
-            if (listTag instanceof CompoundTag ct && ct.contains("position") && ct.contains("wire")) {
-                BlockPos pos = new BlockPos(NBTHelper.readVec3i((ListTag) ct.get("position")));
-                WireType wire = WireType.valueOf(ct.getString("wire"));
-
-                connectorPositions.put(pos, wire);
+        for (ValueInput connection : tag.childrenListOrEmpty("connections")) {
+            BlockPos pos = connection.read("position", BlockPos.CODEC).orElse(null);
+            String wire = connection.getStringOr("wire", "");
+            if (pos == null || wire.isEmpty())
+                continue;
+            try {
+                connectorPositions.put(pos, WireType.valueOf(wire));
+            } catch (IllegalArgumentException ignored) {
             }
         }
 
         needsInstanceUpdate = true;
-        super.read(tag, registries, clientPacket);
-    }
-
-    @Override
-    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-        return saveWithoutMetadata(registries);
+        super.read(tag, clientPacket);
     }
 
     public Map<BlockPos, WireType> getConnectorPositions() {
@@ -119,8 +109,16 @@ public abstract class AbstractElectricalConnector extends SmartBlockEntity {
         needsInstanceUpdate = true;
     }
 
+    /** Called when the block is broken or replaced: disconnects every wire and drops the wire items. */
+    @Override
+    public void destroy() {
+        super.destroy();
+        if (level != null)
+            remove(level);
+    }
+
     public void remove(Level level) {
-        if (!level.isClientSide())
+        if (!level.isClientSide() && network != null)
             network.destroy();
 
         for (Map.Entry<AbstractElectricalConnector, WireType> e : connectors.entrySet()) {
@@ -184,6 +182,12 @@ public abstract class AbstractElectricalConnector extends SmartBlockEntity {
 
     public ElectricalNetwork getNetwork() {
         return network;
+    }
+
+    /** Wires reach other blocks, so the renderer is never culled by this block's own box. */
+    @Override
+    protected AABB createRenderBoundingBox() {
+        return new AABB(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
     }
 
     public Vec3 getConnectionPoint() {

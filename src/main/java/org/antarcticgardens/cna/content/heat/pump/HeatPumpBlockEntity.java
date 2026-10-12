@@ -1,16 +1,14 @@
 package org.antarcticgardens.cna.content.heat.pump;
 
-import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
-import com.simibubi.create.foundation.utility.CreateLang;
+import com.zurrtum.create.api.behaviour.BlockEntityBehaviour;
+import com.zurrtum.create.foundation.blockEntity.SmartBlockEntity;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -20,7 +18,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class HeatPumpBlockEntity extends BlockEntity implements HeatBlockEntity, IHaveGoggleInformation {
+public class HeatPumpBlockEntity extends SmartBlockEntity implements HeatBlockEntity {
+    @Override
+    public void addBehaviours(List<BlockEntityBehaviour<?>> behaviours) {
+    }
+
     public HeatPumpBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
         super(type, pos, blockState);
     }
@@ -30,36 +32,21 @@ public class HeatPumpBlockEntity extends BlockEntity implements HeatBlockEntity,
     public float lastPump = 0;
 
     @Override
-    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
-        heat = tag.getFloat("heat");
-        lastPump = tag.getFloat("last");
+    protected void read(ValueInput tag, boolean clientPacket) {
+        super.read(tag, clientPacket);
+        heat = tag.getFloatOr("heat", 0);
+        lastPump = tag.getFloatOr("last", 0);
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.saveAdditional(tag, registries);
+    protected void write(ValueOutput tag, boolean clientPacket) {
+        super.write(tag, clientPacket);
         tag.putFloat("heat", heat);
         tag.putFloat("last", lastPump);
     }
 
-    @Override
-    public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-        CreateLang.translate("tooltip.create_new_age.pump").style(ChatFormatting.GRAY).forGoggles(tooltip, 1);
-        CreateLang.translate("tooltip.create_new_age.temperature.ps", StringFormatUtil.formatFloat(lastPump)).style(ChatFormatting.AQUA).forGoggles(tooltip, 2);
-        return true;
-    }
 
-    @Nullable
-    @Override
-    public Packet<ClientGamePacketListener> getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this);
-    }
 
-    @Override
-    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-        return saveWithoutMetadata(registries);
-    }
 
     @Override
     public float getHeat() {

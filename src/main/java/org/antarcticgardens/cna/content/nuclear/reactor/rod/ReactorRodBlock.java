@@ -37,7 +37,7 @@ import java.util.List;
 public class ReactorRodBlock extends ReactorBlock implements EntityBlock {
     public ReactorRodBlock(Properties properties) {
         super(properties
-                .isViewBlocking((blockState, blockGetter, blockPos) -> false)
+                .isViewBlocking((blockState, blockGetter, blockPos, box) -> false)
                 .lightLevel(state -> state.getValue(ACTIVE) ? 12 : 0));
         this.registerDefaultState(this.stateDefinition.any().setValue(AXIS, Direction.Axis.Y));
     }

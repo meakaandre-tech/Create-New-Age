@@ -2,9 +2,9 @@ package org.antarcticgardens.cna.content.electricity.network;
 
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.antarcticgardens.cna.content.electricity.connector.AbstractElectricalConnector;
-import org.antarcticgardens.esl.energy.EnergyStorage;
-import org.antarcticgardens.esl.transaction.SnapshotParticipant;
-import org.antarcticgardens.esl.transaction.TransactionContext;
+import org.antarcticgardens.cna.energy.EnergyStorage;
+import org.antarcticgardens.cna.energy.SnapshotParticipant;
+import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 
 import java.util.Map;
 

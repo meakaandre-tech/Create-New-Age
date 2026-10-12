@@ -1,13 +1,12 @@
 package org.antarcticgardens.cna.content.heat.stirling;
 
-import com.simibubi.create.content.kinetics.base.GeneratingKineticBlockEntity;
-import com.simibubi.create.foundation.utility.CreateLang;
-import net.createmod.catnip.animation.LerpedFloat;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import com.zurrtum.create.content.kinetics.base.GeneratingKineticBlockEntity;
+import com.zurrtum.create.catnip.animation.LerpedFloat;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -28,8 +27,8 @@ public class StirlingEngineBlockEntity extends GeneratingKineticBlockEntity impl
     }
 
     @Override
-    protected void write(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
-        super.write(compound, registries, clientPacket);
+    protected void write(ValueOutput compound, boolean clientPacket) {
+        super.write(compound, clientPacket);
         compound.putFloat("heat", heat);
         compound.putFloat("gSpeed", speed);
     }
@@ -47,26 +46,15 @@ public class StirlingEngineBlockEntity extends GeneratingKineticBlockEntity impl
         };
     }
 
-    @Override
-    public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-        HeatBlockEntity.addToolTips(this, tooltip);
-
-        CreateLang.translate("tooltip.create_new_age.using")
-                .style(ChatFormatting.GRAY).forGoggles(tooltip, 1);
-        CreateLang.translate("tooltip.create_new_age.temperature.ps", StringFormatUtil.formatFloat(speed * 3.125f)) // 3.125 is is 50/16
-                .style(ChatFormatting.AQUA).forGoggles(tooltip, 2);
-
-        return super.addToGoggleTooltip(tooltip, isPlayerSneaking);
-    }
 
     @Override
-    protected void read(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
-        super.read(compound, registries, clientPacket);
+    protected void read(ValueInput compound, boolean clientPacket) {
+        super.read(compound, clientPacket);
         if (clientPacket)
             visualSpeed.chase(getGeneratedSpeed(), 1 / 64f, LerpedFloat.Chaser.EXP);
 
-        heat = compound.getFloat("heat");
-        speed = compound.getFloat("gSpeed");
+        heat = compound.getFloatOr("heat", 0);
+        speed = compound.getFloatOr("gSpeed", 0);
     }
 
     public float speed = 0;
@@ -107,7 +95,7 @@ public class StirlingEngineBlockEntity extends GeneratingKineticBlockEntity impl
             }
         }
 
-        if (!getLevel().isClientSide) {
+        if (!getLevel().isClientSide()) {
             HeatBlockEntity.trySync(this);
             return;
         }
@@ -146,5 +134,13 @@ public class StirlingEngineBlockEntity extends GeneratingKineticBlockEntity impl
         float impact = 32.0f;
         this.lastStressApplied = impact;
         return impact;
+    }
+
+    public float getVisualSpeed(float partialTicks) {
+        return visualSpeed.getValue(partialTicks);
+    }
+
+    public float getAngle() {
+        return angle;
     }
 }

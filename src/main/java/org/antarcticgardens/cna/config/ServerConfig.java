@@ -1,48 +1,47 @@
 package org.antarcticgardens.cna.config;
 
-import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class ServerConfig {
-    public final ModConfigSpec.ConfigValue<Double> suToEnergy;
-    public final ModConfigSpec.ConfigValue<Integer> maxRodsInDirection;
-    public final ModConfigSpec.ConfigValue<Integer> maxCoils;
-    public final ModConfigSpec.ConfigValue<Double> conductivityMultiplier;
-    public final ModConfigSpec.ConfigValue<Integer> maxPathfindingDepth;
-    public final ModConfigSpec.ConfigValue<Double> energiserSpeedMultiplier;
-    public final ModConfigSpec.ConfigValue<Double> passiveHeatSourceMultiplier;
-    public final ModConfigSpec.ConfigValue<Double> passivePipeHeatLoss;
-    public final ModConfigSpec.ConfigValue<Double> heaterRequiredHeatMultiplier;
-    public final ModConfigSpec.ConfigValue<Double> overheatingMultiplier;
-    public final ModConfigSpec.ConfigValue<Double> nuclearReactorRodHeat;
-    public final ModConfigSpec.ConfigValue<Double> nuclearReactorRodHeatLoss;
-    public final ModConfigSpec.ConfigValue<Double> solarPanelHeatMultiplier;
-    public final ModConfigSpec.ConfigValue<Integer> maxWireLength;
+    public final ConfigBuilder.ConfigValue<Double> suToEnergy;
+    public final ConfigBuilder.ConfigValue<Integer> maxRodsInDirection;
+    public final ConfigBuilder.ConfigValue<Integer> maxCoils;
+    public final ConfigBuilder.ConfigValue<Double> conductivityMultiplier;
+    public final ConfigBuilder.ConfigValue<Integer> maxPathfindingDepth;
+    public final ConfigBuilder.ConfigValue<Double> energiserSpeedMultiplier;
+    public final ConfigBuilder.ConfigValue<Double> passiveHeatSourceMultiplier;
+    public final ConfigBuilder.ConfigValue<Double> passivePipeHeatLoss;
+    public final ConfigBuilder.ConfigValue<Double> heaterRequiredHeatMultiplier;
+    public final ConfigBuilder.ConfigValue<Double> overheatingMultiplier;
+    public final ConfigBuilder.ConfigValue<Double> nuclearReactorRodHeat;
+    public final ConfigBuilder.ConfigValue<Double> nuclearReactorRodHeatLoss;
+    public final ConfigBuilder.ConfigValue<Double> solarPanelHeatMultiplier;
+    public final ConfigBuilder.ConfigValue<Integer> maxWireLength;
 
-    public final ModConfigSpec.ConfigValue<Double> motorSUMultiplier;
-    public final ModConfigSpec.ConfigValue<Integer> basicMotorCapacity;
-    public final ModConfigSpec.ConfigValue<Double> basicMotorStress;
-    public final ModConfigSpec.ConfigValue<Double> basicMotorSpeed;
-    public final ModConfigSpec.ConfigValue<Integer> advancedMotorCapacity;
-    public final ModConfigSpec.ConfigValue<Double> advancedMotorStress;
-    public final ModConfigSpec.ConfigValue<Double> advancedMotorSpeed;
-    public final ModConfigSpec.ConfigValue<Integer> reinforcedMotorCapacity;
-    public final ModConfigSpec.ConfigValue<Double> reinforcedMotorStress;
-    public final ModConfigSpec.ConfigValue<Double> reinforcedMotorSpeed;
-    public final ModConfigSpec.ConfigValue<Double> basicMotorExtensionMultiplier;
-    public final ModConfigSpec.ConfigValue<Integer> basicMotorExtensionExtraCapacity;
-    public final ModConfigSpec.ConfigValue<Integer> basicMotorExtensionScrollStep;
-    public final ModConfigSpec.ConfigValue<Double> advancedMotorExtensionMultiplier;
-    public final ModConfigSpec.ConfigValue<Integer> advancedMotorExtensionExtraCapacity;
-    public final ModConfigSpec.ConfigValue<Integer> advancedMotorExtensionScrollStep;
-    public final ModConfigSpec.ConfigValue<Double> radiationDamageExplosionScale;
-    public final ModConfigSpec.ConfigValue<Double> reactorOverheatExplosionMultiplier;
-    public final ModConfigSpec.ConfigValue<Boolean> radiationDamageExplosionFire;
-    public final ModConfigSpec.ConfigValue<Boolean> geigerCounterSounds;
-    public final ModConfigSpec.ConfigValue<Boolean> nauseaInducingRadiation;
-    public final ModConfigSpec.ConfigValue<Integer> streetLightLevelExtraction;
-    public final ModConfigSpec.ConfigValue<Integer> streetLightCapacity;
+    public final ConfigBuilder.ConfigValue<Double> motorSUMultiplier;
+    public final ConfigBuilder.ConfigValue<Integer> basicMotorCapacity;
+    public final ConfigBuilder.ConfigValue<Double> basicMotorStress;
+    public final ConfigBuilder.ConfigValue<Double> basicMotorSpeed;
+    public final ConfigBuilder.ConfigValue<Integer> advancedMotorCapacity;
+    public final ConfigBuilder.ConfigValue<Double> advancedMotorStress;
+    public final ConfigBuilder.ConfigValue<Double> advancedMotorSpeed;
+    public final ConfigBuilder.ConfigValue<Integer> reinforcedMotorCapacity;
+    public final ConfigBuilder.ConfigValue<Double> reinforcedMotorStress;
+    public final ConfigBuilder.ConfigValue<Double> reinforcedMotorSpeed;
+    public final ConfigBuilder.ConfigValue<Double> basicMotorExtensionMultiplier;
+    public final ConfigBuilder.ConfigValue<Integer> basicMotorExtensionExtraCapacity;
+    public final ConfigBuilder.ConfigValue<Integer> basicMotorExtensionScrollStep;
+    public final ConfigBuilder.ConfigValue<Double> advancedMotorExtensionMultiplier;
+    public final ConfigBuilder.ConfigValue<Integer> advancedMotorExtensionExtraCapacity;
+    public final ConfigBuilder.ConfigValue<Integer> advancedMotorExtensionScrollStep;
+    public final ConfigBuilder.ConfigValue<Double> radiationDamageExplosionScale;
+    public final ConfigBuilder.ConfigValue<Double> reactorOverheatExplosionMultiplier;
+    public final ConfigBuilder.ConfigValue<Boolean> radiationDamageExplosionFire;
+    public final ConfigBuilder.ConfigValue<Boolean> geigerCounterSounds;
+    public final ConfigBuilder.ConfigValue<Boolean> nauseaInducingRadiation;
+    public final ConfigBuilder.ConfigValue<Integer> streetLightLevelExtraction;
+    public final ConfigBuilder.ConfigValue<Integer> streetLightCapacity;
 
-    public ServerConfig(ModConfigSpec.Builder builder) {
+    public ServerConfig(ConfigBuilder builder) {
         suToEnergy = builder
                 .comment(
                         "Responsible for how much energy is generated per 1 stress unit in a tick",

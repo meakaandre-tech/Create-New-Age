@@ -1,36 +1,27 @@
 package org.antarcticgardens.cna.content.electricity.light;
 
-import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
-import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
-import com.simibubi.create.foundation.blockEntity.behaviour.ValueBoxTransform;
-import com.simibubi.create.foundation.blockEntity.behaviour.scrollValue.ScrollValueBehaviour;
-import com.simibubi.create.foundation.utility.CreateLang;
-import net.createmod.catnip.math.VecHelper;
-import net.minecraft.ChatFormatting;
+import com.zurrtum.create.api.behaviour.BlockEntityBehaviour;
+import com.zurrtum.create.foundation.blockEntity.behaviour.scrollValue.ServerScrollValueBehaviour;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
-import org.antarcticgardens.cna.CNABlockEntityTypes;
 import org.antarcticgardens.cna.config.CNAConfig;
 import org.antarcticgardens.cna.content.electricity.connector.AbstractElectricalConnector;
 import org.antarcticgardens.cna.content.electricity.network.ElectricalNetwork;
 import org.antarcticgardens.cna.content.electricity.network.SimpleNetworkEnergyStorage;
 import org.antarcticgardens.cna.util.RunnableUtil;
-import org.antarcticgardens.cna.util.StringFormatUtil;
-import org.antarcticgardens.esl.energy.EnergyStorage;
 
 import java.util.List;
 
-public class StreetLightBlockEntity extends AbstractElectricalConnector implements IHaveGoggleInformation {
+public class StreetLightBlockEntity extends AbstractElectricalConnector {
     private final SimpleNetworkEnergyStorage storage;
 
     private long prvEnergy = -100000;
-    public ScrollValueBehaviour lightLevelBehaviour;
+    public ServerScrollValueBehaviour lightLevelBehaviour;
 
     public StreetLightBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
         super(type, pos, blockState);
@@ -38,14 +29,12 @@ public class StreetLightBlockEntity extends AbstractElectricalConnector implemen
         storage = new SimpleNetworkEnergyStorage(this, null, CNAConfig.getServer().streetLightCapacity.get())
                 .onFinalCommit(RunnableUtil.createBlockEntityUpdater(this))
                 .setSupportsExtraction(false);
-
-        EnergyStorage.registerForBlockEntity((blockEntity, direction) -> blockEntity.storage, CNABlockEntityTypes.STREET_LIGHT.get());
     }
 
     @Override
-    protected void read(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
-        storage.setStoredEnergy(tag.getLong("energy"));
-        super.read(tag, registries, clientPacket);
+    protected void read(ValueInput tag, boolean clientPacket) {
+        storage.setStoredEnergy(tag.getLongOr("energy", 0));
+        super.read(tag, clientPacket);
     }
 
     @Override
@@ -54,37 +43,21 @@ public class StreetLightBlockEntity extends AbstractElectricalConnector implemen
     }
 
     @Override
-    protected void write(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
+    protected void write(ValueOutput tag, boolean clientPacket) {
         tag.putLong("energy", storage.getStoredEnergy());
-        super.write(tag, registries, clientPacket);
+        super.write(tag, clientPacket);
     }
 
     @Override
-    public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
-        lightLevelBehaviour = new ScrollValueBehaviour(CreateLang.translateDirect("create_new_age.street_light.light_level"), this, new StreetLightBox())
-                .between(0, 15);
-        lightLevelBehaviour.value = 15;
-        lightLevelBehaviour.requiresWrench();
-        lightLevelBehaviour.withCallback( i -> {
+    public void addBehaviours(List<BlockEntityBehaviour<?>> behaviours) {
+        lightLevelBehaviour = new ServerScrollValueBehaviour(this).between(0, 15);
+        lightLevelBehaviour.setValue(15);
+        lightLevelBehaviour.withCallback(i -> {
             if (getLevel() != null && storage.getStoredEnergy() > 0)
                 getLevel().setBlock(getBlockPos(), getBlockState().setValue(StreetLightBlock.LIGHT_LEVEL, i), 3);
         });
         behaviours.add(lightLevelBehaviour);
         super.addBehaviours(behaviours);
-    }
-
-    @Override
-    public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-        CreateLang.translate("tooltip.create_new_age.energy_stored")
-                .style(ChatFormatting.GRAY)
-                .forGoggles(tooltip);
-
-        CreateLang.translate("tooltip.create_new_age.energy_storage", StringFormatUtil.formatLong(storage.getStoredEnergy()),
-                        StringFormatUtil.formatLong(storage.getCapacity()))
-                .style(ChatFormatting.AQUA)
-                .forGoggles(tooltip, 1);
-
-        return true;
     }
 
     @Override
@@ -107,28 +80,18 @@ public class StreetLightBlockEntity extends AbstractElectricalConnector implemen
         }
     }
 
-    static class StreetLightBox extends ValueBoxTransform.Sided {
-
-        @Override
-        protected Vec3 getSouthLocation() {
-            return VecHelper.voxelSpace(8, 9, 12.5);
-        }
-
-        @Override
-        protected boolean isSideActive(BlockState state, Direction direction) {
-            if (direction == Direction.UP || direction == Direction.DOWN)
-                return false;
-            return super.isSideActive(state, direction);
-        }
-    }
-
     @Override
     public void setNetwork(ElectricalNetwork network) {
         super.setNetwork(network);
         storage.setNetwork(network);
     }
 
+    @Override
     public Vec3 getConnectionPoint() {
-        return new Vec3(0.5f, 1/16f, 0.5f);
+        return new Vec3(0.5f, 1 / 16f, 0.5f);
+    }
+
+    public SimpleNetworkEnergyStorage getEnergyStorage() {
+        return storage;
     }
 }

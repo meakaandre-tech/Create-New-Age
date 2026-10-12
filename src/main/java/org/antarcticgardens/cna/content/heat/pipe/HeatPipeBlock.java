@@ -1,13 +1,12 @@
 package org.antarcticgardens.cna.content.heat.pipe;
 
-import com.simibubi.create.api.boiler.BoilerHeater;
-import com.simibubi.create.content.decoration.encasing.EncasableBlock;
-import com.simibubi.create.content.equipment.wrench.IWrenchable;
+import com.zurrtum.create.api.boiler.BoilerHeater;
+import com.zurrtum.create.content.decoration.encasing.EncasableBlock;
+import com.zurrtum.create.content.equipment.wrench.IWrenchable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -15,6 +14,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -52,15 +52,15 @@ public class HeatPipeBlock extends Block implements EntityBlock, IWrenchable, En
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        ItemInteractionResult result = tryEncase(state, level, pos, stack, player, hand, hitResult);
+    protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        InteractionResult result = tryEncase(state, level, pos, stack, player, hand, hitResult);
         if (result.consumesAction())
             return result;
 
-        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        return InteractionResult.TRY_WITH_EMPTY_HAND;
     }
 
-    private static BlockState checkHeatBlock(BlockState state, LevelAccessor world, BlockPos pos, Direction dir, BooleanProperty property) {
+    private static BlockState checkHeatBlock(BlockState state, LevelReader world, BlockPos pos, Direction dir, BooleanProperty property) {
         return state.setValue(property,
                 world.getBlockEntity(pos.relative(dir)) instanceof HeatBlockEntity hbe
                         && hbe.canConnect(dir));
@@ -87,7 +87,7 @@ public class HeatPipeBlock extends Block implements EntityBlock, IWrenchable, En
         };
     }
 
-    public static BlockState updateState(BlockState state, LevelAccessor world, BlockPos pos) {
+    public static BlockState updateState(BlockState state, LevelReader world, BlockPos pos) {
         for (Direction dir : Direction.values()) {
             state = checkHeatBlock(state, world, pos, dir, getDirectionProperty(dir));
         }
@@ -95,13 +95,13 @@ public class HeatPipeBlock extends Block implements EntityBlock, IWrenchable, En
     }
 
     @Override
-    public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor world, BlockPos pos, BlockPos neighborPos) {
+    public BlockState updateShape(BlockState state, net.minecraft.world.level.LevelReader world, net.minecraft.world.level.ScheduledTickAccess scheduledTickAccess, BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState, net.minecraft.util.RandomSource random) {
         return updateState(state, world, pos);
     }
 
     @Override
-    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean movedByPiston) {
-        super.neighborChanged(state, level, pos, neighborBlock, neighborPos, movedByPiston);
+    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, @org.jetbrains.annotations.Nullable net.minecraft.world.level.redstone.Orientation orientation, boolean movedByPiston) {
+        super.neighborChanged(state, level, pos, neighborBlock, orientation, movedByPiston);
         level.scheduleTick(pos, this, 1);
     }
 

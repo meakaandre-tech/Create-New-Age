@@ -1,9 +1,9 @@
 package org.antarcticgardens.cna.content.nuclear.reactor.fuelacceptor;
 
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.Containers;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
@@ -20,7 +20,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public abstract class ReactorFuelAcceptorBlockEntity extends RodFindingReactorBlockEntity {
+public class ReactorFuelAcceptorBlockEntity extends RodFindingReactorBlockEntity {
     public SimpleContainer container;
 
     public ReactorFuelAcceptorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
@@ -29,15 +29,18 @@ public abstract class ReactorFuelAcceptorBlockEntity extends RodFindingReactorBl
     }
 
     @Override
-    protected void write(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
-        compound.put("contents", container.createTag(registries));
-        super.write(compound, registries, clientPacket);
+    protected void write(ValueOutput compound, boolean clientPacket) {
+        compound.store("contents", ItemStack.OPTIONAL_CODEC.listOf(), container.getItems());
+        super.write(compound, clientPacket);
     }
 
     @Override
-    protected void read(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
-        container.fromTag(compound.getList("contents", compound.TAG_COMPOUND), registries);
-        super.read(compound, registries, clientPacket);
+    protected void read(ValueInput compound, boolean clientPacket) {
+        compound.read("contents", ItemStack.OPTIONAL_CODEC.listOf()).ifPresent(items -> {
+            for (int i = 0; i < container.getContainerSize(); i++)
+                container.setItem(i, i < items.size() ? items.get(i) : ItemStack.EMPTY);
+        });
+        super.read(compound, clientPacket);
     }
 
     @Override
@@ -71,7 +74,7 @@ public abstract class ReactorFuelAcceptorBlockEntity extends RodFindingReactorBl
             for (int i = 0 ; i < container.getContainerSize() ; i++) {
                 ItemStack stack = container.getItem(i);
                 if (stack.is(CNATags.Item.NUCLEAR_FUEL.tag)) {
-                    stack.getTags().forEach(itemTagKey -> {
+                    stack.typeHolder().tags().toList().forEach(itemTagKey -> {
                         if (itemTagKey.location().getNamespace().equals(CreateNewAge.MOD_ID)) {
                             String path = itemTagKey.location().getPath();
                             if (path.startsWith("nuclear/energy_")) {

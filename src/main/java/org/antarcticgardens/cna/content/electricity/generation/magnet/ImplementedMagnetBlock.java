@@ -1,7 +1,5 @@
 package org.antarcticgardens.cna.content.electricity.generation.magnet;
 
-import com.simibubi.create.foundation.utility.CreateLang;
-import com.tterrag.registrate.util.nullness.NonNullFunction;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
@@ -22,19 +20,13 @@ public class ImplementedMagnetBlock extends Block implements IMagneticBlock {
         this.strength = strength;
     }
 
-    @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.add(CreateLang.translate("tooltip.create_new_age.magnetic_force").style(ChatFormatting.GRAY).component());
-        tooltipComponents.add(CreateLang.text(" " + strength).style(ChatFormatting.AQUA)
-                .component());
-    }
 
     @Override
     public float getStrength() {
         return strength;
     }
 
-    public static NonNullFunction<Properties, ImplementedMagnetBlock> simple(int level) {
+    public static java.util.function.Function<Properties, ImplementedMagnetBlock> simple(int level) {
         return (p) -> new ImplementedMagnetBlock(p, level);
     }
 }

@@ -1,8 +1,7 @@
 package org.antarcticgardens.cna.content.electricity.light;
 
-import com.simibubi.create.content.equipment.wrench.IWrenchable;
-import com.simibubi.create.foundation.block.IBE;
-import com.simibubi.create.foundation.utility.CreateLang;
+import com.zurrtum.create.content.equipment.wrench.IWrenchable;
+import com.zurrtum.create.foundation.block.IBE;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -42,7 +41,7 @@ public class StreetLightBlock extends Block implements IBE<StreetLightBlockEntit
     @Override
     public <S extends BlockEntity> BlockEntityTicker<S> getTicker(Level p_153212_, BlockState p_153213_, BlockEntityType<S> p_153214_) {
         return (level, blockPos, blockState, blockEntity) -> {
-            if (blockEntity instanceof StreetLightBlockEntity streetLightBlock && !level.isClientSide)
+            if (blockEntity instanceof StreetLightBlockEntity streetLightBlock && !level.isClientSide())
                 streetLightBlock.serverTick();
         };
     }
@@ -73,31 +72,10 @@ public class StreetLightBlock extends Block implements IBE<StreetLightBlockEntit
         return CNABlockEntityTypes.STREET_LIGHT.get();
     }
 
-    @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.add(CreateLang.translate("tooltip.create_new_age.speed").style(ChatFormatting.GRAY).component());
-        tooltipComponents.add(CreateLang.text(" ").translate("tooltip.create_new_age.energy_per_tick",
-                        StringFormatUtil.formatLong(CNAConfig.getServer().streetLightLevelExtraction.get())).style(ChatFormatting.AQUA)
-                .add(CreateLang.text(" ").translate("tooltip.create_new_age.per_light_level").style(ChatFormatting.GRAY)).component());
-        tooltipComponents.add(CreateLang.translate("tooltip.create_new_age.stores").style(ChatFormatting.GRAY).component());
-        tooltipComponents.add(CreateLang.text(" ").translate("tooltip.create_new_age.energy",
-                StringFormatUtil.formatLong(CNAConfig.getServer().streetLightCapacity.get())).style(ChatFormatting.AQUA).component());
-    }
+
 
     @Override
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
-        if (newState.is(CNABlocks.STREET_LIGHT.get()))
-            return;
-
-        if (level.getBlockEntity(pos) instanceof StreetLightBlockEntity connector) {
-            connector.remove(level);
-        }
-
-        super.onRemove(state, level, pos, newState, movedByPiston);
-    }
-
-    @Override
-    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean movedByPiston) {
+    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, @org.jetbrains.annotations.Nullable net.minecraft.world.level.redstone.Orientation orientation, boolean movedByPiston) {
         if (level.getBlockEntity(pos) instanceof StreetLightBlockEntity connector)
             connector.neighborChanged();
     }

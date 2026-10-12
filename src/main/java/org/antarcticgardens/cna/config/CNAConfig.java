@@ -1,32 +1,35 @@
 package org.antarcticgardens.cna.config;
 
-import net.neoforged.fml.config.ModConfig;
-import net.neoforged.neoforge.common.ModConfigSpec;
+import net.fabricmc.loader.api.FabricLoader;
 import org.antarcticgardens.cna.CreateNewAge;
 
+/**
+ * Client and server settings, read from create_new_age-client.json and create_new_age-server.json
+ * in the config folder. The server file is read on both sides, as the wire sag uses the wire length.
+ */
 public class CNAConfig {
-    private static final CNAConfig INSTANCE = new CNAConfig();
-
-    private final ClientConfig client;
-    private final ServerConfig server;
-
-    private CNAConfig() {
-        var client = new ModConfigSpec.Builder().configure(ClientConfig::new);
-        this.client = client.getLeft();
-        CreateNewAge.getInstance().getPlatform().getRegistrar().registerConfig(ModConfig.Type.CLIENT, client.getRight());
-
-        var common = new ModConfigSpec.Builder().configure(ServerConfig::new);
-        this.server = common.getLeft();
-        CreateNewAge.getInstance().getPlatform().getRegistrar().registerConfig(ModConfig.Type.SERVER, common.getRight());
-    }
+    private static ClientConfig client;
+    private static ServerConfig server;
 
     public static ClientConfig getClient() {
-        return INSTANCE.client;
+        if (client == null) {
+            ConfigBuilder builder = new ConfigBuilder();
+            client = new ClientConfig(builder);
+            builder.load(FabricLoader.getInstance().getConfigDir().resolve(CreateNewAge.MOD_ID + "-client.json"));
+        }
+        return client;
     }
 
     public static ServerConfig getServer() {
-        return INSTANCE.server;
+        if (server == null) {
+            ConfigBuilder builder = new ConfigBuilder();
+            server = new ServerConfig(builder);
+            builder.load(FabricLoader.getInstance().getConfigDir().resolve(CreateNewAge.MOD_ID + "-server.json"));
+        }
+        return server;
     }
-    
-    public static void load() {  }
+
+    public static void load() {
+        getServer();
+    }
 }

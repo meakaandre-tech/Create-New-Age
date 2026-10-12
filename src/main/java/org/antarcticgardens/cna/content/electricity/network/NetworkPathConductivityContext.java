@@ -1,6 +1,6 @@
 package org.antarcticgardens.cna.content.electricity.network;
 
-import net.minecraft.util.Tuple;
+import org.antarcticgardens.cna.util.Tuple;
 import org.antarcticgardens.cna.content.electricity.connector.AbstractElectricalConnector;
 import org.antarcticgardens.cna.util.HashSortedPair;
 

@@ -1,18 +1,17 @@
 package org.antarcticgardens.cna;
 
-import com.tterrag.registrate.util.entry.RegistryEntry;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import org.antarcticgardens.cna.content.nuclear.RadiationPoisoningEffect;
 
-import static org.antarcticgardens.cna.CreateNewAge.REGISTRATE;
-
 public class CNAEffects {
-    public static final RegistryEntry<MobEffect, RadiationPoisoningEffect> RADIATION_POISONING =
-            REGISTRATE.object("radiation_poisoning")
-                    .simple(Registries.MOB_EFFECT, () -> new RadiationPoisoningEffect(MobEffectCategory.HARMFUL, 0x48F542));
+    public static Holder<MobEffect> RADIATION_POISONING;
 
-    public static void load() {}
+    public static void register() {
+        RADIATION_POISONING = Registry.registerForHolder(BuiltInRegistries.MOB_EFFECT, CreateNewAge.asResource("radiation_poisoning"),
+                new RadiationPoisoningEffect(MobEffectCategory.HARMFUL, 0x48F542));
+    }
 }
-

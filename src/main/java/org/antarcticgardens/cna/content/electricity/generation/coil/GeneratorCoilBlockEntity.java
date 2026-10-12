@@ -1,9 +1,8 @@
 package org.antarcticgardens.cna.content.electricity.generation.coil;
 
 import com.google.common.collect.Lists;
-import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
-import com.simibubi.create.content.kinetics.base.RotatedPillarKineticBlock;
-import com.simibubi.create.foundation.utility.CreateLang;
+import com.zurrtum.create.content.kinetics.base.KineticBlockEntity;
+import com.zurrtum.create.content.kinetics.base.RotatedPillarKineticBlock;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -72,7 +71,7 @@ public class GeneratorCoilBlockEntity extends KineticBlockEntity {
                 if (state.getBlock() instanceof IMagneticBlock magneticBlock) {
                     stress += magneticBlock.getStrength();
                 } else {
-                    for (TagKey<Block> blockTagKey : state.getTags().toList()) {
+                    for (TagKey<Block> blockTagKey : state.typeHolder().tags().toList()) {
                         if (blockTagKey.location().getNamespace().equals(CreateNewAge.MOD_ID)) {
                             String path = blockTagKey.location().getPath();
                             if (path.startsWith("magnet/force_")) { 
@@ -102,7 +101,7 @@ public class GeneratorCoilBlockEntity extends KineticBlockEntity {
 
     @Override
     public void lazyTick() {
-        if (level == null || level.isClientSide)
+        if (level == null || level.isClientSide())
             return;
         float stress = calculateStressApplied();
         var network = getOrCreateNetwork();
@@ -116,13 +115,9 @@ public class GeneratorCoilBlockEntity extends KineticBlockEntity {
         }
     }
 
-    @Override
-    public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-        CreateLang.translate("tooltip.create_new_age.efficiency").style(ChatFormatting.GRAY).forGoggles(tooltip, 1);
-        CreateLang.translate("tooltip.create_new_age.percent", StringFormatUtil.formatPercentFloat(
-                (lastStressApplied-plainStress)/lastStressApplied
-        )).style(ChatFormatting.AQUA).forGoggles(tooltip, 2);
-        return super.addToGoggleTooltip(tooltip, isPlayerSneaking);
+    /** Share of the applied stress that the magnets add, which is what becomes energy. */
+    public float getEfficiency() {
+        return lastStressApplied == 0 ? 0 : (lastStressApplied - plainStress) / lastStressApplied;
     }
 
     public int takeGeneratedEnergy() {

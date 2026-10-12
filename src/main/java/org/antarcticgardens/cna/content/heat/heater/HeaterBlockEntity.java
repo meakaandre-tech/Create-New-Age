@@ -1,17 +1,15 @@
 package org.antarcticgardens.cna.content.heat.heater;
 
-import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
-import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
-import com.simibubi.create.foundation.utility.CreateLang;
+import com.zurrtum.create.api.behaviour.BlockEntityBehaviour;
+import com.zurrtum.create.foundation.blockEntity.SmartBlockEntity;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import java.util.List;
+import com.zurrtum.create.content.processing.burner.BlazeBurnerBlock;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -22,7 +20,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class HeaterBlockEntity extends BlockEntity implements HeatBlockEntity, IHaveGoggleInformation {
+public class HeaterBlockEntity extends SmartBlockEntity implements HeatBlockEntity {
+    @Override
+    public void addBehaviours(List<BlockEntityBehaviour<?>> behaviours) {
+    }
+
     public HeaterBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
         super(type, pos, blockState);
     }
@@ -30,14 +32,14 @@ public class HeaterBlockEntity extends BlockEntity implements HeatBlockEntity, I
     public float heat = 0;
 
     @Override
-    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
-        heat = tag.getFloat("heat");
+    protected void read(ValueInput tag, boolean clientPacket) {
+        super.read(tag, clientPacket);
+        heat = tag.getFloatOr("heat", 0);
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.saveAdditional(tag, registries);
+    protected void write(ValueOutput tag, boolean clientPacket) {
+        super.write(tag, clientPacket);
         tag.putFloat("heat", heat);
     }
 
@@ -64,16 +66,7 @@ public class HeaterBlockEntity extends BlockEntity implements HeatBlockEntity, I
         setChanged();
     }
 
-    @Nullable
-    @Override
-    public Packet<ClientGamePacketListener> getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this);
-    }
 
-    @Override
-    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-        return saveWithoutMetadata(registries);
-    }
 
     @Nullable
     @Override
@@ -116,38 +109,5 @@ public class HeaterBlockEntity extends BlockEntity implements HeatBlockEntity, I
         return CNAConfig.getServer().heaterRequiredHeatMultiplier.get();
     }
 
-    @Override
-    public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-        HeatBlockEntity.addToolTips(this, tooltip);
-        BlazeBurnerBlock.HeatLevel strength = getBlockState().getValue(HeaterBlock.STRENGTH);
-        double heat = 0;
-
-        Double mult = CNAConfig.getServer().heaterRequiredHeatMultiplier.get();
-
-        switch (strength) {
-
-            case NONE -> {
-                heat = 0;
-            }
-            case SMOULDERING -> {
-                heat = 50 * mult;
-            }
-            case FADING -> {
-                heat = 100 * mult;
-            }
-            case KINDLED -> {
-                heat = 400 * mult;
-            }
-            case SEETHING -> {
-                heat = 500 * mult;
-            }
-        }
-
-        CreateLang.translate("tooltip.create_new_age.releasing")
-                .style(ChatFormatting.GRAY).forGoggles(tooltip, 1);
-        CreateLang.translate("tooltip.create_new_age.temperature.ps", StringFormatUtil.formatFloat((float)heat))
-                .style(ChatFormatting.AQUA).forGoggles(tooltip, 2);
-        return true;
-    }
 
 }

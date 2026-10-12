@@ -1,78 +1,21 @@
 package org.antarcticgardens.cna;
 
-import com.google.gson.JsonObject;
-import com.simibubi.create.AllSoundEvents;
-import net.minecraft.data.CachedOutput;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.DataProvider;
-import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.level.Level;
 
-import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-
+/** Sound events. The sound definitions live in assets/create_new_age/sounds.json. */
 public class CNASounds {
-    public static final Map<ResourceLocation, AllSoundEvents.SoundEntry> CNASounds = new HashMap<>();
+    public static final SoundEvent GEIGER_COUNTER = Registry.register(BuiltInRegistries.SOUND_EVENT,
+            CreateNewAge.asResource("geiger_counter"), SoundEvent.createVariableRangeEvent(CreateNewAge.asResource("geiger_counter")));
 
-    public static final AllSoundEvents.SoundEntry GEIGER_COUNTER =
-            new CNASoundEntryBuilder(ResourceLocation.fromNamespaceAndPath(CreateNewAge.MOD_ID, "geiger_counter"))
-                    .subtitle("Geiger Counter Clicking")
-                    .category(SoundSource.PLAYERS)
-                    .build();
-
-    public static void load() {
-        for (AllSoundEvents.SoundEntry entry : CNASounds.values())
-            entry.prepare();
+    public static void playOnServer(SoundEvent sound, Level level, BlockPos pos, float volume, float pitch) {
+        level.playSound(null, pos, sound, SoundSource.PLAYERS, volume, pitch);
     }
 
-    public static class CNASoundEntryBuilder extends AllSoundEvents.SoundEntryBuilder {
-
-        public CNASoundEntryBuilder(ResourceLocation id) {
-            super(id);
-        }
-
-        @Override
-        public AllSoundEvents.SoundEntry build() {
-            AllSoundEvents.SoundEntry entry = super.build();
-            CNASounds.put(entry.getId(), entry);
-            return entry;
-        }
-    }
-
-    public static class SoundEntryProvider implements DataProvider {
-
-        private PackOutput output;
-
-        public SoundEntryProvider(PackOutput packOutput) {
-            output = packOutput;
-        }
-
-        @Override
-        public CompletableFuture<?> run(CachedOutput cache) {
-            return generate(output.getOutputFolder(), cache);
-        }
-
-        @Override
-        public String getName() {
-            return "CNA Custom Sounds";
-        }
-
-        public CompletableFuture<?> generate(Path path, CachedOutput cache) {
-            path = path.resolve("assets/create_new_age");
-            JsonObject json = new JsonObject();
-            CNASounds.entrySet()
-                    .stream()
-                    .sorted(Map.Entry.comparingByKey())
-                    .forEach(entry -> {
-                        entry.getValue()
-                                .write(json);
-                    });
-            return DataProvider.saveStable(cache, json, path.resolve("sounds.json"));
-        }
-
+    public static void register() {
     }
 }
-

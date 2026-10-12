@@ -1,61 +1,48 @@
 package org.antarcticgardens.cna;
 
-import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
-import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
-import net.createmod.catnip.lang.Lang;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.StringRepresentable;
-import net.minecraft.world.item.crafting.*;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeInput;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import org.antarcticgardens.cna.content.energising.recipe.EnergisingRecipe;
-import org.antarcticgardens.cna.content.energising.recipe.EnergisingRecipeParams;
-import org.antarcticgardens.cna.platform.PlatformRegistrar;
 
-import java.util.function.Supplier;
+import java.util.Locale;
 
-public enum CNARecipeTypes implements IRecipeTypeInfo, StringRepresentable {
-    ENERGISING(EnergisingRecipe::new);
+public enum CNARecipeTypes {
+    ENERGISING(EnergisingRecipe.SERIALIZER);
 
-    public final ResourceLocation id;
-    private final RecipeSerializer<?> serializerObject;
+    public final Identifier id;
+    private final RecipeSerializer<?> serializer;
     private final RecipeType<?> type;
 
-    private final PlatformRegistrar register = CreateNewAge.getInstance().getPlatform().getRegistrar();
-
-    CNARecipeTypes(Supplier<RecipeSerializer<?>> serializerSupplier) {
-        String name = Lang.asId(name());
-        id = ResourceLocation.fromNamespaceAndPath(CreateNewAge.MOD_ID, name);
-        serializerObject = serializerSupplier.get();
-        type = register.registerRecipe(name, serializerObject);
+    CNARecipeTypes(RecipeSerializer<?> serializer) {
+        id = CreateNewAge.asResource(name().toLowerCase(Locale.ROOT));
+        this.serializer = Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, id, serializer);
+        this.type = Registry.register(BuiltInRegistries.RECIPE_TYPE, id, new RecipeType<Recipe<?>>() {
+            @Override
+            public String toString() {
+                return id.toString();
+            }
+        });
     }
 
-    CNARecipeTypes(ProcessingRecipe.Factory<EnergisingRecipeParams, ? extends EnergisingRecipe> energisingRecipeFactory) {
-        this(() -> new EnergisingRecipe.Serializer<>(energisingRecipeFactory));
-    }
-
-    @Override
-    public ResourceLocation getId() {
+    public Identifier getId() {
         return id;
     }
 
     @SuppressWarnings("unchecked")
-    @Override
     public <T extends RecipeSerializer<?>> T getSerializer() {
-        return (T) serializerObject;
+        return (T) serializer;
     }
 
     @SuppressWarnings("unchecked")
-    @Override
     public <I extends RecipeInput, R extends Recipe<I>> RecipeType<R> getType() {
         return (RecipeType<R>) type;
     }
 
-    @Override
-    public String getSerializedName() {
-        return id.toString();
+    public static void register() {
     }
-
-    public static void load() {
-        // Make sure the recipe types load
-    }
-
 }

@@ -1,95 +1,56 @@
 package org.antarcticgardens.cna;
 
-import com.simibubi.create.content.processing.sequenced.SequencedAssemblyItem;
-import com.simibubi.create.foundation.data.AssetLookup;
-import com.tterrag.registrate.providers.DataGenContext;
-import com.tterrag.registrate.providers.RegistrateItemModelProvider;
-import com.tterrag.registrate.util.entry.ItemEntry;
-import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
+import com.zurrtum.create.content.processing.sequenced.SequencedAssemblyItem;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
 import org.antarcticgardens.cna.content.electricity.wire.ElectricWireItem;
+import org.antarcticgardens.cna.registry.ItemEntry;
 
-import static org.antarcticgardens.cna.CreateNewAge.REGISTRATE;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Function;
 
+/** Items. Their tags come from the generated data. */
 public class CNAItems {
-    public static final ItemEntry<Item> OVERCHARGED_GOLD =
-            REGISTRATE.item("overcharged_gold", Item::new)
-                    .register();
+    /** Items shown in the creative tab, in registration order (incomplete assembly items are left out). */
+    public static final List<ItemEntry<?>> TAB = new ArrayList<>();
 
-    public static final ItemEntry<Item> OVERCHARGED_IRON =
-            REGISTRATE.item("overcharged_iron", Item::new)
-                    .register();
+    public static final ItemEntry<Item> OVERCHARGED_GOLD = item("overcharged_gold", Item::new);
+    public static final ItemEntry<Item> OVERCHARGED_IRON = item("overcharged_iron", Item::new);
+    public static final ItemEntry<Item> OVERCHARGED_DIAMOND = item("overcharged_diamond", Item::new);
+    public static final ItemEntry<Item> NUCLEAR_FUEL = item("nuclear_fuel", Item::new);
+    public static final ItemEntry<Item> THORIUM = item("thorium", Item::new);
+    public static final ItemEntry<Item> RADIOACTIVE_THORIUM = item("radioactive_thorium", Item::new);
 
-    public static final ItemEntry<Item> OVERCHARGED_DIAMOND =
-            REGISTRATE.item("overcharged_diamond", Item::new)
-                    .register();
-    
-    public static final ItemEntry<Item> NUCLEAR_FUEL =
-            REGISTRATE.item("nuclear_fuel", Item::new)
-                    .tag(CNATags.Item.NUCLEAR_FUEL.tag)
-                    .tag(CNATags.createNuclearEnergyTag(28800))
-                    .register();
+    public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_FUEL = hidden("incomplete_fuel", SequencedAssemblyItem::new);
+    public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_REACTOR_CASING = hidden("incomplete_reactor_casing", SequencedAssemblyItem::new);
+    public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_WIRE = hidden("incomplete_wire", SequencedAssemblyItem::new);
+    public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_ENCHANTED_GOLDEN_APPLE = hidden("incomplete_enchanted_golden_apple", SequencedAssemblyItem::new);
 
-    public static final ItemEntry<Item> THORIUM =
-            REGISTRATE.item("thorium", Item::new)
-                    .register();
+    public static final ItemEntry<Item> OVERCHARGED_IRON_SHEET = item("overcharged_iron_sheet", Item::new);
+    public static final ItemEntry<Item> OVERCHARGED_GOLDEN_SHEET = item("overcharged_golden_sheet", Item::new);
+    public static final ItemEntry<Item> BLANK_CIRCUIT = item("blank_circuit", Item::new);
+    public static final ItemEntry<Item> COPPER_CIRCUIT = item("copper_circuit", Item::new);
 
-    public static final ItemEntry<Item> RADIOACTIVE_THORIUM =
-            REGISTRATE.item("radioactive_thorium", Item::new)
-                    .register();
+    public static final ItemEntry<ElectricWireItem> COPPER_WIRE = item("copper_wire", ElectricWireItem::newCopperWire);
+    public static final ItemEntry<ElectricWireItem> OVERCHARGED_IRON_WIRE = item("overcharged_iron_wire", ElectricWireItem::newIronWire);
+    public static final ItemEntry<ElectricWireItem> OVERCHARGED_GOLDEN_WIRE = item("overcharged_golden_wire", ElectricWireItem::newGoldenWire);
+    public static final ItemEntry<ElectricWireItem> OVERCHARGED_DIAMOND_WIRE = item("overcharged_diamond_wire", ElectricWireItem::newDiamondWire);
 
-    public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_FUEL =
-            REGISTRATE.item("incomplete_fuel", SequencedAssemblyItem::new)
-                    .removeTab(CreateNewAge.CREATIVE_TAB_KEY)
-                    .register();
+    private static <T extends Item> ItemEntry<T> item(String name, Function<Item.Properties, T> factory) {
+        ItemEntry<T> entry = hidden(name, factory);
+        TAB.add(entry);
+        return entry;
+    }
 
-    public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_REACTOR_CASING =
-            REGISTRATE.item("incomplete_reactor_casing", SequencedAssemblyItem::new)
-                    .removeTab(CreateNewAge.CREATIVE_TAB_KEY)
-                    .register();
+    private static <T extends Item> ItemEntry<T> hidden(String name, Function<Item.Properties, T> factory) {
+        ResourceKey<Item> key = ResourceKey.create(Registries.ITEM, CreateNewAge.asResource(name));
+        return new ItemEntry<>(Registry.register(BuiltInRegistries.ITEM, key, factory.apply(new Item.Properties().setId(key))));
+    }
 
-    public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_WIRE =
-            REGISTRATE.item("incomplete_wire", SequencedAssemblyItem::new)
-                    .removeTab(CreateNewAge.CREATIVE_TAB_KEY)
-                    .register();
-
-    public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_ENCHANTED_GOLDEN_APPLE =
-            REGISTRATE.item("incomplete_enchanted_golden_apple", SequencedAssemblyItem::new)
-                    .removeTab(CreateNewAge.CREATIVE_TAB_KEY)
-                    .register();
-
-
-    public static final ItemEntry<Item> OVERCHARGED_IRON_SHEET =
-            REGISTRATE.item("overcharged_iron_sheet", Item::new)
-                    .register();
-
-    public static final ItemEntry<Item> OVERCHARGED_GOLDEN_SHEET =
-            REGISTRATE.item("overcharged_golden_sheet", Item::new)
-                    .register();
-
-    public static final ItemEntry<Item> BLANK_CIRCUIT =
-            REGISTRATE.item("blank_circuit", Item::new)
-                    .register();
-    public static final ItemEntry<Item> COPPER_CIRCUIT =
-            REGISTRATE.item("copper_circuit", Item::new)
-                    .register();
-
-
-    public static final ItemEntry<ElectricWireItem> COPPER_WIRE =
-            REGISTRATE.item("copper_wire", ElectricWireItem::newCopperWire)
-                    .register();
-
-    public static final ItemEntry<ElectricWireItem> OVERCHARGED_IRON_WIRE =
-            REGISTRATE.item("overcharged_iron_wire", ElectricWireItem::newIronWire)
-                    .register();
-
-    public static final ItemEntry<ElectricWireItem> OVERCHARGED_GOLDEN_WIRE =
-            REGISTRATE.item("overcharged_golden_wire", ElectricWireItem::newGoldenWire)
-                    .register();
-
-    public static final ItemEntry<ElectricWireItem> OVERCHARGED_DIAMOND_WIRE =
-            REGISTRATE.item("overcharged_diamond_wire", ElectricWireItem::newDiamondWire)
-                    .register();
-
-    public static void load() {  }
+    public static void register() {
+    }
 }

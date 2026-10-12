@@ -1,45 +1,23 @@
 package org.antarcticgardens.cna.content.electricity.connector;
 
-import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
-import com.simibubi.create.foundation.utility.CreateLang;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import org.antarcticgardens.cna.CNABlockEntityTypes;
 import org.antarcticgardens.cna.content.electricity.network.ElectricalNetwork;
 import org.antarcticgardens.cna.content.electricity.network.NetworkEnergyStorage;
-import org.antarcticgardens.esl.energy.EnergyStorage;
 
-import java.util.*;
-
-public class ElectricalConnectorBlockEntity extends AbstractElectricalConnector implements IHaveGoggleInformation {
+public class ElectricalConnectorBlockEntity extends AbstractElectricalConnector {
     private final NetworkEnergyStorage storage;
 
     public ElectricalConnectorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
         super(type, pos, blockState);
         storage = new NetworkEnergyStorage(this, null);
-        EnergyStorage.registerForBlockEntity((blockEntity, direction) -> blockEntity.storage, CNABlockEntityTypes.ELECTRICAL_CONNECTOR.get());
     }
 
-    @Override
-    public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-        CreateLang.translate("tooltip.create_new_age.connector_info")
-                .style(ChatFormatting.WHITE).forGoggles(tooltip);
-
-        CreateLang.translate("tooltip.create_new_age.mode")
-                .style(ChatFormatting.GRAY)
-                .forGoggles(tooltip);
-
-        ElectricalConnectorMode mode = getBlockState().getValue(ElectricalConnectorBlock.MODE);
-        CreateLang.translate("tooltip.create_new_age.connector_mode." + mode.getSerializedName())
-                .style(ChatFormatting.AQUA)
-                .forGoggles(tooltip, 1);
-
-        return true;
+    public ElectricalConnectorMode getMode() {
+        return getBlockState().getValue(ElectricalConnectorBlock.MODE);
     }
 
     @Override
@@ -56,5 +34,9 @@ public class ElectricalConnectorBlockEntity extends AbstractElectricalConnector 
     @Override
     public Direction getFacing() {
         return getBlockState().getValue(BlockStateProperties.FACING);
+    }
+
+    public NetworkEnergyStorage getEnergyStorage() {
+        return storage;
     }
 }

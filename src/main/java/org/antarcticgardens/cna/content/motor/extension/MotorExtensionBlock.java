@@ -1,9 +1,8 @@
 package org.antarcticgardens.cna.content.motor.extension;
 
-import com.simibubi.create.content.equipment.wrench.IWrenchable;
-import com.simibubi.create.foundation.block.IBE;
-import com.simibubi.create.foundation.utility.CreateLang;
-import com.tterrag.registrate.util.entry.BlockEntityEntry;
+import com.zurrtum.create.content.equipment.wrench.IWrenchable;
+import com.zurrtum.create.foundation.block.IBE;
+import org.antarcticgardens.cna.registry.BlockEntityEntry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -55,17 +54,6 @@ public class MotorExtensionBlock extends Block implements IBE<MotorExtensionBloc
         builder.add(BlockStateProperties.FACING);
     }
 
-    @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.add(Component.translatable("tooltip.create_new_age.motor_extension").withStyle(ChatFormatting.DARK_GRAY));
-        tooltipComponents.add(CreateLang.translate("tooltip.create_new_age.stress_limit_multiplier").style(ChatFormatting.GRAY)
-                .component());
-        tooltipComponents.add(CreateLang.text(" ").add(CreateLang.number((int)(variant.getMultiplier() * 100)).text("%").style(ChatFormatting.AQUA)).component());
-
-        tooltipComponents.add(CreateLang.translate("tooltip.create_new_age.additional_capacity").style(ChatFormatting.GRAY)
-                .component());
-        tooltipComponents.add(CreateLang.text(" ").add(CreateLang.number(variant.getExtraCapacity()).text("⚡").style(ChatFormatting.AQUA)).component());
-    }
 
     @Nullable
     @Override
@@ -87,24 +75,6 @@ public class MotorExtensionBlock extends Block implements IBE<MotorExtensionBloc
         return blockState;
     }
 
-    @Override
-    public InteractionResult onSneakWrenched(BlockState state, UseOnContext context) {
-        Level world = context.getLevel();
-        BlockPos pos = context.getClickedPos();
-        Player player = context.getPlayer();
-        if (world instanceof ServerLevel) {
-            if (player != null && !player.isCreative()) {
-                Block.getDrops(state, (ServerLevel)world, pos, world.getBlockEntity(pos), player, context.getItemInHand()).forEach((itemStack) -> {
-                    player.getInventory().placeItemBackInInventory(itemStack);
-                });
-            }
-
-            state.spawnAfterBreak((ServerLevel)world, pos, ItemStack.EMPTY, true);
-            world.destroyBlock(pos, false);
-        }
-
-        return InteractionResult.SUCCESS;
-    }
 
     @Override
     public InteractionResult onWrenched(BlockState state, UseOnContext context) {
@@ -138,5 +108,9 @@ public class MotorExtensionBlock extends Block implements IBE<MotorExtensionBloc
     @Override
     public BlockEntityType<? extends MotorExtensionBlockEntity> getBlockEntityType() {
         return entry.get();
+    }
+
+    public IMotorExtensionVariant getVariant() {
+        return variant;
     }
 }

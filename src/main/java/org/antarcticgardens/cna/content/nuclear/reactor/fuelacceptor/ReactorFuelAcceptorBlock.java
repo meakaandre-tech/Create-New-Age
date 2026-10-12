@@ -1,5 +1,9 @@
 package org.antarcticgardens.cna.content.nuclear.reactor.fuelacceptor;
 
+import com.zurrtum.create.infrastructure.items.ItemInventoryProvider;
+import net.minecraft.core.Direction;
+import net.minecraft.world.Container;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
@@ -11,13 +15,13 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import org.antarcticgardens.cna.CNABlockEntityTypes;
 import org.antarcticgardens.cna.content.nuclear.reactor.ReactorBlock;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class ReactorFuelAcceptorBlock extends ReactorBlock implements EntityBlock {
+public class ReactorFuelAcceptorBlock extends ReactorBlock implements EntityBlock, ItemInventoryProvider<ReactorFuelAcceptorBlockEntity> {
     public ReactorFuelAcceptorBlock(Properties properties) {
         super(properties);
     }
@@ -37,7 +41,7 @@ public class ReactorFuelAcceptorBlock extends ReactorBlock implements EntityBloc
         };
     }
 
-    public static final DirectionProperty FACING = BlockStateProperties.FACING;
+    public static final EnumProperty<net.minecraft.core.Direction> FACING = BlockStateProperties.FACING;
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         return this.defaultBlockState().setValue(FACING, context.getClickedFace());
     }
@@ -46,4 +50,15 @@ public class ReactorFuelAcceptorBlock extends ReactorBlock implements EntityBloc
         builder.add(FACING);
     }
 
+
+    /** Funnels, chutes and hoppers insert fuel through this container, as through the NeoForge item handler. */
+    @Override
+    public Container getInventory(LevelAccessor level, BlockPos pos, BlockState state, ReactorFuelAcceptorBlockEntity blockEntity, Direction side) {
+        return blockEntity.container;
+    }
+
+    @Override
+    public Class<ReactorFuelAcceptorBlockEntity> getBlockEntityClass() {
+        return ReactorFuelAcceptorBlockEntity.class;
+    }
 }

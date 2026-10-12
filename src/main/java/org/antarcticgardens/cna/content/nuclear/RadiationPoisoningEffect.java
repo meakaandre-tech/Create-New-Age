@@ -1,5 +1,6 @@
 package org.antarcticgardens.cna.content.nuclear;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -15,33 +16,33 @@ public class RadiationPoisoningEffect extends MobEffect {
     }
 
     @Override
-    public boolean applyEffectTick(LivingEntity livingEntity, int amplifier) {
-        if (!livingEntity.level().isClientSide) {
+    public boolean applyEffectTick(ServerLevel serverLevel, LivingEntity livingEntity, int amplifier) {
+        {
             if (CNAConfig.getServer().geigerCounterSounds.get()) {
                 float clickChance = 0.15f + (amplifier * 0.10f);
-                if (livingEntity.getRandom().nextFloat() < clickChance && livingEntity.getType() == EntityType.PLAYER) {
+                if (livingEntity.getRandom().nextFloat() < clickChance && livingEntity instanceof net.minecraft.world.entity.player.Player) {
                     float pitch = 0.95f + livingEntity.getRandom().nextFloat() * 0.1f;
-                    CNASounds.GEIGER_COUNTER.playOnServer(livingEntity.level(), livingEntity.blockPosition(), .75f, pitch);
+                    CNASounds.playOnServer(CNASounds.GEIGER_COUNTER, livingEntity.level(), livingEntity.blockPosition(), .75f, pitch);
                 }
             }
             if (CNAConfig.getServer().nauseaInducingRadiation.get()) {
-                MobEffectInstance nausea = livingEntity.getEffect(MobEffects.CONFUSION);
+                MobEffectInstance nausea = livingEntity.getEffect(MobEffects.NAUSEA);
                 if (nausea == null || nausea.getDuration() < 100) {
-                    livingEntity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 400, amplifier, false, false, false));
+                    livingEntity.addEffect(new MobEffectInstance(MobEffects.NAUSEA, 400, amplifier, false, false, false));
                 }
             }
 
-            MobEffectInstance fatigue = livingEntity.getEffect(MobEffects.DIG_SLOWDOWN);
+            MobEffectInstance fatigue = livingEntity.getEffect(MobEffects.MINING_FATIGUE);
             if (fatigue == null || fatigue.getDuration() < 100) {
-                livingEntity.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 300, amplifier + 1, false, false, false));
+                livingEntity.addEffect(new MobEffectInstance(MobEffects.MINING_FATIGUE, 300, amplifier + 1, false, false, false));
             }
 
             if (livingEntity.tickCount % 40 == 0) {
-                livingEntity.hurt(livingEntity.damageSources().magic(), 1.0F + amplifier);
+                livingEntity.hurtServer(serverLevel, livingEntity.damageSources().magic(), 1.0F + amplifier);
             }
         }
 
-        return super.applyEffectTick(livingEntity, amplifier);
+        return super.applyEffectTick(serverLevel, livingEntity, amplifier);
     }
 
     @Override

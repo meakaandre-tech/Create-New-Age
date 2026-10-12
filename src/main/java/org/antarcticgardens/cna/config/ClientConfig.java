@@ -1,13 +1,12 @@
 package org.antarcticgardens.cna.config;
 
 
-import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class ClientConfig {
-    public final ModConfigSpec.ConfigValue<Integer> wireSectionsPerMeter;
-    public final ModConfigSpec.ConfigValue<Double> wireThickness;
+    public final ConfigBuilder.ConfigValue<Integer> wireSectionsPerMeter;
+    public final ConfigBuilder.ConfigValue<Double> wireThickness;
 
-    public ClientConfig(ModConfigSpec.Builder builder) {
+    public ClientConfig(ConfigBuilder builder) {
         wireSectionsPerMeter = builder
                 .comment(
                         "Choose how many wire sections are rendered in one meter (block).",

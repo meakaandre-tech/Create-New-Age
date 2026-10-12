@@ -1,6 +1,6 @@
 package org.antarcticgardens.cna.content.electricity.light;
 
-import com.simibubi.create.content.equipment.wrench.IWrenchable;
+import com.zurrtum.create.content.equipment.wrench.IWrenchable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionResult;
@@ -114,8 +114,8 @@ public class LampPostBlock extends Block implements IWrenchable {
     }
 
     @Override
-    protected void neighborChanged(BlockState state, Level world, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean movedByPiston) {
-        super.neighborChanged(state, world, pos, neighborBlock, neighborPos, movedByPiston);
+    protected void neighborChanged(BlockState state, Level world, BlockPos pos, Block neighborBlock, @org.jetbrains.annotations.Nullable net.minecraft.world.level.redstone.Orientation orientation, boolean movedByPiston) {
+        super.neighborChanged(state, world, pos, neighborBlock, orientation, movedByPiston);
 
         state = updateState(state, world, pos, (dir, st) -> st.getValue(getDirectionProperty(dir.getOpposite())));
 

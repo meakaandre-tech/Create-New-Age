@@ -7,10 +7,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.antarcticgardens.cna.content.electricity.connector.AbstractElectricalConnector;
 import org.antarcticgardens.cna.content.electricity.connector.ElectricalConnectorBlock;
-import org.antarcticgardens.esl.energy.EnergyStorage;
-import org.antarcticgardens.esl.transaction.Transaction;
-import org.antarcticgardens.esl.transaction.TransactionContext;
-import org.antarcticgardens.esl.transaction.TransactionStack;
+import org.antarcticgardens.cna.energy.EnergyStorage;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
@@ -155,7 +154,7 @@ public class ElectricalNetwork {
 
     protected void tick() {
         for (Map.Entry<AbstractElectricalConnector, EnergyBlockEntity> e : pulledSources.entrySet()) {
-            try (Transaction txn = TransactionStack.get().openOuter(); Transaction test = txn.openNested()) {
+            try (Transaction txn = Transaction.openOuter(); Transaction test = txn.openNested()) {
                 long maxExtracted = e.getValue().storage().extract(Long.MAX_VALUE, test);
                 test.abort();
                 long inserted = insert(e.getKey(), maxExtracted, txn);

@@ -1,9 +1,8 @@
 package org.antarcticgardens.cna.content.energising;
 
-import com.simibubi.create.AllShapes;
-import com.simibubi.create.content.kinetics.base.HorizontalKineticBlock;
-import com.simibubi.create.foundation.block.IBE;
-import com.simibubi.create.foundation.utility.CreateLang;
+import com.zurrtum.create.AllShapes;
+import com.zurrtum.create.content.kinetics.base.HorizontalKineticBlock;
+import com.zurrtum.create.foundation.block.IBE;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -81,16 +80,6 @@ public class EnergiserBlock extends HorizontalKineticBlock implements IBE<Energi
     }
 
 
-    @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.add(CreateLang.translate("tooltip.create_new_age.speed").style(ChatFormatting.GRAY).component());
-        tooltipComponents.add(CreateLang.text(" ").translate("tooltip.create_new_age.energy_per_tick",
-                        StringFormatUtil.formatLong(getStrength(tier))).style(ChatFormatting.AQUA)
-                .add(CreateLang.text(" ").translate("tooltip.create_new_age.per_rpm", 10).style(ChatFormatting.GRAY)).component());
-        tooltipComponents.add(CreateLang.translate("tooltip.create_new_age.stores").style(ChatFormatting.GRAY).component());
-        tooltipComponents.add(CreateLang.text(" ").translate("tooltip.create_new_age.energy",
-                StringFormatUtil.formatLong(getCapacity(tier))).style(ChatFormatting.AQUA).component());
-    }
 
     public static EnergiserBlock newBasic(Properties properties) {
         return new EnergiserBlock(properties, 1);
@@ -102,5 +91,9 @@ public class EnergiserBlock extends HorizontalKineticBlock implements IBE<Energi
 
     public static EnergiserBlock newReinforced(Properties properties) {
         return new EnergiserBlock(properties, 3);
+    }
+
+    public int getTier() {
+        return tier;
     }
 }
