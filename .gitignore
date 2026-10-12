@@ -43,3 +43,6 @@ replay_*.log
 # datagen
 
 **/generated/resources/.cache/
+
+# Create Fly jar and class tweaker, downloaded by CI
+libs/
