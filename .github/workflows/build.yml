@@ -27,6 +27,9 @@ jobs:
           # compile with Create Fly's class tweaker, so its injected interfaces and widened members are visible
           unzip -o -j libs/create-fly-26.3.jar create.classtweaker -d libs/
           ls -l libs
+      - name: Check block and item models and textures
+        shell: bash
+        run: python3 .github/scripts/check_assets.py --create-jar libs/create-fly-26.3.jar
       - name: Build
         shell: bash
         run: |
@@ -249,7 +252,7 @@ jobs:
           name: create-new-age-fabric-26.3
           path: build/libs/*.jar
       - name: Publish the jar as a release
-        if: success()
+        if: success() && github.ref == 'refs/heads/fabric-26.3'
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash

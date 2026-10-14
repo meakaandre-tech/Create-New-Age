@@ -43,3 +43,6 @@ shot
 cmd tp @a 19.5 204 27.5 180 35
 sleep 5
 shot
+cmd tp @a 43.5 204 15.5 0 35
+sleep 5
+shot

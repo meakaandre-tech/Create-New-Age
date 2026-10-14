@@ -64,4 +64,8 @@ setblock 0 200 23 create_new_age:overcharged_golden_wire_block
 setblock 2 200 23 create_new_age:overcharged_diamond_wire_block
 setblock 4 200 23 create_new_age:street_light
 setblock 6 200 23 create_new_age:lamp_post
+fill 37 200 26 39 201 26 create_new_age:reactor_casing
+fill 41 200 26 43 201 26 create_new_age:reactor_glass
+fill 45 200 26 47 201 26 create_new_age:heat_casing
+fill 49 200 26 51 201 26 create_new_age:redstone_magnet
 say CHECK placed every block
